@@ -1,5 +1,5 @@
-### to upload file if modified
 import time
+import os
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
@@ -41,31 +41,44 @@ def upload_file_to_drive(file_path, drive_folder_id, credentials_path):
     print(f"File uploaded successfully with file ID: {response['id']}")
 
 class MyHandler(FileSystemEventHandler):
+    def __init__(self, folder_to_watch, credentials_file_path, drive_folder_id_to_upload_to):
+        super().__init__()
+        self.folder_to_watch = folder_to_watch
+        self.credentials_file_path = credentials_file_path
+        self.drive_folder_id_to_upload_to = drive_folder_id_to_upload_to
+
     def on_modified(self, event):
         if event.is_directory:
             return
         print(f'File {event.src_path} has been modified.')
         # Replace these with your specific values
-        file_path_to_upload = "C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\Sem4_project\\reference_files\\test.txt"
-        drive_folder_id_to_upload_to = "1gvh-akOM4JlkCljrtpxAGfX4dXdbfJ2n" #1Ov7bY55OAh-abKsfdKWFkR15HksnsMkn
-        credentials_file_path = "C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\Sem4_project\\reference_files\\syncin-411107-949b882c5e98.json"
-
-        upload_file_to_drive(file_path_to_upload, drive_folder_id_to_upload_to, credentials_file_path)
+        file_path_to_upload = event.src_path
+        upload_file_to_drive(file_path_to_upload, self.drive_folder_id_to_upload_to, self.credentials_file_path)
+        
+        # Stop the current observer
+        self.observer.stop()
+        
+        # Start a new observer
+        self.observer = Observer()
+        self.observer.schedule(self, path=self.folder_to_watch, recursive=True)
+        self.observer.start()
 
 if __name__ == "__main__":
     folder_to_watch = 'C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\Sem4_project\\reference_files'  # Replace with the path to your folder
+    credentials_file_path = "C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\Sem4_project\\reference_files\\syncin-411107-949b882c5e98.json"
+    drive_folder_id_to_upload_to = "1gvh-akOM4JlkCljrtpxAGfX4dXdbfJ2n" #1Ov7bY55OAh-abKsfdksnsMkn
 
-    event_handler = MyHandler()
+    event_handler = MyHandler(folder_to_watch, credentials_file_path, drive_folder_id_to_upload_to)
     observer = Observer()
-    observer.schedule(event_handler, path=folder_to_watch, recursive=False)
-    observer.start()
+    observer.schedule(event_handler, path=folder_to_watch, recursive=True)
+    event_handler.observer = observer  # Store the observer reference in the event handler
 
     try:
         print(f'Watching folder: {folder_to_watch}')
+        observer.start()
         while True:
             time.sleep(1)
     except KeyboardInterrupt:
         observer.stop()
-        print("error")
-
-    observer.join()
+        print("Stopped watching folder.")
+        observer.join()

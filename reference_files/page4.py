@@ -25,7 +25,7 @@ def authenticate():
             creds.refresh(Request())
         else:
             flow = InstalledAppFlow.from_client_secrets_file(
-                'credentials.json', SCOPES)
+                'C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\Sem4_project\\reference_files\\client_secrets.json', SCOPES)
             creds = flow.run_local_server(port=0)
         # Save the credentials for the next run
         with open('token.pickle', 'wb') as token:
@@ -43,7 +43,6 @@ def create_folder(service, folder_name):
     return folder.get('id')
 
 def grant_access(service, folder_id, email):
-    batch = service.new_batch_http_request(callback=callback)
     user_permission = {
         'type': 'user',
         'role': 'writer',
@@ -54,8 +53,7 @@ def grant_access(service, folder_id, email):
         body=user_permission,
         fields='id',
     )
-    batch.add(request)
-    batch.execute()
+    request.execute()
 
 def main():
     creds = authenticate()
