@@ -18,6 +18,12 @@ class CustomFileSystemModel(QFileSystemModel):
             return self.headers[section] if section < len(self.headers) else None
         return super().headerData(section, orientation, role)
 
+    def flags(self, index):
+        default_flags = super().flags(index)
+        if index.column() == 1:  # Allow editing only for the "Status" column
+            return default_flags | Qt.ItemIsEditable
+        return default_flags
+
     def data(self, index, role=0):
         if not index.isValid():
             return None
@@ -46,7 +52,14 @@ class CustomFileSystemModel(QFileSystemModel):
 
         return super().data(index, role)
 
-
+    def setData(self, index, value, role=Qt.EditRole):
+        print("setData called")
+        if role == Qt.EditRole and index.column() == 1:  # Ensure data is set only for the "Status" column
+            success = super().setData(index, value, role)
+            if success:
+                self.dataChanged.emit(index, index)
+            return success
+        return False
 
     def get_size_formatted(self, size):
         if size < 1024:
@@ -68,6 +81,7 @@ class MyFileBrowser(ui.Ui_MainWindow, QtWidgets.QMainWindow):
         self.treeView.customContextMenuRequested.connect(self.context_menu)
         self.populate()
         self.treeView.setColumnWidth(0, 300)
+        self.model.setReadOnly(False)
         
     
     def populate(self):
@@ -122,7 +136,13 @@ class MyFileBrowser(ui.Ui_MainWindow, QtWidgets.QMainWindow):
 
     def sync_file(self):
         index = self.treeView.currentIndex()
-        self.model.setData(index, "Synced", role=Qt.DisplayRole)
+        if index.isValid():
+            status_index = index.siblingAtColumn(1)  # Get the index for the "Status" column
+            self.model.layoutAboutToBeChanged.emit()  # Notify model layout is about to change
+            success = self.model.setData(status_index, "Synced", role=Qt.EditRole)  # Set data using Qt.EditRole
+            if success:
+                self.model.layoutChanged.emit()  # Notify model layout has changed
+
 
 
 if __name__ == '__main__':
