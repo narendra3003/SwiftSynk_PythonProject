@@ -2,7 +2,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QFileSystemModel, QMessageBox
 from PyQt5.QtCore import QModelIndex, QFileInfo, Qt
 
-from UI import main
+from UI import ui
 import os, shutil
 
 class CustomFileSystemModel(QFileSystemModel):
@@ -63,7 +63,7 @@ class CustomFileSystemModel(QFileSystemModel):
         size_gb = size_mb / 1024
         return f"{size_gb:.2f} GB"
 
-class MyFileBrowser(main.Ui_MainWindow, QtWidgets.QMainWindow):
+class MyFileBrowser(ui.Ui_MainWindow, QtWidgets.QMainWindow):
     def __init__(self):
         super(MyFileBrowser, self).__init__()
         self.setupUi(self)
