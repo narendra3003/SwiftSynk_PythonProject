@@ -8,21 +8,16 @@ import os, shutil
 class CustomFileSystemModel(QFileSystemModel):
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.headers = ["Name", "Status", "Size", "Type", "Date Modified"] #
+        self.headers = ["Name", "Status", "Size", "Type", "Date Modified"]  # Define headers
 
     def columnCount(self, parent=QModelIndex()):
-        return super().columnCount(parent) + 3 
+        # Ensure only 5 columns are returned
+        return 5
 
     def headerData(self, section, orientation, role=0):
-        if orientation == Qt.Horizontal and role == Qt.DisplayRole: 
-            if section == 1: 
-                return "Status"
-            elif section == 2:  
-                return "Size"
-            elif section == 3:  
-                return "Type"
-            elif section == 4: 
-                return "Date Modified"
+        if orientation == Qt.Horizontal and role == Qt.DisplayRole:
+            # Return header data based on section
+            return self.headers[section] if section < len(self.headers) else None
         return super().headerData(section, orientation, role)
 
     def data(self, index, role=0):
@@ -48,8 +43,12 @@ class CustomFileSystemModel(QFileSystemModel):
             elif index.column() == 4:  
                 file_info = QFileInfo(self.filePath(index))
                 return file_info.lastModified().toString(Qt.DefaultLocaleShortDate)
+            elif index.column() == 5:  # For Date Modified column
+                return ""  # Return empty string for Date Modified column
 
         return super().data(index, role)
+
+
 
     def get_size_formatted(self, size):
         if size < 1024:
