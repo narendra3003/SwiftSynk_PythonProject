@@ -10,7 +10,7 @@ def upload_file_to_drive(file_path, drive_folder_id, credentials_path):
         credentials_path,
         scopes=['https://www.googleapis.com/auth/drive.file']
     )
-
+    
     # Build the Google Drive API service
     drive_service = build('drive', 'v3', credentials=credentials)
 
