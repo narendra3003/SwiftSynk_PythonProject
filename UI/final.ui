@@ -89,11 +89,6 @@
      </property>
      <column>
       <property name="text">
-       <string/>
-      </property>
-     </column>
-     <column>
-      <property name="text">
        <string>Name</string>
       </property>
       <property name="font">
@@ -161,6 +156,12 @@
        <weight>75</weight>
        <bold>true</bold>
       </font>
+     </property>
+     <property name="cursor">
+      <cursorShape>PointingHandCursor</cursorShape>
+     </property>
+     <property name="toolTip">
+      <string>Select files to Sync</string>
      </property>
      <property name="text">
       <string>SYNC</string>

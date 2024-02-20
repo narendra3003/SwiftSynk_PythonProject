@@ -9,7 +9,42 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QTableWidgetItem
+from PyQt5.QtGui import QFont, QIcon, QPixmap
+from PyQt5 import QtCore
 
+import math, os
+
+class FileItemWidget(QtWidgets.QWidget):
+    def __init__(self, icon, text, parent=None):
+        super().__init__(parent)
+        
+        layout = QtWidgets.QHBoxLayout()
+        layout.setContentsMargins(0, 0, 0, 0)
+        layout.setSpacing(10)
+        
+        self.icon_label = QtWidgets.QLabel()
+        self.icon_label.setPixmap(icon.pixmap(20, 20))
+        layout.addWidget(self.icon_label)
+        
+        self.text_label = QtWidgets.QLabel(text)
+        font = QtGui.QFont("Agency FB", 10, QtGui.QFont.Bold)
+        self.text_label.setFont(font)
+        alignment = QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter 
+        self.text_label.setAlignment(alignment)
+
+        layout.addWidget(self.text_label)
+        
+        self.setLayout(layout)
+
+def convert_size(size_bytes):
+    if size_bytes == 0:
+        return "0 B"
+    size_name = ("B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB")
+    i = int(math.floor(math.log(size_bytes, 1024)))
+    p = math.pow(1024, i)
+    s = round(size_bytes / p, 2)
+    return "%s %s" % (s, size_name[i])
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -49,13 +84,28 @@ class Ui_MainWindow(object):
         self.table = QtWidgets.QTableWidget(self.widget2)
         self.table.setGeometry(QtCore.QRect(-10, 2, 1102, 682))
         self.table.setStyleSheet("QHeaderView::section {\n"
-"    background-color: rgb(255, 255, 255);\n"
-"    border: none\n"
-"}")
+                         "    background-color: rgb(255, 255, 255);\n"
+                         "    border: none\n"
+                         "}\n"
+                         "QTableWidget {\n"
+                         "    border: none;\n"
+                         "}\n")
+
         self.table.setObjectName("table")
-        self.table.setColumnCount(5)
+        self.table.setColumnCount(4)
+        self.table.setColumnWidth(0, 200)
+        self.table.setColumnWidth(1, 100)
+        self.table.setColumnWidth(2, 400)
+        self.table.setColumnWidth(3, 100)
+        self.table.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
         self.table.setRowCount(0)
         item = QtWidgets.QTableWidgetItem()
+        font = QtGui.QFont()
+        font.setFamily("Agency FB")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        item.setFont(font)
         self.table.setHorizontalHeaderItem(0, item)
         item = QtWidgets.QTableWidgetItem()
         font = QtGui.QFont()
@@ -81,14 +131,6 @@ class Ui_MainWindow(object):
         font.setWeight(75)
         item.setFont(font)
         self.table.setHorizontalHeaderItem(3, item)
-        item = QtWidgets.QTableWidgetItem()
-        font = QtGui.QFont()
-        font.setFamily("Agency FB")
-        font.setPointSize(10)
-        font.setBold(True)
-        font.setWeight(75)
-        item.setFont(font)
-        self.table.setHorizontalHeaderItem(4, item)
         self.syncButton = QtWidgets.QPushButton(self.widget2)
         self.syncButton.setGeometry(QtCore.QRect(950, 552, 102, 102))
         font = QtGui.QFont()
@@ -97,6 +139,7 @@ class Ui_MainWindow(object):
         font.setBold(True)
         font.setWeight(75)
         self.syncButton.setFont(font)
+        self.syncButton.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.syncButton.setObjectName("syncButton")
         MainWindow.setCentralWidget(self.centralwidget)
 
@@ -106,15 +149,18 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        item = self.table.horizontalHeaderItem(1)
+        item = self.table.horizontalHeaderItem(0)
         item.setText(_translate("MainWindow", "Name"))
-        item = self.table.horizontalHeaderItem(2)
+        item = self.table.horizontalHeaderItem(1)
         item.setText(_translate("MainWindow", "Status"))
-        item = self.table.horizontalHeaderItem(3)
+        item = self.table.horizontalHeaderItem(2)
         item.setText(_translate("MainWindow", "Path"))
-        item = self.table.horizontalHeaderItem(4)
+        item = self.table.horizontalHeaderItem(3)
         item.setText(_translate("MainWindow", "Size"))
+        self.syncButton.setToolTip(_translate("MainWindow", "Select files to Sync"))
         self.syncButton.setText(_translate("MainWindow", "SYNC"))
+
+
 
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self):
@@ -122,29 +168,66 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.ui = Ui_MainWindow()
         self.setupUi(self)
         self.syncButton.clicked.connect(self.sync_files)
+        self.table.itemClicked.connect(self.open_file_explorer)
+
+        self.icon_provider = QtWidgets.QFileIconProvider()
 
     def sync_files(self):
-        print("Sync button clicked")  # Add this line
         file_dialog = QtWidgets.QFileDialog(self)
         file_dialog.setFileMode(QtWidgets.QFileDialog.ExistingFiles)
         if file_dialog.exec_():
             selected_files = file_dialog.selectedFiles()
             for file_path in selected_files:
                 file_info = QtCore.QFileInfo(file_path)
-                row_position = self.table.rowCount()
-                row_position = self.findChild(QtWidgets.QTableWidget, "table").rowCount()
-                self.findChild(QtWidgets.QTableWidget, "table").insertRow(row_position)
-                self.findChild(QtWidgets.QTableWidget, "table").setItem(row_position, 1, QtWidgets.QTableWidgetItem(file_info.fileName()))
-                self.findChild(QtWidgets.QTableWidget, "table").setItem(row_position, 2, QtWidgets.QTableWidgetItem("Synced"))
-                self.findChild(QtWidgets.QTableWidget, "table").setItem(row_position, 3, QtWidgets.QTableWidgetItem(file_info.absoluteFilePath()))
-                self.findChild(QtWidgets.QTableWidget, "table").setItem(row_position, 4, QtWidgets.QTableWidgetItem(str(file_info.size()) + " bytes"))
+                file_already_exists = False
+                for row in range(self.table.rowCount()):
+                    existing_path_item = self.table.item(row, 2)  # Path column is column index 2
+                    if existing_path_item and existing_path_item.text() == file_info.absoluteFilePath():
+                        file_already_exists = True
+                        break
+                
+                if not file_already_exists:
+                    row_position = self.table.rowCount()
+                    self.table.insertRow(row_position)
+                    
+                    icon = self.icon_provider.icon(file_info)
+                    file_item_widget = FileItemWidget(icon, file_info.fileName())
+                    item_name = QtWidgets.QTableWidgetItem(file_info.fileName())
+                    self.table.setCellWidget(row_position, 0, file_item_widget)
 
+                    item_status = QtWidgets.QTableWidgetItem("Synced")
+                    item_status.setFont(QtGui.QFont("Agency FB", 10, QtGui.QFont.Bold))
+                    item_status.setTextAlignment(QtCore.Qt.AlignCenter)
+                    self.table.setItem(row_position, 1, item_status)
+
+                    item_path = QtWidgets.QTableWidgetItem(file_info.absoluteFilePath())
+                    item_path.setFont(QtGui.QFont("Agency FB", 10, QtGui.QFont.Bold))
+                    item_path.setTextAlignment(QtCore.Qt.AlignCenter)
+                    self.table.setItem(row_position, 2, item_path)
+
+                    item_size = QtWidgets.QTableWidgetItem(convert_size(file_info.size()))
+                    item_size.setFont(QtGui.QFont("Agency FB", 10, QtGui.QFont.Bold))
+                    item_size.setTextAlignment(QtCore.Qt.AlignCenter)
+                    self.table.setItem(row_position, 3, item_size)
+
+                else:
+                    QtWidgets.QMessageBox.warning(self, "File Already Exists", "The file '{}' is already being synced.".format(file_info.fileName()))
+
+    def open_file_explorer(self, item):
+        if item.column() == 2:  
+            file_path = item.text()
+            if os.path.exists(file_path):
+                folder_path = os.path.dirname(file_path)  
+                os.startfile(folder_path) 
+            else:
+                QtWidgets.QMessageBox.warning(self, "File Not Found", "The file does not exist.")
 
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     window = MainWindow()
+    window.setWindowTitle("SyncIN")
     window.show()
     sys.exit(app.exec_())
 
