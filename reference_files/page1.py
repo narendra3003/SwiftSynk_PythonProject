@@ -4,6 +4,31 @@ from google.oauth2 import service_account
 from googleapiclient.discovery import build
 from googleapiclient.http import MediaFileUpload
 
+def delete_file_from_drive(file_name, folder_id, credentials_path):
+    # Load credentials from the service account key file
+    credentials = service_account.Credentials.from_service_account_file(
+        credentials_path,
+        scopes=['https://www.googleapis.com/auth/drive']
+    )
+
+    # Build the Google Drive API service
+    drive_service = build('drive', 'v3', credentials=credentials)
+
+    # Search for the file in the specified folder
+    query = f"name='{file_name}' and '{folder_id}' in parents and trashed=false"
+    response = drive_service.files().list(q=query, fields='files(id)').execute()
+    
+    # Check if the file exists in the folder
+    files = response.get('files', [])
+    if not files:
+        print(f"File '{file_name}' not found in folder with ID '{folder_id}'.")
+        return
+
+    # Delete the file
+    file_id = files[0]['id']
+    drive_service.files().delete(fileId=file_id).execute()
+    print(f"File '{file_name}' deleted successfully from Google Drive.")
+
 def upload_file_to_drive(file_path, drive_folder_id, credentials_path):
     # Load credentials from the service account key file
     credentials = service_account.Credentials.from_service_account_file(
@@ -38,8 +63,9 @@ def upload_file_to_drive(file_path, drive_folder_id, credentials_path):
     print(f"File uploaded successfully with file ID: {response['id']}")
 
 if __name__ == "__main__":
-    file_path_to_upload = "C:\\Users\\tupti\\OneDrive\\Desktop\\curr\\HelloFool.txt"
-    drive_folder_id_to_upload_to = "1Ov7bY55OAh-abKsfdKWFkR15HksnsMkn"
-    credentials_file_path = "C:\\Users\\tupti\\OneDrive\\Desktop\\curr\\syncin-411107-949b882c5e98.json"
+    file_path = "C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\Sem4_project\\reference_files\\test.txt"
+    drive_folder_id = "1gvh-akOM4JlkCljrtpxAGfX4dXdbfJ2n"
+    credentials_file_path = "C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\Sem4_project\\reference_files\\syncin-411107-949b882c5e98.json"
 
-    upload_file_to_drive(file_path_to_upload, drive_folder_id_to_upload_to, credentials_file_path)
+    upload_file_to_drive(file_path, drive_folder_id, credentials_file_path)
+    delete_file_from_drive(file_path, drive_folder_id, credentials_file_path)

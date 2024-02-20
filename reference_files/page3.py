@@ -47,7 +47,7 @@ class MyHandler(FileSystemEventHandler):
         print(f'File {event.src_path} has been modified.')
         # Replace these with your specific values
         file_path_to_upload = "C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\Sem4_project\\reference_files\\test.txt"
-        drive_folder_id_to_upload_to = "1gvh-akOM4JlkCljrtpxAGfX4dXdbfJ2n" #1Ov7bY55OAh-abKsfdKWFkR15HksnsMkn
+        drive_folder_id_to_upload_to = "1gvh-akOM4JlkCljrtpxAGfX4dXdbfJ2n" #saif: 1Ov7bY55OAh-abKsfdKWFkR15HksnsMkn
         credentials_file_path = "C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\Sem4_project\\reference_files\\syncin-411107-949b882c5e98.json"
 
         upload_file_to_drive(file_path_to_upload, drive_folder_id_to_upload_to, credentials_file_path)
