@@ -43,8 +43,17 @@
 
 #syncButton{
 	background-color: rgb(106, 90, 205);
-	border-radius: 10;
+	border-top-left-radius: 12;
+	border-bottom-left-radius: 12;
 	color: white
+}
+
+#syncButton2{
+	background-color: rgb(106, 90, 205);
+	border-top-right-radius: 12;
+	border-bottom-right-radius: 12;
+	color: white;
+	border-left-color: rgb(255, 255, 255)
 }
 
 </string>
@@ -87,6 +96,11 @@
 	border: none
 }</string>
      </property>
+     <column>
+      <property name="text">
+       <string/>
+      </property>
+     </column>
      <column>
       <property name="text">
        <string>Name</string>
@@ -143,16 +157,16 @@
     <widget class="QPushButton" name="syncButton">
      <property name="geometry">
       <rect>
-       <x>475</x>
-       <y>276</y>
-       <width>51</width>
+       <x>440</x>
+       <y>280</y>
+       <width>45</width>
        <height>51</height>
       </rect>
      </property>
      <property name="font">
       <font>
        <family>Agency FB</family>
-       <pointsize>16</pointsize>
+       <pointsize>14</pointsize>
        <weight>75</weight>
        <bold>true</bold>
       </font>
@@ -164,7 +178,35 @@
       <string>Select files to Sync</string>
      </property>
      <property name="text">
-      <string>SYNC</string>
+      <string>SYNC
+Files</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="syncButton2">
+     <property name="geometry">
+      <rect>
+       <x>486</x>
+       <y>280</y>
+       <width>45</width>
+       <height>51</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <family>Agency FB</family>
+       <pointsize>14</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">#syncButton2{
+	text : SYNC \n Folder
+}</string>
+     </property>
+     <property name="text">
+      <string>SYNC
+Folders</string>
      </property>
     </widget>
    </widget>
