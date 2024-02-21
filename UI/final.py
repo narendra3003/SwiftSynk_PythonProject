@@ -32,9 +32,7 @@ class FileItemWidget(QtWidgets.QWidget):
         self.text_label.setFont(font)
         alignment = QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter 
         self.text_label.setAlignment(alignment)
-
         layout.addWidget(self.text_label)
-        
         self.setLayout(layout)
 
 def convert_size(size_bytes):
@@ -45,6 +43,9 @@ def convert_size(size_bytes):
     p = math.pow(1024, i)
     s = round(size_bytes / p, 2)
     return "%s %s" % (s, size_name[i])
+
+
+
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -61,7 +62,8 @@ class Ui_MainWindow(object):
 "\n"
 "#table{\n"
 "    background-color: rgb(194, 194, 255);\n"
-"    border-width: 0px\n"
+"    border-width: 0px;\n"
+"    gridline-color: rgb(194, 194, 255)\n"
 "}\n"
 "\n"
 "\n"
@@ -162,13 +164,15 @@ class Ui_MainWindow(object):
 
 
 
+
+
 class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def __init__(self):
         super().__init__()
         self.ui = Ui_MainWindow()
         self.setupUi(self)
         self.syncButton.clicked.connect(self.sync_files)
-        self.table.itemClicked.connect(self.open_file_explorer)
+        self.table.cellDoubleClicked.connect(self.open_file_explorer)
 
         self.icon_provider = QtWidgets.QFileIconProvider()
 
@@ -213,12 +217,20 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 else:
                     QtWidgets.QMessageBox.warning(self, "File Already Exists", "The file '{}' is already being synced.".format(file_info.fileName()))
 
-    def open_file_explorer(self, item):
-        if item.column() == 2:  
-            file_path = item.text()
+    def open_file_explorer(self, row, column):
+        if column == 2:  
+            file_path = self.table.item(row, column).text()
             if os.path.exists(file_path):
                 folder_path = os.path.dirname(file_path)  
                 os.startfile(folder_path) 
+            else:
+                QtWidgets.QMessageBox.warning(self, "File Not Found", "The file does not exist.")
+
+        elif column == 0:
+            file_path_item = self.table.item(row, 2)
+            file_path = file_path_item.text()
+            if os.path.exists(file_path):
+                os.startfile(file_path)
             else:
                 QtWidgets.QMessageBox.warning(self, "File Not Found", "The file does not exist.")
 
