@@ -25,7 +25,24 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.table2.cellDoubleClicked.connect(self.open_item_explorer)
         self.icon_provider = QtWidgets.QFileIconProvider()
         self.backbutton.clicked.connect(self.go_to_page)
+        self.loginbutton.clicked.connect(self.login)
+        self.stackedWidget.setCurrentWidget(self.page_3)
 
+    def login(self):
+        expected_email = "aa"
+        expected_password = "aa"
+
+        entered_email = self.emailbox.text()
+        entered_password = self.passbox.text()
+
+        if entered_email == expected_email and entered_password == expected_password:
+            self.emailbox.clear()
+            self.passbox.clear()
+
+            self.stackedWidget.setCurrentIndex(0)
+        else:
+            QtWidgets.QMessageBox.warning(self, "Login Failed", "Incorrect email or password. Please try again.")
+    
     def go_to_page(self):
         self.stackedWidget.setCurrentIndex(0)
 
@@ -156,6 +173,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
                     item_status = QtWidgets.QTableWidgetItem("Synced")
                     item_status.setFont(QtGui.QFont("Agency FB", 10, QtGui.QFont.Bold))
+                    item_status.setForeground(QtGui.QColor('green'))
                     item_status.setTextAlignment(QtCore.Qt.AlignCenter)
                     self.table.setItem(row_position, 2, item_status)
 
