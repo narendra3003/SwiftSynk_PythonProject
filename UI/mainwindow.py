@@ -1,24 +1,12 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5 import QtCore
 
-# import math, os
-
-# def convert_size(size_bytes):
-#     if size_bytes == 0:
-#         return "0 B"
-#     size_name = ("B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB")
-#     i = int(math.floor(math.log(size_bytes, 1024)))
-#     p = math.pow(1024, i)
-#     s = round(size_bytes / p, 2)
-#     return "%s %s" % (s, size_name[i])
-
-
-
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(1080, 740)
+        MainWindow.setGeometry(420, 225, 1080, 740)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
