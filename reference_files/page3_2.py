@@ -64,9 +64,9 @@ class MyHandler(FileSystemEventHandler):
         self.upload_handler.upload_file_to_drive(event.src_path)
 
 if __name__ == "__main__":
-    folder_to_watch = 'C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\Sem4_project\\reference_files'  # Replace with the path to your folder
+    folder_to_watch = 'C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\SwiftSynk_PythonProject\\reference_files'  # Replace with the path to your folder
     drive_folder_id_to_upload_to = "1gvh-akOM4JlkCljrtpxAGfX4dXdbfJ2n"
-    credentials_file_path = "C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\Sem4_project\\reference_files\\syncin-411107-949b882c5e98.json"
+    credentials_file_path = "C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\SwiftSynk_PythonProject\\reference_files\\syncin-411107-949b882c5e98.json"
 
     upload_handler = FileUploadHandler(drive_folder_id_to_upload_to, credentials_file_path)
     event_handler = MyHandler(upload_handler)

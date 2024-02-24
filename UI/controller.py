@@ -3,6 +3,7 @@ from PyQt5 import QtCore
 from main import Ui_MainWindow
 # from UI.window2 import Ui_MainWindow as Ui_MainWindow2
 import math, os
+import connector
 
 
 def convert_size(size_bytes):
@@ -96,6 +97,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 if self.is_folder_already_added(folder_path):
                     QtWidgets.QMessageBox.warning(self, "Folder Already Added", "The folder '{}' is already being synced.".format(folder_path))
                 else:
+                    connector.upload_folder_to_drive(folder_path)
                     folder_info = QtCore.QDir(folder_path)
                     # Add folder information to the table
                     row_position = self.table.rowCount()
@@ -140,8 +142,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 return True
         return False
 
-
-
     def sync_files(self):
         file_dialog = QtWidgets.QFileDialog(self)
         file_dialog.setFileMode(QtWidgets.QFileDialog.ExistingFiles)
@@ -157,6 +157,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                         break
                 
                 if not file_already_exists:
+                    connector.upload_file_to_drive(file_path)
                     row_position = self.table.rowCount()
                     self.table.insertRow(row_position)
                     
@@ -213,7 +214,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.stackedWidget.setCurrentIndex(1)  
             else:
                 QtWidgets.QMessageBox.warning(self, "File Not Found", "The file does not exist.")
-
 
 if __name__ == "__main__":
     import sys

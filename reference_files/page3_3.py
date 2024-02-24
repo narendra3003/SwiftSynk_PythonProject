@@ -64,8 +64,8 @@ class MyHandler(FileSystemEventHandler):
         self.observer.start()
 
 if __name__ == "__main__":
-    folder_to_watch = 'C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\Sem4_project\\reference_files'  # Replace with the path to your folder
-    credentials_file_path = "C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\Sem4_project\\reference_files\\syncin-411107-949b882c5e98.json"
+    folder_to_watch = 'C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\SwiftSynk_PythonProject\\reference_files'  # Replace with the path to your folder
+    credentials_file_path = "C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\SwiftSynk_PythonProject\\reference_files\\syncin-411107-949b882c5e98.json"
     drive_folder_id_to_upload_to = "1gvh-akOM4JlkCljrtpxAGfX4dXdbfJ2n" #1Ov7bY55OAh-abKsfdksnsMkn
 
     event_handler = MyHandler(folder_to_watch, credentials_file_path, drive_folder_id_to_upload_to)

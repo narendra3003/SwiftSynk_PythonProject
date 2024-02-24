@@ -23,5 +23,5 @@ def check_folder_permissions(folder_id, credentials_path):
 
 if __name__ == "__main__":
     folder_id = "1gvh-akOM4JlkCljrtpxAGfX4dXdbfJ2n"  # Replace with the ID of the folder you want to check permissions for
-    credentials_path = "C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\Sem4_project\\reference_files\\syncin-411107-949b882c5e98.json"  # Replace with the path to your service account credentials file
+    credentials_path = "C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\SwiftSynk_PythonProject\\reference_files\\syncin-411107-949b882c5e98.json"  # Replace with the path to your service account credentials file
     check_folder_permissions(folder_id, credentials_path)

@@ -14,7 +14,7 @@ def get_file_size(file_path):
 
 if __name__ == "__main__":
     # Replace with the path to your file
-    file_path = "C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\Sem4_project\\reference_files\\test.txt"  
+    file_path = "C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\SwiftSynk_PythonProject\\reference_files\\test.txt"  
     last_modified_time = get_last_modified_time(file_path)
     print(f"Last modified time of {file_path}: {last_modified_time}")
     file_size = get_file_size(file_path)

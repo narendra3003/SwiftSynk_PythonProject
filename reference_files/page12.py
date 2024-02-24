@@ -12,6 +12,7 @@ from google.auth.credentials import Credentials
 from googleapiclient.errors import HttpError
 import datetime
 import time
+import requests
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
@@ -23,9 +24,9 @@ last_upload=datetime.datetime.now()
 # print(datetime_obj1<datetime_obj2)
 
 ####Basic things needed
-file_path = "C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\Sem4_project\\reference_files\\test.txt"
+file_path = "C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\SwiftSynk_PythonProject\\reference_files\\test.txt"
 drive_folder_id = "1gvh-akOM4JlkCljrtpxAGfX4dXdbfJ2n"
-credentials_file_path = "C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\Sem4_project\\reference_files\\syncin-411107-949b882c5e98.json"
+credentials_file_path = "C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\SwiftSynk_PythonProject\\reference_files\\syncin-411107-949b882c5e98.json"
 ####Code common to all functions
 # If modifying these scopes, delete the file token.pickle.
 SCOPES = ['https://www.googleapis.com/auth/drive']
@@ -36,10 +37,10 @@ credentials = service_account.Credentials.from_service_account_file(
 )
 # Build the Google Drive API service
 drive_service = build('drive', 'v3', credentials=credentials)
-filesToUpload=["C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\Sem4_project\\reference_files\\test.txt"]
+filesToUpload=["C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\SwiftSynk_PythonProject\\reference_files\\test.txt"]
 
 #to delete files from drive
-def delete_file_from_drive(file_name, drive_folder_id, credentials_file_path):
+def delete_file_from_drive(file_name, drive_folder_id=drive_folder_id, credentials_file_path=credentials_file_path):
     credentials = service_account.Credentials.from_service_account_file(
         credentials_file_path,
         scopes=['https://www.googleapis.com/auth/drive']
@@ -110,7 +111,16 @@ def reUpload(file_path, drive_folder_id, credentials_file_path):
         delete_file_from_drive(file_name, drive_folder_id, credentials_file_path)
     upload_file_to_drive(file_path, drive_folder_id, credentials_file_path)
 
+def IsInternet():
+    try:
+        response=requests.get("https://google.com", timeout=5)
+        return True
+    except requests.ConnectionError:
+        return False
+
 while True:
+    if(not IsInternet()):
+        continue
     if(datetime.datetime.strptime(get_last_modified_time(file_path), '%Y-%m-%d %H:%M:%S')>last_upload):
         print(datetime.datetime.strptime(get_last_modified_time(file_path), '%Y-%m-%d %H:%M:%S'),last_upload)
         reUpload(file_path, drive_folder_id, credentials_file_path)

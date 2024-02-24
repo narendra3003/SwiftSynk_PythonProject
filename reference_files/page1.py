@@ -71,9 +71,9 @@ def upload_file_to_drive(file_path, drive_folder_id, credentials_path):
     print(f"File uploaded successfully with file ID: {response['id']}")
 
 if __name__ == "__main__":
-    file_path = "C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\Sem4_project\\reference_files\\test.txt"
+    file_path = "C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\SwiftSynk_PythonProject\\reference_files\\test.txt"
     drive_folder_id = "1gvh-akOM4JlkCljrtpxAGfX4dXdbfJ2n"
-    credentials_file_path = "C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\Sem4_project\\reference_files\\syncin-411107-949b882c5e98.json"
+    credentials_file_path = "C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\SwiftSynk_PythonProject\\reference_files\\syncin-411107-949b882c5e98.json"
 
     # upload_file_to_drive(file_path, drive_folder_id, credentials_file_path)
     delete_file_from_drive(file_path, drive_folder_id, credentials_file_path)

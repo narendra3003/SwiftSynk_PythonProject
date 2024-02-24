@@ -83,9 +83,9 @@ def upload_folder_to_drive(folder_path, parent_folder_id, credentials_path):
     upload_files_from_folder_to_drive(folder_path, new_folder_id, credentials_path)
 
 if __name__ == "__main__":
-    folder_path = "C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\Sem4_project\\reference_files"
+    folder_path = "C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\SwiftSynk_PythonProject\\reference_files"
     parent_folder_id = "1gvh-akOM4JlkCljrtpxAGfX4dXdbfJ2n"
-    credentials_file_path = "C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\Sem4_project\\reference_files\\syncin-411107-949b882c5e98.json"
+    credentials_file_path = "C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\SwiftSynk_PythonProject\\reference_files\\syncin-411107-949b882c5e98.json"
 
     new_folder_id=upload_folder_to_drive(folder_path, parent_folder_id, credentials_file_path)
     print(new_folder_id)

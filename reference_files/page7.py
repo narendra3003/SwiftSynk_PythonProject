@@ -49,9 +49,9 @@ def delete_file_from_drive(file_name, folder_id, credentials_path):
     print(f"File '{file_name}' deleted successfully from Google Drive.")
 
 if __name__ == "__main__":
-    # file_path = "C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\Sem4_project\\reference_files\\test.txt"
+    # file_path = "C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\SwiftSynk_PythonProject\\reference_files\\test.txt"
     drive_folder_id = "1gvh-akOM4JlkCljrtpxAGfX4dXdbfJ2n"
-    credentials_file_path = "C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\Sem4_project\\reference_files\\syncin-411107-949b882c5e98.json"
+    credentials_file_path = "C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\SwiftSynk_PythonProject\\reference_files\\syncin-411107-949b882c5e98.json"
     file_names = get_files_in_folder(drive_folder_id, credentials_file_path)
     print("Files in folder:")
     for name in file_names:

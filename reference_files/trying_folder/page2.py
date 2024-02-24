@@ -28,7 +28,7 @@ def create_folder_in_folder(parent_folder_id, folder_name, credentials_path):
 if __name__ == "__main__":
     parent_folder_id = "1gvh-akOM4JlkCljrtpxAGfX4dXdbfJ2n"  # Replace with the ID of the parent folder
     folder_name = "Hii" 
-    credentials_path = "C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\Sem4_project\\reference_files\\syncin-411107-949b882c5e98.json"
+    credentials_path = "C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\SwiftSynk_PythonProject\\reference_files\\syncin-411107-949b882c5e98.json"
 
     new_folder_id = create_folder_in_folder(parent_folder_id, folder_name, credentials_path)
     print(new_folder_id)
