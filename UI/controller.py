@@ -97,7 +97,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         folder_dialog.setOption(QtWidgets.QFileDialog.ShowDirsOnly, True)
         if folder_dialog.exec_():
             selected_folders = folder_dialog.selectedFiles()
-            for folder_path in selected_folders:
+            self.show_folders_on_table(selected_folders)
+
+    def show_folders_on_table(self, selected_folders):
+        for folder_path in selected_folders:
                 if self.is_folder_already_added(folder_path):
                     QtWidgets.QMessageBox.warning(self, "Folder Already Added", "The folder '{}' is already being synced.".format(folder_path))
                 else:
@@ -159,7 +162,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         file_dialog.setFileMode(QtWidgets.QFileDialog.ExistingFiles)
         if file_dialog.exec_():
             selected_files = file_dialog.selectedFiles()
-            for file_path in selected_files:
+            self.show_files_on_table(selected_files)
+
+    def show_files_on_table(self, selected_files):
+        for file_path in selected_files:
                 file_info = QtCore.QFileInfo(file_path)
                 file_already_exists = False
                 for row in range(self.table.rowCount()):
