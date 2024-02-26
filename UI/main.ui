@@ -105,7 +105,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="page">
      <widget class="QTableWidget" name="table1">
@@ -178,6 +178,11 @@
          <weight>75</weight>
          <bold>true</bold>
         </font>
+       </property>
+      </column>
+      <column>
+       <property name="text">
+        <string/>
        </property>
       </column>
      </widget>

@@ -6,6 +6,7 @@ import math, os
 import connector
 
 
+
 def convert_size(size_bytes):
     if size_bytes == 0:
         return "0 B"
@@ -28,6 +29,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.backbutton.clicked.connect(self.go_to_page)
         self.loginbutton.clicked.connect(self.login)
         self.stackedWidget.setCurrentWidget(self.page_3)
+
+
+        
 
     def login(self):
         expected_email = "aa"
@@ -99,7 +103,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 else:
                     connector.upload_folder_to_drive(folder_path)
                     folder_info = QtCore.QDir(folder_path)
-                    # Add folder information to the table
                     row_position = self.table.rowCount()
                     self.table.insertRow(row_position)
                     
@@ -129,11 +132,20 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     item_path.setTextAlignment(QtCore.Qt.AlignCenter)
                     self.table.setItem(row_position, 3, item_path)
                     
-                    # Add folder size (you can adjust this according to your requirement)
+                    # Add folder size
                     item_size = QtWidgets.QTableWidgetItem("▶")
                     item_size.setFont(QtGui.QFont("Agency FB", 15, QtGui.QFont.Bold))
                     item_size.setTextAlignment(QtCore.Qt.AlignCenter)
                     self.table.setItem(row_position, 4, item_size)
+
+                    item_del = QtWidgets.QTableWidgetItem("Delete")
+                    item_del.setFont(QtGui.QFont("Agency FB", 10, QtGui.QFont.Bold))
+                    item_del.setForeground(QtGui.QColor('red'))
+                    item_del.setTextAlignment(QtCore.Qt.AlignCenter)
+                    self.table.setItem(row_position, 5, item_del)
+
+
+
 
     def is_folder_already_added(self, folder_path):
         for row in range(self.table.rowCount()):
@@ -188,6 +200,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     item_size.setTextAlignment(QtCore.Qt.AlignCenter)
                     self.table.setItem(row_position, 4, item_size)
 
+                    item_del = QtWidgets.QTableWidgetItem("Delete")
+                    item_del.setFont(QtGui.QFont("Agency FB", 10, QtGui.QFont.Bold))
+                    item_del.setForeground(QtGui.QColor('red'))
+                    item_del.setTextAlignment(QtCore.Qt.AlignCenter)
+                    self.table.setItem(row_position, 5, item_del)
+
                 else:
                     QtWidgets.QMessageBox.warning(self, "File Already Exists", "The file '{}' is already being synced.".format(file_info.fileName()))
 
@@ -214,6 +232,19 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.stackedWidget.setCurrentIndex(1)  
             else:
                 QtWidgets.QMessageBox.warning(self, "File Not Found", "The file does not exist.")
+
+        elif column == 5:
+                msg_box = QtWidgets.QMessageBox()
+                msg_box.setIcon(QtWidgets.QMessageBox.Warning)
+                msg_box.setWindowTitle("Delete Warning")
+                msg_box.setText("Are you sure you want to delete the file from Google Drive?")
+                msg_box.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
+                msg_box.setDefaultButton(QtWidgets.QMessageBox.No)
+                result = msg_box.exec_()
+                if result == QtWidgets.QMessageBox.Yes:
+                    file_path = self.table.item(row, 3).text() if self.table.item(row, column) == self.table.item(row, column) else self.table2.item(row, 3).text()
+                    connector.delete_file_from_drive(file_path)
+                    self.table.removeRow(row)
 
 if __name__ == "__main__":
     import sys

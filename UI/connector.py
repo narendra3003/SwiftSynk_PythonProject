@@ -17,9 +17,11 @@ import requests
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
-file_path = "C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\SwiftSynk_PythonProject\\reference_files\\test.txt"
+# file_path = "C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\SwiftSynk_PythonProject\\reference_files\\test.txt"
+file_path = "C:\\Projects\\SEM 4\\SwiftSynk_PythonProject\\reference_files\\test.txt"
 drive_folder_id = "1gvh-akOM4JlkCljrtpxAGfX4dXdbfJ2n"
-credentials_file_path = "C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\SwiftSynk_PythonProject\\reference_files\\syncin-411107-949b882c5e98.json"
+# credentials_file_path = "C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\SwiftSynk_PythonProject\\reference_files\\syncin-411107-949b882c5e98.json"
+credentials_file_path = "C:\\Projects\\SEM 4\\SwiftSynk_PythonProject\\reference_files\\syncin-411107-949b882c5e98.json"
 SCOPES = ['https://www.googleapis.com/auth/drive']
 
 credentials = service_account.Credentials.from_service_account_file(
@@ -28,7 +30,8 @@ credentials = service_account.Credentials.from_service_account_file(
 )
 
 drive_service = build('drive', 'v3', credentials=credentials)
-filesToUpload=["C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\SwiftSynk_PythonProject\\reference_files\\test.txt"]
+# filesToUpload=["C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\SwiftSynk_PythonProject\\reference_files\\test.txt"]
+filesToUpload = ["C:\\Projects\\SEM 4\\SwiftSynk_PythonProject\\reference_files\\test.txt"]
 
 def upload_file_to_drive(file_path, drive_folder_id=drive_folder_id, credentials_path=credentials_file_path):
     # Load credentials from the service account key file
@@ -107,7 +110,7 @@ def upload_folder_to_drive(folder_path, parent_folder_id=drive_folder_id, creden
     upload_files_from_folder_to_drive(folder_path, new_folder_id, credentials_path)
 
 #to delete files from drive
-def delete_file_from_drive(file_name, drive_folder_id, credentials_file_path):
+def delete_file_from_drive(file_name, drive_folder_id=drive_folder_id, credentials_file_path=credentials_file_path):
     credentials = service_account.Credentials.from_service_account_file(
         credentials_file_path,
         scopes=['https://www.googleapis.com/auth/drive']
