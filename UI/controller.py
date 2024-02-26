@@ -1,7 +1,6 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5 import QtCore
 from main import Ui_MainWindow
-# from UI.window2 import Ui_MainWindow as Ui_MainWindow2
 import math, os
 import connector
 
