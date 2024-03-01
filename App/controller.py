@@ -1,3 +1,4 @@
+import threading
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5 import QtCore
 from main import Ui_MainWindow
@@ -28,9 +29,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.backbutton.clicked.connect(self.go_to_page)
         self.loginbutton.clicked.connect(self.login)
         self.stackedWidget.setCurrentWidget(self.page_3)
-
-
-        
 
     def login(self):
         expected_email = "aa"
@@ -103,6 +101,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 if self.is_folder_already_added(folder_path):
                     QtWidgets.QMessageBox.warning(self, "Folder Already Added", "The folder '{}' is already being synced.".format(folder_path))
                 else:
+                    print("bye", folder_path)
                     connector.upload_folder_to_drive(folder_path)
                     folder_info = QtCore.QDir(folder_path)
                     row_position = self.table.rowCount()
@@ -174,6 +173,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                         break
                 
                 if not file_already_exists:
+                    print("bye")
                     connector.upload_file_to_drive(file_path)
                     row_position = self.table.rowCount()
                     self.table.insertRow(row_position)
@@ -251,10 +251,16 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     connector.delete_file_from_drive(file_path)
                     self.table.removeRow(row)
 
+
+
+
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     window = MainWindow()
     window.setWindowTitle("SwiftSynk")
+    selected=[x[2] for x in connector.dbm.getFiles()]
+    print("hii", selected)
+    window.show_files_on_table(selected)
     window.show()
     sys.exit(app.exec_())

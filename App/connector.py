@@ -17,57 +17,53 @@ import requests
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
-# file_path = "C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\SwiftSynk_PythonProject\\reference_files\\test.txt"
-file_path = "C:\\Projects\\SEM 4\\SwiftSynk_PythonProject\\reference_files\\test.txt"
-drive_folder_id = "1gvh-akOM4JlkCljrtpxAGfX4dXdbfJ2n"
-# credentials_file_path = "C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\SwiftSynk_PythonProject\\reference_files\\syncin-411107-949b882c5e98.json"
-credentials_file_path = "C:\\Projects\\SEM 4\\SwiftSynk_PythonProject\\reference_files\\syncin-411107-949b882c5e98.json"
-SCOPES = ['https://www.googleapis.com/auth/drive']
+email="narendradukhande30@gmail.com"
+file_path = "C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\SwiftSynk_PythonProject\\reference_files\\test.txt"
+base_drive_folder_id = "1gvh-akOM4JlkCljrtpxAGfX4dXdbfJ2n"
+credentials_file_path = "C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\SwiftSynk_PythonProject\\reference_files\\syncin-411107-949b882c5e98.json"
 
-credentials = service_account.Credentials.from_service_account_file(
-    credentials_file_path,
-    scopes=SCOPES
-)
+# file_path = "C:\\Projects\\SEM 4\\SwiftSynk_PythonProject\\reference_files\\test.txt"
+# credentials_file_path = "C:\\Projects\\SEM 4\\SwiftSynk_PythonProject\\reference_files\\syncin-411107-949b882c5e98.json"
 
-drive_service = build('drive', 'v3', credentials=credentials)
-# filesToUpload=["C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\SwiftSynk_PythonProject\\reference_files\\test.txt"]
-filesToUpload = ["C:\\Projects\\SEM 4\\SwiftSynk_PythonProject\\reference_files\\test.txt"]
-
-def upload_file_to_drive(file_path, drive_folder_id=drive_folder_id, credentials_path=credentials_file_path):
+def getDriveService(credentials_file_path=credentials_file_path):
+    SCOPES = ['https://www.googleapis.com/auth/drive']
     # Load credentials from the service account key file
     credentials = service_account.Credentials.from_service_account_file(
-        credentials_path,
-        scopes=['https://www.googleapis.com/auth/drive.file']
+        credentials_file_path,
+        scopes=SCOPES
     )
     
     # Build the Google Drive API service
     drive_service = build('drive', 'v3', credentials=credentials)
+    return drive_service
 
-    # Set the file metadata
+
+# filesToUpload=["C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\SwiftSynk_PythonProject\\reference_files\\test.txt"]
+# filesToUpload = ["C:\\Projects\\SEM 4\\SwiftSynk_PythonProject\\reference_files\\test.txt"]
+
+
+##To upload file on drive
+def upload_file_to_drive(file_path, drive_folder_id=base_drive_folder_id, credentials_file_path=credentials_file_path):
+    drive_service=getDriveService(credentials_file_path)
     file_metadata = {
-        'name': file_path.split("\\")[-1],  # Extracting the file name from the path
-        'parents': [drive_folder_id],  # ID of the folder in Google Drive to upload to
+        'name': file_path.split("\\")[-1],
+        'parents': [drive_folder_id],
     }
     print(file_metadata)
-    # To get type of the file
     print(os.path.splitext(file_metadata.get('name')))
-
-    # Create a media file upload instance and upload the file
     media = MediaFileUpload(file_path, resumable=True)
-
     request = drive_service.files().create(
         body=file_metadata,
         media_body=media,
         fields='id'
     )
-
     response = None
     while response is None:
         status, response = request.next_chunk()
         if status:
             print(f"Uploaded {int(status.progress() * 100)}%")
-
     print(f"File uploaded successfully with file ID: {response['id']}")
+    # return response['id']
 
 def upload_files_from_folder_to_drive(folder_path, drive_folder_id, credentials_path):
     for filename in os.listdir(folder_path):
@@ -81,15 +77,7 @@ def upload_files_from_folder_to_drive(folder_path, drive_folder_id, credentials_
             print("NONE")
 
 def create_folder_in_parent_on_drive(folder_path, parent_folder_id, credentials_path):
-    # Load credentials from the service account key file
-    credentials = service_account.Credentials.from_service_account_file(
-        credentials_path,
-        scopes=['https://www.googleapis.com/auth/drive.file']
-    )
-    
-    # Build the Google Drive API service
-    drive_service = build('drive', 'v3', credentials=credentials)
-
+    drive_service=getDriveService()
     folder_name=folder_path.split("\\")[-1]
 
     # Set the file metadata
@@ -105,18 +93,13 @@ def create_folder_in_parent_on_drive(folder_path, parent_folder_id, credentials_
     print(f"Folder '{folder_name}' created successfully in folder with ID '{parent_folder_id}'.")
     return folder.get('id')
 
-def upload_folder_to_drive(folder_path, parent_folder_id=drive_folder_id, credentials_path=credentials_file_path):
+def upload_folder_to_drive(folder_path, parent_folder_id=base_drive_folder_id, credentials_path=credentials_file_path):
     new_folder_id=create_folder_in_parent_on_drive(folder_path, parent_folder_id, credentials_path)
     upload_files_from_folder_to_drive(folder_path, new_folder_id, credentials_path)
 
 #to delete files from drive
-def delete_file_from_drive(file_name, drive_folder_id=drive_folder_id, credentials_file_path=credentials_file_path):
-    credentials = service_account.Credentials.from_service_account_file(
-        credentials_file_path,
-        scopes=['https://www.googleapis.com/auth/drive']
-    )
-
-    drive_service = build('drive', 'v3', credentials=credentials)
+def delete_file_from_drive(file_name, drive_folder_id=base_drive_folder_id, credentials_file_path=credentials_file_path):
+    drive_service = getDriveService()
     # file_name = os.path.basename(file_path)
     query = f"name='{file_name}' and '{drive_folder_id}' in parents and trashed=false"
     response = drive_service.files().list(q=query, fields='files(id)').execute()
@@ -134,7 +117,7 @@ def get_file_id(file_name, folder_id=credentials_file_path, credentials_path=cre
 
     # Search for the file in the specified folder
     query = f"name='{file_name}' and '{folder_id}' in parents and trashed=false"
-    response = drive_service.files().list(q=query, fields='files(id)').execute()
+    response = getDriveService().files().list(q=query, fields='files(id)').execute()
     
     # Check if the file exists in the folder
     files = response.get('files', [])
@@ -151,7 +134,7 @@ def get_last_modified_time(file_path):
     modified_datetime = datetime.datetime.fromtimestamp(modified_timestamp)
     return modified_datetime.strftime('%Y-%m-%d %H:%M:%S')
 
-def reUpload(file_path, drive_folder_id=drive_folder_id, credentials_file_path=credentials_file_path):
+def reUpload(file_path, drive_folder_id=base_drive_folder_id, credentials_file_path=credentials_file_path):
     file_name=os.path.basename(file_path)
     if(get_file_id!=None):
         delete_file_from_drive(file_name, drive_folder_id, credentials_file_path)
@@ -164,7 +147,7 @@ def IsInternet():
     except requests.ConnectionError:
         return False
 
-
+upload_file_to_drive(file_path)
 
 
 
