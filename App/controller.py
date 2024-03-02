@@ -99,6 +99,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if folder_dialog.exec_():
             selected_folders = folder_dialog.selectedFiles()
             for folder_path in selected_folders:
+                print("folder", folder_path)
                 if(connector.dbm.is_folder_already_added(folder_path)):
                     QtWidgets.QMessageBox.warning(self, "Folder Already Added", "The folder '{}' is already being synced.".format(folder_path))
                 else:
@@ -156,6 +157,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if file_dialog.exec_():
             selected_files = file_dialog.selectedFiles()
             for file_path in selected_files:
+                print(file_path)
                 if(connector.dbm.file_already_added(file_path)):
                     QtWidgets.QMessageBox.warning(self, "File Already Exists", "The file '{}' is already being synced.".format(file_path))
                 else:
@@ -234,9 +236,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             msg_box.setDefaultButton(QtWidgets.QMessageBox.No)
             result = msg_box.exec_()
             if result == QtWidgets.QMessageBox.Yes:
-                file_path = self.table.item(row, 3).text() if self.table.item(row, column) == self.table.item(row, column) else self.table2.item(row, 3).text()
-                connector.dbm.deleteFile(connector.delete_file_from_drive(file_path))
-                self.table.removeRow(row)
+                path = self.table.item(row, 3).text() if self.table.item(row, column) == self.table.item(row, column) else self.table2.item(row, 3).text()
+                if os.path.isfile(path):
+                    connector.delete_file_from_drive(path)
+                    self.table.removeRow(row)
+                elif os.path.isdir(path):
+                    connector.delete_folder_from_drive(path)
             self.refresh_table()
 
 if __name__ == "__main__":
@@ -245,5 +250,7 @@ if __name__ == "__main__":
     window = MainWindow()
     window.setWindowTitle("SwiftSynk")
     window.refresh_table()
+    thread = threading.Thread(target=connector.modifiedUploader)
+    thread.start()
     window.show()
     sys.exit(app.exec_())

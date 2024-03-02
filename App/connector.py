@@ -18,12 +18,22 @@ from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
 email="narendradukhande30@gmail.com"
-file_path = "C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\SwiftSynk_PythonProject\\reference_files\\test.txt"
+file_path = "C:/Users/tupti/OneDrive/Desktop/new Lang/Sem4/SwiftSynk_PythonProject/reference_files/test.txt"
 base_drive_folder_id = "1gvh-akOM4JlkCljrtpxAGfX4dXdbfJ2n"
 credentials_file_path = "C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\SwiftSynk_PythonProject\\reference_files\\syncin-411107-949b882c5e98.json"
 
 # file_path = "C:\\Projects\\SEM 4\\SwiftSynk_PythonProject\\reference_files\\test.txt"
 # credentials_file_path = "C:\\Projects\\SEM 4\\SwiftSynk_PythonProject\\reference_files\\syncin-411107-949b882c5e98.json"
+
+def modifiedUploader():
+    while True:
+        if(not IsInternet()):
+            continue
+        if(datetime.datetime.strptime(get_last_modified_time(file_path), '%Y-%m-%d %H:%M:%S')>datetime.datetime.strptime(dbm.give_last_upload_time(file_path), '%Y-%m-%d %H:%M:%S')):
+            print(datetime.datetime.strptime(get_last_modified_time(file_path), '%Y-%m-%d %H:%M:%S'),dbm.give_last_upload_time(file_path))
+            reUpload(file_path, base_drive_folder_id, credentials_file_path)
+            print("\n\n\n")
+        time.sleep(1)
 
 def getDriveService(credentials_file_path=credentials_file_path):
     SCOPES = ['https://www.googleapis.com/auth/drive']
@@ -59,7 +69,6 @@ def upload_file_to_drive(file_path, drive_folder_id=base_drive_folder_id, creden
             print(f"Uploaded {int(status.progress() * 100)}%")
     print(f"File uploaded successfully with file ID: {response['id']}")
     dbm.insertFile(response['id'],file_path,get_current_time(),drive_folder_id,"Synced")
-    # return response['id']
 
 def upload_files_from_folder_to_drive(folder_path, drive_folder_id, credentials_path):
     for filename in os.listdir(folder_path):
@@ -107,11 +116,12 @@ def delete_file_from_drive(file_name, drive_folder_id=base_drive_folder_id, cred
         return
     file_id = files[0]['id']
     drive_service.files().delete(fileId=file_id).execute()
+    if(dbm.deleteFile(file_id)==1):
+        print(f"File '{file_name}' deleted successfully from Google Drive. And DB")
     print(f"File '{file_name}' deleted successfully from Google Drive.")
-    return file_id
 
 ##to get id of the file on drive
-def get_file_id(file_name, folder_id=credentials_file_path, credentials_path=credentials_file_path):
+def get_file_id(file_name, folder_id=base_drive_folder_id, credentials_path=credentials_file_path):
     drive_service=getDriveService()
     # Search for the file in the specified folder
     query = f"name='{file_name}' and '{folder_id}' in parents and trashed=false"
@@ -134,7 +144,9 @@ def get_last_modified_time(file_path):
 
 #to get current time
 def get_current_time():
-    return datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    now=datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    print(now)
+    return now
 
 #to compare 2 string times (true if 1 is after 2)
 def compare_time(time1, time2):
@@ -143,9 +155,9 @@ def compare_time(time1, time2):
     return time1_obj>time2_obj
 
 def reUpload(file_path, drive_folder_id=base_drive_folder_id, credentials_file_path=credentials_file_path):
-    file_name=os.path.basename(file_path)
-    if(get_file_id!=None):
-        delete_file_from_drive(file_name, drive_folder_id, credentials_file_path)
+    # file_name=os.path.basename(file_path)
+    if(get_file_id(file_path)!=None):
+        delete_file_from_drive(file_path, drive_folder_id, credentials_file_path)
     upload_file_to_drive(file_path, drive_folder_id, credentials_file_path)
 
 def IsInternet():
