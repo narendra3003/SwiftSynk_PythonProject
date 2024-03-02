@@ -34,13 +34,13 @@ CREATE TRIGGER addBaseFolder
 SS
 DELIMITER ;
 
-insert into user values("narendradukhande30@gmail.com","tejas@30","Narendra", "1gvh-akOM4JlkCljrtpxAGfX4dXdbfJ2n");
+insert into user values("narendradukhande30@gmail.com","hii","Narendra", "1gvh-akOM4JlkCljrtpxAGfX4dXdbfJ2n");
 -- insert into user values("varadesanchita@gmail.com","sanchi@11","Sanchita", "efgh");
 -- insert into user values("saiff@gmail.com","saif@16","Saifuddin", "jklm");
 -- insert into folder values("1gvh-akOM4JlkCljrtpxAGfX4dXdbfJ2n", "BASE","narendradukhande30@gmail.com");
 -- insert into folder values("efgh", "some\\path","varadesanchita@gmail.com");
 -- insert into folder values("jklm", "some\\path","saiff@gmail.com");
-insert into file values("1dM3brV3OM80SM6L4mhHifbxuzGCuoVdM","Modified","C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\SwiftSynk_PythonProject\\reference_files\\test.txt","24/02/23 16:40:01","1gvh-akOM4JlkCljrtpxAGfX4dXdbfJ2n");
+-- insert into file values("1dM3brV3OM80SM6L4mhHifbxuzGCuoVdM","Modified","C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\SwiftSynk_PythonProject\\reference_files\\test.txt","24/02/23 16:40:01","1gvh-akOM4JlkCljrtpxAGfX4dXdbfJ2n");
 -- insert into file values("uvw","Modified","c:folder/py","16:06","efgh");
 -- insert into file values("pqr","Sync","c:files/java","16:09","jklm");
 

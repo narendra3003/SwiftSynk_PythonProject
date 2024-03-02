@@ -37,11 +37,6 @@ def getDriveService(credentials_file_path=credentials_file_path):
     drive_service = build('drive', 'v3', credentials=credentials)
     return drive_service
 
-
-# filesToUpload=["C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\SwiftSynk_PythonProject\\reference_files\\test.txt"]
-# filesToUpload = ["C:\\Projects\\SEM 4\\SwiftSynk_PythonProject\\reference_files\\test.txt"]
-
-
 ##To upload file on drive
 def upload_file_to_drive(file_path, drive_folder_id=base_drive_folder_id, credentials_file_path=credentials_file_path):
     drive_service=getDriveService(credentials_file_path)
@@ -63,6 +58,7 @@ def upload_file_to_drive(file_path, drive_folder_id=base_drive_folder_id, creden
         if status:
             print(f"Uploaded {int(status.progress() * 100)}%")
     print(f"File uploaded successfully with file ID: {response['id']}")
+    dbm.insertFile(response['id'],file_path,get_current_time(),drive_folder_id,"Synced")
     # return response['id']
 
 def upload_files_from_folder_to_drive(folder_path, drive_folder_id, credentials_path):
@@ -95,6 +91,7 @@ def create_folder_in_parent_on_drive(folder_path, parent_folder_id, credentials_
 
 def upload_folder_to_drive(folder_path, parent_folder_id=base_drive_folder_id, credentials_path=credentials_file_path):
     new_folder_id=create_folder_in_parent_on_drive(folder_path, parent_folder_id, credentials_path)
+    dbm.insertFolder(new_folder_id,folder_path,email)
     upload_files_from_folder_to_drive(folder_path, new_folder_id, credentials_path)
 
 #to delete files from drive
@@ -111,13 +108,14 @@ def delete_file_from_drive(file_name, drive_folder_id=base_drive_folder_id, cred
     file_id = files[0]['id']
     drive_service.files().delete(fileId=file_id).execute()
     print(f"File '{file_name}' deleted successfully from Google Drive.")
+    return file_id
 
 ##to get id of the file on drive
 def get_file_id(file_name, folder_id=credentials_file_path, credentials_path=credentials_file_path):
-
+    drive_service=getDriveService()
     # Search for the file in the specified folder
     query = f"name='{file_name}' and '{folder_id}' in parents and trashed=false"
-    response = getDriveService().files().list(q=query, fields='files(id)').execute()
+    response = drive_service.files().list(q=query, fields='files(id)').execute()
     
     # Check if the file exists in the folder
     files = response.get('files', [])
@@ -134,6 +132,16 @@ def get_last_modified_time(file_path):
     modified_datetime = datetime.datetime.fromtimestamp(modified_timestamp)
     return modified_datetime.strftime('%Y-%m-%d %H:%M:%S')
 
+#to get current time
+def get_current_time():
+    return datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+#to compare 2 string times (true if 1 is after 2)
+def compare_time(time1, time2):
+    time1_obj=datetime.datetime.strptime(time1[2:], '%y-%m-%d %H:%M:%S')
+    time2_obj=datetime.datetime.strptime(time2[2:], '%y-%m-%d %H:%M:%S')
+    return time1_obj>time2_obj
+
 def reUpload(file_path, drive_folder_id=base_drive_folder_id, credentials_file_path=credentials_file_path):
     file_name=os.path.basename(file_path)
     if(get_file_id!=None):
@@ -147,7 +155,6 @@ def IsInternet():
     except requests.ConnectionError:
         return False
 
-upload_file_to_drive(file_path)
 
 
 

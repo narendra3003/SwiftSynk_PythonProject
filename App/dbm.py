@@ -8,10 +8,10 @@ def checkLogin(email, password):
     cur = con.cursor()
     print(email)
     try:
-        cur.execute("SELECT password FROM user where email='{email}';".format(email=email))
+        cur.execute("SELECT password FROM user where username='{email}';".format(email=email))
         data=cur.fetchall()
         con.close()
-        print("SELECT password FROM user where email='{email}';".format(email=email))
+        print("SELECT password FROM user where username='{email}';".format(email=email))
         print(data)
         if(len(data)==0):
             return 1
@@ -23,6 +23,74 @@ def checkLogin(email, password):
         con.close()
         return 3
     return 4
+
+def is_folder_already_added(path):
+    con = connect()
+    cur = con.cursor()
+    try:
+        cur.execute("SELECT * FROM folder where folder_path='{folder_path}';".format(folder_path=path))
+        data=cur.fetchall()
+        con.close()
+        print(data)
+        if(len(data)==0):
+            return False
+        return True
+    except:
+        con.close()
+        return False
+    return False
+
+def file_already_added(path):
+    con = connect()
+    cur = con.cursor()
+    try:
+        cur.execute("SELECT * FROM file where filepath='{filepath}';".format(filepath=path))
+        data=cur.fetchall()
+        con.close()
+        print(data)
+        if(len(data)==0):
+            return False
+        return True
+    except:
+        con.close()
+        return False
+    return False
+
+def providePaths(base_folder_id, email):
+    con=connect()
+    cur=con.cursor()
+    data=[[], []]
+    try:
+        cur.execute("select folder_path from folder where email='{email}'and folder_path not in ('Base');".format(email=email))
+        data1=cur.fetchall()
+        print(data1)
+        con.close()
+    except Exception as e:
+        print(e)
+        con.close()
+        print("select folder_path from folder where email='{email}'and folder_path not in ('Base');".format(email=email))
+        print("Error to get folders")
+        return data
+    
+    con=connect()
+    cur=con.cursor()
+    try:
+        cur.execute("select filepath from file where folder_id='{base_folder_id}';".format(base_folder_id=base_folder_id))
+        data2=cur.fetchall()
+        print(data2)
+        con.close()
+    except Exception as e:
+        print(e)
+        con.close()
+        print("select filepath from file where folder_id='{base_folder_id}';".format(base_folder_id=base_folder_id))
+        print("Error to get files")
+        return data
+
+    for i in data1:
+        data[0].append(i[0])
+    for i in data2:
+        data[1].append(i[0])
+    return data
 
 def getFolders():
     con = connect()
@@ -101,10 +169,15 @@ def deleteFolder(dFolder_id):
 def deleteFile(dFile_id):
     con = connect()
     cur = con.cursor()
-    cur.execute("Delete from file where file_id = '{dFile_id}';".format(dFile_id=dFile_id))
-    con.commit()
-    con.close()
-    return 1
+    try:
+        cur.execute("Delete from file where file_id = '{dFile_id}';".format(dFile_id=dFile_id))
+        con.commit()
+        con.close()
+        return 1
+    except Exception as e:
+        print(e)
+        con.close()
+        return 0
 
 def modifyUser(mpassword,mUsername,memail):
     con = connect()
