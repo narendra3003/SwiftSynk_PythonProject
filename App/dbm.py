@@ -161,10 +161,23 @@ def deleteUser(dEmail):
 def deleteFolder(dFolder_id):
     con = connect()
     cur = con.cursor()
-    cur.execute("Delete from folder where folder_id = '{dFolder_id}';".format(dFolder_id=dFolder_id))
-    con.commit()
-    con.close()
-    return 1
+    try:
+        cur.execute("Delete from file where folder_id = '{dFolder_id}';".format(dFolder_id=dFolder_id))
+        try:
+            cur.execute("Delete from folder where folder_id = '{dFolder_id}';".format(dFolder_id=dFolder_id))
+            con.commit()
+            con.close()
+            return 1
+        except Exception as e:
+            print("error occured")
+            print(e)
+            con.close()
+            return 0
+    except:
+        print("error occured")
+        print(e)
+        con.close()
+        return 0
 
 def deleteFile(dFile_id):
     con = connect()

@@ -234,8 +234,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             msg_box.setDefaultButton(QtWidgets.QMessageBox.No)
             result = msg_box.exec_()
             if result == QtWidgets.QMessageBox.Yes:
-                file_path = self.table.item(row, 3).text() if self.table.item(row, column) == self.table.item(row, column) else self.table2.item(row, 3).text()
-                connector.dbm.deleteFile(connector.delete_file_from_drive(file_path))
+                path = self.table.item(row, 3).text() if self.table.item(row, column) == self.table.item(row, column) else self.table2.item(row, 3).text()
+                if os.path.isdir(path):
+                    connector.dbm.deleteFolder(connector.delete_folder_from_drive(path))
+                else:
+                    connector.dbm.deleteFile(connector.delete_file_from_drive(path))
                 self.table.removeRow(row)
             self.refresh_table()
 

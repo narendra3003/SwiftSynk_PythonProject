@@ -17,13 +17,15 @@ import requests
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
-email="narendradukhande30@gmail.com"
-file_path = "C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\SwiftSynk_PythonProject\\reference_files\\test.txt"
-base_drive_folder_id = "1gvh-akOM4JlkCljrtpxAGfX4dXdbfJ2n"
-credentials_file_path = "C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\SwiftSynk_PythonProject\\reference_files\\syncin-411107-949b882c5e98.json"
+# email="narendradukhande30@gmail.com"
+# file_path = "C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\SwiftSynk_PythonProject\\reference_files\\test.txt"
+# base_drive_folder_id = "1gvh-akOM4JlkCljrtpxAGfX4dXdbfJ2n"
+# credentials_file_path = "C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\SwiftSynk_PythonProject\\reference_files\\syncin-411107-949b882c5e98.json"
 
-# file_path = "C:\\Projects\\SEM 4\\SwiftSynk_PythonProject\\reference_files\\test.txt"
-# credentials_file_path = "C:\\Projects\\SEM 4\\SwiftSynk_PythonProject\\reference_files\\syncin-411107-949b882c5e98.json"
+email = "syedsaif78676@gmail.com"
+file_path = "C:\\Projects\\SEM 4\\SwiftSynk_PythonProject\\reference_files\\test.txt"
+base_drive_folder_id = "1rEgaGA5mofkeCf572WVRkOWIj_4sHaWm"
+credentials_file_path = "C:\\Projects\\SEM 4\\SwiftSynk_PythonProject\\reference_files\\syncin-411107-949b882c5e98.json"
 
 def getDriveService(credentials_file_path=credentials_file_path):
     SCOPES = ['https://www.googleapis.com/auth/drive']
@@ -109,6 +111,31 @@ def delete_file_from_drive(file_name, drive_folder_id=base_drive_folder_id, cred
     drive_service.files().delete(fileId=file_id).execute()
     print(f"File '{file_name}' deleted successfully from Google Drive.")
     return file_id
+
+
+def delete_folder_from_drive(folder_name, drive_folder_id=base_drive_folder_id, credentials_file_path=credentials_file_path):
+    drive_service = getDriveService()
+    query = f"name='{folder_name}' and '{drive_folder_id}' in parents and mimeType='application/vnd.google-apps.folder' and trashed=false"
+    response = drive_service.files().list(q=query, fields='files(id)').execute()
+    folders = response.get('files', [])
+
+    if not folders:
+        print(f"Folder '{folder_name}' not found in parent folder with ID '{drive_folder_id}'.")
+        return
+    folder_id = folders[0]['id']
+
+    files_query = f"'{folder_id}' in parents and trashed=false"
+    files_response = drive_service.files().list(q=files_query, fields='files(id)').execute()
+    files = files_response.get('files', [])
+
+    for file in files:
+        file_id = file['id']
+        drive_service.files().delete(fileId=file_id).execute()
+        print(f"File with ID '{file_id}' deleted successfully.")
+        
+    drive_service.files().delete(fileId=folder_id).execute()
+    print(f"Folder '{folder_name}' deleted successfully from Google Drive.")
+    return folder_id
 
 ##to get id of the file on drive
 def get_file_id(file_name, folder_id=credentials_file_path, credentials_path=credentials_file_path):
