@@ -31,20 +31,19 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.stackedWidget.setCurrentWidget(self.page_3)
 
     def login(self):
-        expected_email = "aa"
-        expected_password = "aa"
+        email = self.emailbox.text()
+        password = self.passbox.text()
+        print(email, password)
 
-        entered_email = self.emailbox.text()
-        entered_password = self.passbox.text()
-
-        if entered_email == expected_email and entered_password == expected_password:
-            self.emailbox.clear()
-            self.passbox.clear()
-
+        if(connector.dbm.checkLogin(email, password)==0):
             self.stackedWidget.setCurrentIndex(0)
+        elif(connector.dbm.checkLogin(email, password)==1):
+            QtWidgets.QMessageBox.warning(self, "Login Failed", "Incorrect Email")
+        elif(connector.dbm.checkLogin(email, password)==2):
+            QtWidgets.QMessageBox.warning(self, "Login Failed", "Incorrect Password")
         else:
-            QtWidgets.QMessageBox.warning(self, "Login Failed", "Incorrect email or password. Please try again.")
-    
+            QtWidgets.QMessageBox.warning(self, "Login Failed", "Error")
+
     def go_to_page(self):
         self.stackedWidget.setCurrentIndex(0)
 
