@@ -24,7 +24,9 @@ last_upload=datetime.datetime.now()
 # print(datetime_obj1<datetime_obj2)
 
 ####Basic things needed
-file_path = "C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\SwiftSynk_PythonProject\\reference_files\\test.txt"
+# file_path = "C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\SwiftSynk_PythonProject\\reference_files\\test.txt"
+# file_path = "C:/Users/tupti/OneDrive/Desktop/new Lang/Sem4/SwiftSynk_PythonProject/reference_files/test.txt"
+file_path = "C://Users//tupti//OneDrive//Desktop//new Lang//Sem4//SwiftSynk_PythonProject//reference_files//test.txt"
 drive_folder_id = "1gvh-akOM4JlkCljrtpxAGfX4dXdbfJ2n"
 credentials_file_path = "C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\SwiftSynk_PythonProject\\reference_files\\syncin-411107-949b882c5e98.json"
 ####Code common to all functions
@@ -118,10 +120,11 @@ def IsInternet():
     except requests.ConnectionError:
         return False
 
-while True:
-    if(not IsInternet()):
-        continue
-    if(datetime.datetime.strptime(get_last_modified_time(file_path), '%Y-%m-%d %H:%M:%S')>last_upload):
-        print(datetime.datetime.strptime(get_last_modified_time(file_path), '%Y-%m-%d %H:%M:%S'),last_upload)
-        reUpload(file_path, drive_folder_id, credentials_file_path)
-    time.sleep(1)
+def modifiedUploader():
+    while True:
+        if(not IsInternet()):
+            continue
+        if(datetime.datetime.strptime(get_last_modified_time(file_path), '%Y-%m-%d %H:%M:%S')>last_upload):
+            print(datetime.datetime.strptime(get_last_modified_time(file_path), '%Y-%m-%d %H:%M:%S'),last_upload)
+            reUpload(file_path, drive_folder_id, credentials_file_path)
+        time.sleep(1)

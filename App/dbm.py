@@ -92,6 +92,30 @@ def providePaths(base_folder_id, email):
         data[1].append(i[0])
     return data
 
+def give_id_by_path(path):
+    con = connect()
+    cur = con.cursor()
+    cur.execute("SELECT file_id FROM file where filepath='{file_path}';".format(file_path=path))
+    data=cur.fetchall()
+    con.commit()
+    con.close()
+    print("hii", data)
+    if(len(data)==0):
+        return ""
+    return data[0][0]
+
+def give_last_upload_time(file_path):
+    con = connect()
+    cur = con.cursor()
+    cur.execute("SELECT upload_time FROM file where filepath='{file_path}';".format(file_path=file_path))
+    data=cur.fetchall()
+    con.commit()
+    con.close()
+    print("hii", data)
+    if(len(data)==0):
+        return ""
+    return data[0][0]
+
 def getFolders():
     con = connect()
     cur = con.cursor()

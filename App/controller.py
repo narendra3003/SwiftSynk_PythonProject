@@ -99,6 +99,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if folder_dialog.exec_():
             selected_folders = folder_dialog.selectedFiles()
             for folder_path in selected_folders:
+                print("folder", folder_path)
                 if(connector.dbm.is_folder_already_added(folder_path)):
                     QtWidgets.QMessageBox.warning(self, "Folder Already Added", "The folder '{}' is already being synced.".format(folder_path))
                 else:
@@ -156,6 +157,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         if file_dialog.exec_():
             selected_files = file_dialog.selectedFiles()
             for file_path in selected_files:
+                print(file_path)
                 if(connector.dbm.file_already_added(file_path)):
                     QtWidgets.QMessageBox.warning(self, "File Already Exists", "The file '{}' is already being synced.".format(file_path))
                 else:
@@ -248,5 +250,7 @@ if __name__ == "__main__":
     window = MainWindow()
     window.setWindowTitle("SwiftSynk")
     window.refresh_table()
+    thread = threading.Thread(target=connector.modifiedUploader)
+    thread.start()
     window.show()
     sys.exit(app.exec_())

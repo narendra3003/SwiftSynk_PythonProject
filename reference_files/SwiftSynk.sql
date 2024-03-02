@@ -18,7 +18,7 @@ Create table folder (
 Create table file (
 					file_id varchar(55) primary key,
                     status varchar(100),
-                    filepath varchar(250),
+                    filepath varchar(250) unique,
                     upload_time varchar(25),
                     folder_id varchar(50),
                     foreign key (folder_id) references folder(folder_id)
