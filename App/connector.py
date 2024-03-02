@@ -17,28 +17,26 @@ import requests
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
-# email="narendradukhande30@gmail.com"
-# file_path = "C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\SwiftSynk_PythonProject\\reference_files\\test.txt"
-# base_drive_folder_id = "1gvh-akOM4JlkCljrtpxAGfX4dXdbfJ2n"
-# credentials_file_path = "C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\SwiftSynk_PythonProject\\reference_files\\syncin-411107-949b882c5e98.json"
 email="narendradukhande30@gmail.com"
 file_path = "C:/Users/tupti/OneDrive/Desktop/new Lang/Sem4/SwiftSynk_PythonProject/reference_files/test.txt"
 base_drive_folder_id = "1gvh-akOM4JlkCljrtpxAGfX4dXdbfJ2n"
 credentials_file_path = "C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\SwiftSynk_PythonProject\\reference_files\\syncin-411107-949b882c5e98.json"
 
-email = "syedsaif78676@gmail.com"
-file_path = "C:\\Projects\\SEM 4\\SwiftSynk_PythonProject\\reference_files\\test.txt"
-base_drive_folder_id = "1rEgaGA5mofkeCf572WVRkOWIj_4sHaWm"
-credentials_file_path = "C:\\Projects\\SEM 4\\SwiftSynk_PythonProject\\reference_files\\syncin-411107-949b882c5e98.json"
+# email = "syedsaif78676@gmail.com"
+# file_path = "C:\\Projects\\SEM 4\\SwiftSynk_PythonProject\\reference_files\\test.txt"
+# base_drive_folder_id = "1rEgaGA5mofkeCf572WVRkOWIj_4sHaWm"
+# credentials_file_path = "C:\\Projects\\SEM 4\\SwiftSynk_PythonProject\\reference_files\\syncin-411107-949b882c5e98.json"
 
 def modifiedUploader():
     while True:
         if(not IsInternet()):
             continue
-        if(datetime.datetime.strptime(get_last_modified_time(file_path), '%Y-%m-%d %H:%M:%S')>datetime.datetime.strptime(dbm.give_last_upload_time(file_path), '%Y-%m-%d %H:%M:%S')):
-            print(datetime.datetime.strptime(get_last_modified_time(file_path), '%Y-%m-%d %H:%M:%S'),dbm.give_last_upload_time(file_path))
-            reUpload(file_path, base_drive_folder_id, credentials_file_path)
-            print("\n\n\n")
+        files_toCheck=dbm.getFiles()
+        for file in files_toCheck:
+            if(datetime.datetime.strptime(get_last_modified_time(file[2]), '%Y-%m-%d %H:%M:%S')>datetime.datetime.strptime(dbm.give_last_upload_time(file[2]), '%Y-%m-%d %H:%M:%S')):
+                print(datetime.datetime.strptime(get_last_modified_time(file_path), '%Y-%m-%d %H:%M:%S'),dbm.give_last_upload_time(file_path))
+                reUpload(file[2], file[4], credentials_file_path)
+                print("\n\n\n")
         time.sleep(1)
 
 def getDriveService(credentials_file_path=credentials_file_path):
@@ -126,7 +124,6 @@ def delete_file_from_drive(file_name, drive_folder_id=base_drive_folder_id, cred
         print(f"File '{file_name}' deleted successfully from Google Drive. And DB")
     print(f"File '{file_name}' deleted successfully from Google Drive.")
 
-
 def delete_folder_from_drive(folder_name, drive_folder_id=base_drive_folder_id, credentials_file_path=credentials_file_path):
     drive_service = getDriveService()
     query = f"name='{folder_name}' and '{drive_folder_id}' in parents and mimeType='application/vnd.google-apps.folder' and trashed=false"
@@ -197,8 +194,3 @@ def IsInternet():
         return True
     except requests.ConnectionError:
         return False
-
-
-
-
-
