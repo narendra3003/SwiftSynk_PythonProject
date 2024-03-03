@@ -33,11 +33,19 @@ def modifiedUploader():
             continue
         files_toCheck=dbm.getFiles()
         for file in files_toCheck:
+            if file[1]=="Paused":
+                continue
             if(datetime.datetime.strptime(get_last_modified_time(file[2]), '%Y-%m-%d %H:%M:%S')>datetime.datetime.strptime(dbm.give_last_upload_time(file[2]), '%Y-%m-%d %H:%M:%S')):
                 print(datetime.datetime.strptime(get_last_modified_time(file[2]), '%Y-%m-%d %H:%M:%S'),dbm.give_last_upload_time(file[2]))
                 reUpload(file[2], file[4], credentials_file_path)
                 print("\n\n\n")
         time.sleep(1)
+
+def toggeleUpload(file_path, status):
+    if(status=="Synced"):
+        dbm.modifyFileStatus(file_path,"Paused")
+    if(status=="Paused"):
+        dbm.modifyFileStatus(file_path,"Synced")
 
 def getDriveService(credentials_file_path=credentials_file_path):
     SCOPES = ['https://www.googleapis.com/auth/drive']
