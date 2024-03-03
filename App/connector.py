@@ -34,7 +34,7 @@ def modifiedUploader():
         files_toCheck=dbm.getFiles()
         for file in files_toCheck:
             if(datetime.datetime.strptime(get_last_modified_time(file[2]), '%Y-%m-%d %H:%M:%S')>datetime.datetime.strptime(dbm.give_last_upload_time(file[2]), '%Y-%m-%d %H:%M:%S')):
-                print(datetime.datetime.strptime(get_last_modified_time(file_path), '%Y-%m-%d %H:%M:%S'),dbm.give_last_upload_time(file_path))
+                print(datetime.datetime.strptime(get_last_modified_time(file[2]), '%Y-%m-%d %H:%M:%S'),dbm.give_last_upload_time(file[2]))
                 reUpload(file[2], file[4], credentials_file_path)
                 print("\n\n\n")
         time.sleep(1)
@@ -76,7 +76,7 @@ def upload_file_to_drive(file_path, drive_folder_id=base_drive_folder_id, creden
 
 def upload_files_from_folder_to_drive(folder_path, drive_folder_id, credentials_path):
     for filename in os.listdir(folder_path):
-        f = os.path.join(folder_path, filename)
+        f = folder_path+"/"+ filename
         # checking if it is a file
         if os.path.isfile(f):
             upload_file_to_drive(f, drive_folder_id, credentials_path)
@@ -121,7 +121,7 @@ def delete_file_from_drive(file_name, drive_folder_id=base_drive_folder_id, cred
     file_id = files[0]['id']
     drive_service.files().delete(fileId=file_id).execute()
     if(dbm.deleteFile(file_id)==1):
-        print(f"File '{file_name}' deleted successfully from Google Drive. And DB")
+        print(f"File '{file_name}' deleted successfully from Google Drive. And DB", file_id)
     print(f"File '{file_name}' deleted successfully from Google Drive.")
 
 def delete_folder_from_drive(folder_name, drive_folder_id=base_drive_folder_id, credentials_file_path=credentials_file_path):
@@ -184,7 +184,7 @@ def compare_time(time1, time2):
 
 def reUpload(file_path, drive_folder_id=base_drive_folder_id, credentials_file_path=credentials_file_path):
     # file_name=os.path.basename(file_path)
-    if(get_file_id(file_path)!=None):
+    if(get_file_id(file_path, drive_folder_id)!=None):
         delete_file_from_drive(file_path, drive_folder_id, credentials_file_path)
     upload_file_to_drive(file_path, drive_folder_id, credentials_file_path)
 
