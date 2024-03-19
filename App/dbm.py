@@ -235,7 +235,15 @@ def modifyFolder(mfolder_path,mfolder_id):
 def modifyFile(mfilepath,mfile_id,mupload_time,mStatus):
     con = connect()
     cur = con.cursor()
-    cur.execute("Update file set filepath = '{mfilepath}', upload_time = '{mupload_time}', Status = '{mStatus}' where file_id = '{mfile_id}';".format(mfilepath=mfilepath, mupload_time=mupload_time, mStatus=mStatus))
+    cur.execute("Update file set filepath = '{mfilepath}', upload_time = '{mupload_time}', Status = '{mStatus}' where file_id = '{mfile_id}';".format(mfilepath=mfilepath, mupload_time=mupload_time, mStatus=mStatus, mfile_id=mfile_id))
+    con.commit()
+    con.close()
+    return 1
+
+def modifyFileStatus(mfilepath,mStatus):
+    con = connect()
+    cur = con.cursor()
+    cur.execute("Update file set Status = '{mStatus}' where filepath = '{mfilepath}';".format(mfilepath=mfilepath, mStatus=mStatus))
     con.commit()
     con.close()
     return 1
