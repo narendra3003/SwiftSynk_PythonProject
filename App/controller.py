@@ -26,7 +26,20 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.icon_provider = QtWidgets.QFileIconProvider()
         self.backbutton.clicked.connect(self.go_to_page)
         self.loginbutton.clicked.connect(self.login)
+        self.gdrivebutton.clicked.connect(self.gdrive)
+        self.loginswitch.clicked.connect(self.login_switch)
+        self.signupswitch.clicked.connect(self.signup_switch)
+
+        self.stackedWidget.setCurrentWidget(self.page_5)
+
+    def gdrive(self):
+        self.stackedWidget.setCurrentWidget(self.page_4)
+
+    def login_switch(self):
         self.stackedWidget.setCurrentWidget(self.page_3)
+
+    def signup_switch(self):
+        self.stackedWidget.setCurrentWidget(self.page_4)
 
     def refresh_table(self):
         data=connector.dbm.providePaths(connector.base_drive_folder_id, connector.email)
@@ -145,11 +158,16 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             item_size.setTextAlignment(QtCore.Qt.AlignCenter)
             self.table.setItem(row_position, 4, item_size)
             
-            item_del = QtWidgets.QTableWidgetItem("Delete")
-            item_del.setFont(QtGui.QFont("Agency FB", 10, QtGui.QFont.Bold))
-            item_del.setForeground(QtGui.QColor('red'))
+            item_ps = QtWidgets.QTableWidgetItem()
+            item_ps.setIcon(QtGui.QIcon("C:\\Projects\\SEM 4\\SwiftSynk_PythonProject\\App\\Images\\pause.png"))
+            item_ps.setTextAlignment(QtCore.Qt.AlignCenter)
+            self.table.setItem(row_position, 5, item_ps)
+
+            item_del = QtWidgets.QTableWidgetItem()
+            item_del.setIcon(QtGui.QIcon("C:\\Projects\\SEM 4\\SwiftSynk_PythonProject\\App\\Images\\remove.png"))
             item_del.setTextAlignment(QtCore.Qt.AlignCenter)
-            self.table.setItem(row_position, 5, item_del)
+            self.table.setItem(row_position, 6, item_del)
+
 
     def sync_files(self):
         file_dialog = QtWidgets.QFileDialog(self)
@@ -196,12 +214,16 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             item_size.setFont(QtGui.QFont("Agency FB", 10, QtGui.QFont.Bold))
             item_size.setTextAlignment(QtCore.Qt.AlignCenter)
             self.table.setItem(row_position, 4, item_size)
+
+            item_ps = QtWidgets.QTableWidgetItem()
+            item_ps.setIcon(QtGui.QIcon("C:\\Projects\\SEM 4\\SwiftSynk_PythonProject\\App\\Images\\pause.png"))
+            item_ps.setTextAlignment(QtCore.Qt.AlignCenter)
+            self.table.setItem(row_position, 5, item_ps)
             
-            item_del = QtWidgets.QTableWidgetItem("Delete")
-            item_del.setFont(QtGui.QFont("Agency FB", 10, QtGui.QFont.Bold))
-            item_del.setForeground(QtGui.QColor('red'))
+            item_del = QtWidgets.QTableWidgetItem()
+            item_del.setIcon(QtGui.QIcon("C:\\Projects\\SEM 4\\SwiftSynk_PythonProject\\App\\Images\\remove.png"))
             item_del.setTextAlignment(QtCore.Qt.AlignCenter)
-            self.table.setItem(row_position, 5, item_del)
+            self.table.setItem(row_position, 6, item_del)
 
     def open_item_explorer(self, row, column):
         if column == 3:  
@@ -228,6 +250,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 QtWidgets.QMessageBox.warning(self, "File Not Found", "The file does not exist.")
 
         elif column == 5:
+            pass
+            #for pause sync
+
+        elif column == 6:
             msg_box = QtWidgets.QMessageBox()
             msg_box.setIcon(QtWidgets.QMessageBox.Warning)
             msg_box.setWindowTitle("Delete Warning")
