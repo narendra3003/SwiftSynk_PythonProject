@@ -35,6 +35,7 @@ SS
 DELIMITER ;
 
 insert into user values("narendradukhande30@gmail.com","hii","Narendra", "1gvh-akOM4JlkCljrtpxAGfX4dXdbfJ2n");
+insert into user values("syedsaif78676@gmail.com","hii","Saif", "1rEgaGA5mofkeCf572WVRkOWIj_4sHaWm");
 -- insert into user values("varadesanchita@gmail.com","sanchi@11","Sanchita", "efgh");
 -- insert into user values("saiff@gmail.com","saif@16","Saifuddin", "jklm");
 -- insert into folder values("1gvh-akOM4JlkCljrtpxAGfX4dXdbfJ2n", "BASE","narendradukhande30@gmail.com");

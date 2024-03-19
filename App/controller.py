@@ -1,4 +1,5 @@
 import threading
+import inspect
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5 import QtCore
 from main import Ui_MainWindow
@@ -63,9 +64,23 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             QtWidgets.QMessageBox.warning(self, "Login Failed", "Error")
 
     def go_to_page(self):
-        self.stackedWidget.setCurrentIndex(0)
+        if(self.counter == 1):
+            self.counter -= 1
+            self.stackedWidget.setCurrentIndex(0)
+        else:  
+            self.populate_folder_table(self.backpath)
+
+    counter = 0
+    backpath = ''
 
     def populate_folder_table(self, folder_path):
+        if(inspect.stack()[1].function == 'go_to_page'):
+            self.counter -= 1
+            print(self.counter)
+        else:
+            self.counter += 1
+            print(self.counter)
+        self.backpath = os.path.dirname(folder_path)
         files = os.listdir(folder_path)
         self.table2.setRowCount(0) 
         for file_name in files:
@@ -97,10 +112,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.table2.setItem(row_position, 3, item_path)
 
             item_size = QtWidgets.QTableWidgetItem(convert_size(file_info.size()))
-            item_size.setFont(QtGui.QFont("Agency FB", 10, QtGui.QFont.Bold))
+            item_size.setFont(QtGui.QFont("Agency FB", 15, QtGui.QFont.Bold))
             item_size.setTextAlignment(QtCore.Qt.AlignCenter)
             if os.path.isdir(file_path):
-                item_size.setText("")
+                item_size.setText("▶")
             else:
                 item_size.setText(convert_size(file_info.size()))
             self.table2.setItem(row_position, 4, item_size)
@@ -241,13 +256,27 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             else:
                 QtWidgets.QMessageBox.warning(self, "File Not Found", "The file does not exist.")
         elif column == 4:  
-            file_path = self.table.item(row, 3).text() if self.sender() == self.table else self.table2.item(row, 3).text()
-            if os.path.exists(file_path):
-                folder_path = os.path.dirname(file_path)  
-                self.populate_folder_table(folder_path) 
-                self.stackedWidget.setCurrentIndex(1)  
-            else:
-                QtWidgets.QMessageBox.warning(self, "File Not Found", "The file does not exist.")
+            if self.sender() == self.table:
+                # file_path = self.table.item(row, 3).text() if self.sender() == self.table else self.table2.item(row, 3).text()
+                file_path = self.table.item(row, 3).text()
+                if os.path.exists(file_path):
+                    folder_path = os.path.dirname(file_path)
+                    # self.counter += 1
+                    # print(self.counter)
+                    self.populate_folder_table(file_path) 
+                    self.stackedWidget.setCurrentIndex(1)  
+                else:
+                    QtWidgets.QMessageBox.warning(self, "Folder Not Found", "The folder does not exist.")
+
+            elif self.sender() == self.table2:
+                file_path = self.table2.item(row, 3).text()
+                if os.path.exists(file_path):
+                    folder_path = os.path.dirname(file_path)
+                    self.populate_folder_table(file_path) 
+                    self.stackedWidget.setCurrentIndex(1)  
+                else:
+                    QtWidgets.QMessageBox.warning(self, "Folder Not Found", "The folder does not exist.")
+
 
         elif column == 5:
             pass
