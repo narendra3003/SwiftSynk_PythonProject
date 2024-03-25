@@ -17,10 +17,11 @@ import requests
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
-# changed
+# changed 2
 email="narendradukhande30@gmail.com"
 file_path = "C:/Users/tupti/OneDrive/Desktop/new Lang/Sem4/SwiftSynk_PythonProject/reference_files/test.txt"
 base_drive_folder_id = "1gvh-akOM4JlkCljrtpxAGfX4dXdbfJ2n"
+secondary_folder_id = "16OGxSt74hhmluHekVRs6RRfvoJ1XZdxS"
 credentials_file_path = "C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\SwiftSynk_PythonProject\\reference_files\\syncin-411107-949b882c5e98.json"
 
 # email = "syedsaif78676@gmail.com"
@@ -47,6 +48,48 @@ def toggeleUpload(file_path, status):
         dbm.modifyFileStatus(file_path,"Paused")
     if(status=="Paused"):
         dbm.modifyFileStatus(file_path,"Synced")
+
+# def create_state2_folder():
+#     pass
+
+# def merge_state2_folder():
+#     pass
+
+def create_state2_file(file_path):
+    file_id=dbm.give_id_by_path(file_path)
+    version_id=copy_file(file_id)
+    dbm.insertVersion(version_id, file_id)
+
+def getBackToVersion(file_path):
+    drive_folder_id=dbm.getParentFolderid(file_path)
+    version_id=dbm.getVersionID(dbm.give_id_by_path(file_path))
+    delete_file_from_drive(file_path)
+    id=copy_file(version_id, drive_folder_id)
+    dbm.insertFile(id,file_path,get_current_time(),drive_folder_id,"Synced")
+
+def retainVersion(filepath):
+    version_id=dbm.getVersionID(dbm.give_id_by_path(file_path))
+    drive_folder_id=dbm.getParentFolderid(file_path)
+    delete_file_from_drive(file_path, drive_folder_id)
+    dbm.deleteVersion(version_id)
+
+def copy_file(file_id, destination_folder_id=secondary_folder_id, credentials_path=credentials_file_path):
+    credentials = service_account.Credentials.from_service_account_file(
+        credentials_path,
+        scopes=['https://www.googleapis.com/auth/drive']
+    )
+
+    drive_service = build('drive', 'v3', credentials=credentials)
+
+    file_metadata = drive_service.files().get(fileId=file_id, fields='name').execute()
+    
+    copied_file = drive_service.files().copy(
+        fileId=file_id,
+        body={'parents': [destination_folder_id]},
+        fields='id'
+    ).execute()
+    print(f"File '{file_metadata['name']}' copied to destination folder with ID '{destination_folder_id}'.")
+    return copied_file.get('id')
 
 def getDriveService(credentials_file_path=credentials_file_path):
     SCOPES = ['https://www.googleapis.com/auth/drive']
@@ -117,7 +160,7 @@ def upload_folder_to_drive(folder_path, parent_folder_id=base_drive_folder_id, c
     upload_files_from_folder_to_drive(folder_path, new_folder_id, credentials_path)
 
 #to delete files from drive
-def delete_file_from_drive(file_name, drive_folder_id=base_drive_folder_id, credentials_file_path=credentials_file_path):
+def delete_file_from_drive(file_name, drive_folder_id=base_drive_folder_id, credentials_file_path=credentials_file_path, table="file"):
     drive_service = getDriveService()
     # file_name = os.path.basename(file_path)
     query = f"name='{file_name}' and '{drive_folder_id}' in parents and trashed=false"
@@ -129,6 +172,9 @@ def delete_file_from_drive(file_name, drive_folder_id=base_drive_folder_id, cred
         return
     file_id = files[0]['id']
     drive_service.files().delete(fileId=file_id).execute()
+    if(table=="version"):
+        dbm.deleteVersion(file_id)
+        return
     if(dbm.deleteFile(file_id)==1):
         print(f"File '{file_name}' deleted successfully from Google Drive. And DB", file_id)
     print(f"File '{file_name}' deleted successfully from Google Drive.")

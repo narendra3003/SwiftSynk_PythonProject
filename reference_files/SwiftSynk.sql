@@ -5,7 +5,8 @@ CREATE TABLE user(
 	email varchar(50) primary key not null,
     password varchar(12),
     username varchar(45),
-    base_folder_id varchar(50)
+    base_folder_id varchar(50),
+    secondary_folder_id varchar(50)
 );
 
 Create table folder (
@@ -26,8 +27,8 @@ Create table file (
 
 Create table lastVersions (
 	last_version_id varchar(55) primary key,
-    file_id varchar(55),
-  foreign key (file_id) references file(file_id)
+    main_file_id varchar(55),
+  foreign key (main_file_id) references file(file_id)
 );
 
 DELIMITER SS
@@ -36,6 +37,7 @@ CREATE TRIGGER addBaseFolder
     ON user FOR EACH ROW
     BEGIN
 		INSERT INTO folder VALUES(NEW.base_folder_id, "BASE", NEW.email);
+        INSERT INTO folder VALUES(NEW.secondary_folder_id, "SECOND", NEW.email);
 	END
 SS
 DELIMITER ;
@@ -141,9 +143,9 @@ CREATE TRIGGER DeleteFile
 SS
 DELIMITER ;
 
-insert into user values("syedsaif78676@gmail.com","hii","Saif", "1rEgaGA5mofkeCf572WVRkOWIj_4sHaWm");
-insert into user values("varadesanchita@gmail.com","sanchi","Sanchita", "12QDJynTGSmbyv4Jf6w8ZYzH-NwgYOSt8");
-insert into user values("narendradukhande30@gmail.com","hii","Narendra", "1gvh-akOM4JlkCljrtpxAGfX4dXdbfJ2n");
+-- insert into user values("syedsaif78676@gmail.com","hii","Saif", "1rEgaGA5mofkeCf572WVRkOWIj_4sHaWm");
+-- insert into user values("varadesanchita@gmail.com","sanchi","Sanchita", "12QDJynTGSmbyv4Jf6w8ZYzH-NwgYOSt8");
+insert into user values("narendradukhande30@gmail.com","hii","Narendra", "1gvh-akOM4JlkCljrtpxAGfX4dXdbfJ2n", "16OGxSt74hhmluHekVRs6RRfvoJ1XZdxS");
 -- insert into user values("saiff@gmail.com","saif@16","Saifuddin", "jklm");
 -- insert into folder values("1gvh-akOM4JlkCljrtpxAGfX4dXdbfJ2n", "BASE","narendradukhande30@gmail.com");
 -- insert into folder values("efgh", "some\\path","varadesanchita@gmail.com");

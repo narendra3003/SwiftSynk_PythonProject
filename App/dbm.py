@@ -61,7 +61,7 @@ def providePaths(base_folder_id, email):
     cur=con.cursor()
     data=[[], []]
     try:
-        cur.execute("select folder_path from folder where email='{email}'and folder_path not in ('Base');".format(email=email))
+        cur.execute("select folder_path from folder where email='{email}'and folder_path not in ('Base', 'second');".format(email=email))
         data1=cur.fetchall()
         print(data1)
         con.close()
@@ -103,6 +103,22 @@ def give_id_by_path(path):
     if(len(data)==0):
         return ""
     return data[0][0]
+
+def getParentFolderid(file_path):
+    con = connect()
+    cur = con.cursor()
+    cur.execute("select folder_id from file where filepath = '{file_path}';".format(file_path=file_path))
+    con.commit()
+    con.close()
+    return 1
+
+def getVersion(file_id):
+    con = connect()
+    cur = con.cursor()
+    cur.execute("select last_version_id from lastVersions where main_file_id = '{file_id}';".format(file_id=file_id))
+    con.commit()
+    con.close()
+    return 1
 
 def give_last_upload_time(file_path):
     con = connect()
@@ -146,10 +162,10 @@ def getUsers():
     print(data)
     return data
 
-def insertUser(email,password,username,folder_id):
+def insertUser(email,password,username,folder_id, state_folder_id):
     con = connect()
     cur = con.cursor()
-    cur.execute("Insert into user (Email,password,Username,base_folder_id) values ('{email}','{password}','{username}','{folder_id}');".format(email=email, password=password, username=username, folder_id=folder_id))
+    cur.execute("Insert into user (Email,password,Username,base_folder_id) values ('{email}','{password}','{username}','{folder_id}', '{state_folder_id}');".format(email=email, password=password, username=username, folder_id=folder_id, state_folder_id=state_folder_id))
     con.commit()
     con.close()
     return 1
@@ -166,6 +182,14 @@ def insertFile(file_id,filepath,upload_time,folder_id,status):
     con = connect()
     cur = con.cursor()
     cur.execute("Insert into file (file_id,filepath,upload_time,folder_id,Status) values ('{file_id}','{filepath}','{upload_time}','{folder_id}','{status}');".format(file_id=file_id, filepath=filepath, upload_time=upload_time, folder_id=folder_id, status=status))
+    con.commit()
+    con.close()
+    return 1
+
+def insertVersion(version_file_id,file_id):
+    con = connect()
+    cur = con.cursor()
+    cur.execute("Insert into lastVersions (last_version_id, main_file_id) values ('{last_version_id}','{main_file_id}');".format(last_version_id=version_file_id,main_file_id=file_id))
     con.commit()
     con.close()
     return 1
@@ -208,6 +232,19 @@ def deleteFile(dFile_id):
     cur = con.cursor()
     try:
         cur.execute("Delete from file where file_id = '{dFile_id}';".format(dFile_id=dFile_id))
+        con.commit()
+        con.close()
+        return 1
+    except Exception as e:
+        print(e)
+        con.close()
+        return 0
+
+def deleteVersion(dFile_id):
+    con = connect()
+    cur = con.cursor()
+    try:
+        cur.execute("Delete from lastVersions where last_version_id = '{dFile_id}';".format(dFile_id=dFile_id))
         con.commit()
         con.close()
         return 1
