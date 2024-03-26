@@ -24,6 +24,25 @@ def checkLogin(email, password):
         return 3
     return 4
 
+def insertSignup(username,email,password,folder_id):
+    con = connect()
+    cur = con.cursor()
+    print(email)
+    try:
+        data=cur.fetchall()
+        cur.execute("Insert into user (Email,password,Username,base_folder_id) values ('{email}','{password}','{username}','{folder_id}');".format(email=email, password=password, username=username, folder_id=folder_id))
+        print(data)
+        if(len(password)>8):
+            return 1
+        else:
+            return 0
+    
+    except:
+        con.close()
+        return 2
+    return 3
+
+
 def is_folder_already_added(path):
     con = connect()
     cur = con.cursor()
@@ -247,3 +266,51 @@ def modifyFileStatus(mfilepath,mStatus):
     con.commit()
     con.close()
     return 1
+
+def logfiles(logid):
+    con = connect()
+    cur = con.cursor()
+    cur.execute("select filepath from file where file_id = '{logid}';".format(logid=logid))
+    file_data = cur.fetchall()
+    print("Fetched file path:", file_data)
+    con.close()
+    if file_data:
+        file_path = file_data[0][0]
+        return file_path
+    else:
+        return None
+
+def logfolders(logid):
+    con = connect()
+    cur = con.cursor()
+    cur.execute("select folder_path from folder where folder_id = '{logid}';".format(logid=logid))
+    folder_data = cur.fetchall()
+    con.close()
+
+    if folder_data:
+        folder_path = folder_data[0][0]
+        return folder_path
+    else:
+        return None
+
+
+def logusers(logemail):
+    con = connect()
+    cur = con.cursor()
+    cur.execute("select username from user where email = '{logemail}';".format(logemail=logemail))
+    uname = cur.fetchall()
+    con.close()
+    if uname:
+        username = uname[0][0]
+        return username
+    else:
+        return None
+
+def logtable():
+    con = connect()
+    cur = con.cursor()
+    cur.execute("select * from logtable;")
+    data = cur.fetchall()
+    con.commit()
+    con.close()
+    return data

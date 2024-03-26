@@ -174,7 +174,7 @@ def get_file_id(file_name, folder_id=base_drive_folder_id, credentials_path=cred
 
 #to get modified time
 def get_last_modified_time(file_path):
-    modified_timestamp = os.path.getmtime(file_path)
+    modified_timestamp = os.path.getatime(file_path)
     modified_datetime = datetime.datetime.fromtimestamp(modified_timestamp)
     return modified_datetime.strftime('%Y-%m-%d %H:%M:%S')
 
@@ -202,3 +202,35 @@ def IsInternet():
         return True
     except requests.ConnectionError:
         return False
+    
+def getlogdata():
+    data = dbm.logtable()
+    modified_data = []
+    for row in data:
+        modified_row = list(row)
+        if row[0] == 'File':
+            filepath = dbm.logfiles(row[2])
+            modified_row = list(row)
+            if filepath is not None:
+                modified_row.append(filepath)
+
+        elif row[0] == 'Folder':
+            folderpath = dbm.logfolders(row[2])
+            modified_row = list(row)
+            if folderpath is not None:
+                modified_row.append(folderpath)
+
+        elif row[0] == 'User':
+            username = dbm.logusers(row[2])
+            modified_row = list(row)
+            if username is not None:
+                modified_row.append(username)
+                
+        modified_data.append(tuple(modified_row))
+    return modified_data
+
+
+
+
+
+
