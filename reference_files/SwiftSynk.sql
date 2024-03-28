@@ -56,7 +56,7 @@ CREATE TRIGGER insertFile
 	AFTER INSERT
     ON file FOR EACH ROW
     BEGIN
-		INSERT INTO logtable VALUES("File", "insert",new.file_id, now());
+		INSERT INTO logtable VALUES("File", "insert",new.filepath, now());
 	END
 SS
 DELIMITER ;
@@ -76,7 +76,7 @@ CREATE TRIGGER insertFolder
 	AFTER INSERT
     ON folder FOR EACH ROW
     BEGIN
-		INSERT INTO logtable VALUES("Folder", "insert", new.folder_id, now());
+		INSERT INTO logtable VALUES("Folder", "insert", new.folder_path, now());
 	END
 SS
 DELIMITER ;
@@ -86,7 +86,7 @@ CREATE TRIGGER UpdateFolder
 	AFTER UPDATE
     ON folder FOR EACH ROW
     BEGIN
-		INSERT INTO logtable VALUES("Folder", "update", new.folder_id, now());
+		INSERT INTO logtable VALUES("Folder", "update", new.folder_path, now());
 	END
 SS
 DELIMITER ;
@@ -106,7 +106,7 @@ CREATE TRIGGER UpdateFile
 	AFTER UPDATE
     ON file FOR EACH ROW
     BEGIN
-		INSERT INTO logtable VALUES("File", "update", new.file_id, now());
+		INSERT INTO logtable VALUES("File", "update", new.filepath, now());
 	END
 SS
 DELIMITER ;
@@ -117,7 +117,7 @@ CREATE TRIGGER DeleteFolder
 	before DELETE
     ON folder FOR EACH ROW
     BEGIN
-		INSERT INTO logtable VALUES("Folder", "delete", old.folder_id, now());
+		INSERT INTO logtable VALUES("Folder", "delete", old.folder_path, now());
 	END
 SS
 DELIMITER ;
@@ -137,7 +137,7 @@ CREATE TRIGGER DeleteFile
 	before DELETE
     ON file FOR EACH ROW
     BEGIN
-		INSERT INTO logtable VALUES("File", "delete", old.file_id, now());
+		INSERT INTO logtable VALUES("File", "delete", old.filepath, now());
 	END
 SS
 DELIMITER ;

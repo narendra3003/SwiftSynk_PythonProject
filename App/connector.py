@@ -18,16 +18,16 @@ from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 
 # changed 2
-email="narendradukhande30@gmail.com"
-file_path = "C:/Users/tupti/OneDrive/Desktop/new Lang/Sem4/SwiftSynk_PythonProject/reference_files/test.txt"
-base_drive_folder_id = "1gvh-akOM4JlkCljrtpxAGfX4dXdbfJ2n"
+# email="narendradukhande30@gmail.com"
+# file_path = "C:/Users/tupti/OneDrive/Desktop/new Lang/Sem4/SwiftSynk_PythonProject/reference_files/test.txt"
+# base_drive_folder_id = "1gvh-akOM4JlkCljrtpxAGfX4dXdbfJ2n"
 secondary_folder_id = "16OGxSt74hhmluHekVRs6RRfvoJ1XZdxS"
-credentials_file_path = "C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\SwiftSynk_PythonProject\\reference_files\\syncin-411107-949b882c5e98.json"
+# credentials_file_path = "C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\SwiftSynk_PythonProject\\reference_files\\syncin-411107-949b882c5e98.json"
 
-# email = "syedsaif78676@gmail.com"
-# file_path = "C:\\Projects\\SEM 4\\SwiftSynk_PythonProject\\reference_files\\test.txt"
-# base_drive_folder_id = "1rEgaGA5mofkeCf572WVRkOWIj_4sHaWm"
-# credentials_file_path = "C:\\Projects\\SEM 4\\SwiftSynk_PythonProject\\reference_files\\syncin-411107-949b882c5e98.json"
+email = "syedsaif78676@gmail.com"
+file_path = "C:\\Projects\\SEM 4\\SwiftSynk_PythonProject\\reference_files\\test.txt"
+base_drive_folder_id = "1rEgaGA5mofkeCf572WVRkOWIj_4sHaWm"
+credentials_file_path = "C:\\Projects\\SEM 4\\SwiftSynk_PythonProject\\reference_files\\syncin-411107-949b882c5e98.json"
 
 def modifiedUploader():
     while True:
@@ -252,30 +252,42 @@ def IsInternet():
     
 def getlogdata():
     data = dbm.logtable()
+    print('db data: ',data)
+
     modified_data = []
     for row in data:
-        modified_row = list(row)
-        if row[0] == 'File':
-            filepath = dbm.logfiles(row[2])
-            modified_row = list(row)
-            if filepath is not None:
-                modified_row.append(filepath)
-
-        elif row[0] == 'Folder':
-            folderpath = dbm.logfolders(row[2])
-            modified_row = list(row)
-            if folderpath is not None:
-                modified_row.append(folderpath)
-
-        elif row[0] == 'User':
-            username = dbm.logusers(row[2])
-            modified_row = list(row)
-            if username is not None:
-                modified_row.append(username)
-                
+        modified_row = []
+        timestamp = row[3]
+        modified_row.append(timestamp)
+        print(modified_row)
+        act = row[1]
+        path_email = row[2]
+        ty = row[0]
+        print(ty)
+        if ty == 'User':
+            if act == 'insert':
+                desc = 'User account: '+path_email+' was added.'
+                modified_row.append(desc)
+            elif act == 'update':
+                desc = 'User account: '+path_email+' was updated.'
+                modified_row.append(desc)
+            elif act == 'delete':
+                desc = 'User account: '+path_email+' was removed.'
+                modified_row.append(desc)
+        elif ty == 'File' or 'Folder':
+            if act == 'insert':
+                desc = ty+': '+os.path.basename(path_email)+' was synced. '+ty+' path: '+path_email
+                modified_row.append(desc)
+                print("modified_row: ",modified_row)
+            elif act == 'update':
+                desc = ty+': '+os.path.basename(path_email)+'   was updated. '+ty+' path: '+path_email
+                modified_row.append(desc)
+            elif act == 'delete':
+                desc = ty+': '+os.path.basename(path_email)+' was unsynced. '+ty+' path: '+path_email
+                modified_row.append(desc)
         modified_data.append(tuple(modified_row))
+    print('logdata: ',modified_data)
     return modified_data
-
 
 
 

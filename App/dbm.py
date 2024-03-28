@@ -304,44 +304,44 @@ def modifyFileStatus(mfilepath,mStatus):
     con.close()
     return 1
 
-def logfiles(logid):
-    con = connect()
-    cur = con.cursor()
-    cur.execute("select filepath from file where file_id = '{logid}';".format(logid=logid))
-    file_data = cur.fetchall()
-    print("Fetched file path:", file_data)
-    con.close()
-    if file_data:
-        file_path = file_data[0][0]
-        return file_path
-    else:
-        return None
+# def logfiles(logid):
+#     con = connect()
+#     cur = con.cursor()
+#     cur.execute("select filepath from file where file_id = '{logid}';".format(logid=logid))
+#     file_data = cur.fetchall()
+#     print("Fetched file path:", file_data)
+#     con.close()
+#     if file_data:
+#         file_path = file_data[0][0]
+#         return file_path
+#     else:
+#         return None
 
-def logfolders(logid):
-    con = connect()
-    cur = con.cursor()
-    cur.execute("select folder_path from folder where folder_id = '{logid}';".format(logid=logid))
-    folder_data = cur.fetchall()
-    con.close()
+# def logfolders(logid):
+#     con = connect()
+#     cur = con.cursor()
+#     cur.execute("select folder_path from folder where folder_id = '{logid}';".format(logid=logid))
+#     folder_data = cur.fetchall()
+#     con.close()
 
-    if folder_data:
-        folder_path = folder_data[0][0]
-        return folder_path
-    else:
-        return None
+#     if folder_data:
+#         folder_path = folder_data[0][0]
+#         return folder_path
+#     else:
+#         return None
 
 
-def logusers(logemail):
-    con = connect()
-    cur = con.cursor()
-    cur.execute("select username from user where email = '{logemail}';".format(logemail=logemail))
-    uname = cur.fetchall()
-    con.close()
-    if uname:
-        username = uname[0][0]
-        return username
-    else:
-        return None
+# def logusers(logemail):
+#     con = connect()
+#     cur = con.cursor()
+#     cur.execute("select username from user where email = '{logemail}';".format(logemail=logemail))
+#     uname = cur.fetchall()
+#     con.close()
+#     if uname:
+#         username = uname[0][0]
+#         return username
+#     else:
+#         return None
 
 def logtable():
     con = connect()

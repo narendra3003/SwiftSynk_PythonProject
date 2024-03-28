@@ -280,46 +280,19 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.logtable.insertRow(row_position)
             print("Row Position:", row_position)
 
-            log_type = dataset[0]
-            print("Log Type:", log_type)
-            log_type_item = QtWidgets.QTableWidgetItem(log_type)
-            log_type_item.setFont(QtGui.QFont("Bahnschrift Condensed", 10))
-            log_type_item.setTextAlignment(QtCore.Qt.AlignCenter)
-            self.logtable.setItem(row_position, 0, log_type_item)
-
-            if len(dataset) > 4:
-                if log_type != 'User':
-                    file_name = os.path.basename(dataset[4])
-                    file_name_item = QtWidgets.QTableWidgetItem(file_name)
-                    file_name_item.setFont(QtGui.QFont("Bahnschrift Condensed", 10))
-                    file_name_item.setTextAlignment(QtCore.Qt.AlignCenter)
-                    self.logtable.setItem(row_position, 1, file_name_item)
-                else:
-                    user_name = dataset[4]
-                    user_name_item = QtWidgets.QTableWidgetItem(user_name)
-                    user_name_item.setFont(QtGui.QFont("Bahnschrift Condensed", 10))
-                    user_name_item.setTextAlignment(QtCore.Qt.AlignCenter)
-                    self.logtable.setItem(row_position, 1, user_name_item)
-
-            action = dataset[1].capitalize()
-            action_item = QtWidgets.QTableWidgetItem(action)
-            action_item.setFont(QtGui.QFont("Bahnschrift Condensed", 10))
-            action_item.setTextAlignment(QtCore.Qt.AlignCenter)
-            self.logtable.setItem(row_position, 2, action_item)
-
-            time = dataset[3]
-            time_item = QtWidgets.QTableWidgetItem(str(time))  # Assuming time is a string or convertible to string
+            time = dataset[0]
+            time_item = QtWidgets.QTableWidgetItem(str(time))
             time_item.setFont(QtGui.QFont("Bahnschrift Condensed", 10))
             time_item.setTextAlignment(QtCore.Qt.AlignCenter)
-            self.logtable.setItem(row_position, 3, time_item)
+            self.logtable.setItem(row_position, 0, time_item)
 
-            if len(dataset) > 4 and log_type != 'User':
-                path = dataset[4]
-                path_item = QtWidgets.QTableWidgetItem(path)
-                path_item.setFont(QtGui.QFont("Bahnschrift Condensed", 10))
-                path_item.setTextAlignment(QtCore.Qt.AlignCenter)
-                self.logtable.setItem(row_position, 4, path_item)
-            print("Table populated successfully")
+            log_desc = dataset[1]
+            print("Log Type:", log_desc)
+            log_desc_item = QtWidgets.QTableWidgetItem(log_desc)
+            log_desc_item.setFont(QtGui.QFont("Bahnschrift Condensed", 10))
+            log_desc_item.setTextAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
+            self.logtable.setItem(row_position, 1, log_desc_item)
+
             
 
     def open_item_explorer(self, row, column):
