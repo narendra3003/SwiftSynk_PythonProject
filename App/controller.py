@@ -1,5 +1,6 @@
 import threading
 import inspect
+import time
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import QGraphicsDropShadowEffect
@@ -33,6 +34,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.backbutton.clicked.connect(self.go_to_page)
         self.loginbutton.clicked.connect(self.login)
         self.gdrivebutton.clicked.connect(self.gdrive)
+        self.signupbutton.clicked.connect(self.signup)
         self.loginswitch.clicked.connect(self.login_switch)
         self.signupswitch.clicked.connect(self.signup_switch)
         for button in [self.lmhome,self.lmhome2, self.lmhome3]:
@@ -57,43 +59,46 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.stackedWidget.setCurrentWidget(self.page_4)
 
     def refresh_table(self):
-        data=connector.dbm.providePaths(connector.base_drive_folder_id, connector.email)
+        data=connector.dbm.providePaths(connector.mainUser.base_drive_folder_id, connector.mainUser.username)
         for i in reversed(range(self.table.rowCount())):
             self.table.removeRow(i)
         self.show_folders_on_table(data[0])
         self.show_files_on_table(data[1])
 
     def login(self):
-        email = self.emailbox.text()
+        username = self.emailbox.text()
         password = self.passbox.text()
-        print(email, password)
+        print(username, password)
 
-        if(connector.dbm.checkLogin(email, password)==0):
+        if(connector.dbm.checkLogin(username, password)==0):
             self.stackedWidget.setCurrentIndex(0)
-        elif(connector.dbm.checkLogin(email, password)==1):
-            QtWidgets.QMessageBox.warning(self, "Login Failed", "Incorrect Email")
-        elif(connector.dbm.checkLogin(email, password)==2):
+            data=connector.dbm.getUserData(username)
+            print(data)
+            connector.mainUser.modifyUser(data[0][1], data[0][2], data[0][3])
+            print("new",connector.mainUser.username, connector.mainUser.base_drive_folder_id, connector.mainUser.secondary_folder_id)
+        elif(connector.dbm.checkLogin(username, password)==1):
+            QtWidgets.QMessageBox.warning(self, "Login Failed", "Incorrect username")
+        elif(connector.dbm.checkLogin(username, password)==2):
             QtWidgets.QMessageBox.warning(self, "Login Failed", "Incorrect Password")
         else:
             QtWidgets.QMessageBox.warning(self, "Login Failed", "Error")
 
     def signup(self):
         username = self.unamebox_su.text()
-        email = self.emailbox.text()
         password = self.passbox_su.text()
-        print(username,email,password)
+        creds = connector.authenticate()
+        service = connector.build('drive', 'v3', credentials=creds)
+        base_drive_folder_id= connector.create_folder(service, username+"_SwiftSynK")
+        connector.grant_access(service, base_drive_folder_id)
+        secondary_folder_id=connector.create_folder_in_parent_on_drive("Second_space", base_drive_folder_id)
+        signedUp=connector.dbm.insertUser(username,password, base_drive_folder_id, secondary_folder_id)
 
-        if(connector.dbm.insertSignup(email,username,password)==1):
+        if(signedUp==1):
             self.stackedWidget.setCurrentIndex(3)
-        elif(connector.dbm.insertSignup(email,username,password==0)):
-            QtWidgets.QMessageBox.warning(self, "Password must contain 8 characters")
+        elif(signedUp==0):
+            QtWidgets.QMessageBox.warning(self, "Password must contain 8 characters", "Error")
         else:
             QtWidgets.QMessageBox.warning(self,"Signup failed","Error")
-
-
-    
-        
-
 
     def go_to_page(self):
         if(self.counter == 1):

@@ -3,15 +3,15 @@ import pymysql as p
 def connect():
     return p.connect(host="localhost", user="root", password='oracle',db="SwiftSynK", port=3306)
 
-def checkLogin(email, password):
+def checkLogin(username, password):
     con = connect()
     cur = con.cursor()
-    print(email)
+    print(username)
     try:
-        cur.execute("SELECT password FROM user where username='{email}';".format(email=email))
+        cur.execute("SELECT password FROM user where username='{username}';".format(username=username))
         data=cur.fetchall()
         con.close()
-        print("SELECT password FROM user where username='{email}';".format(email=email))
+        print("SELECT password FROM user where username='{username}';".format(username=username))
         print(data)
         if(len(data)==0):
             return 1
@@ -24,23 +24,23 @@ def checkLogin(email, password):
         return 3
     return 4
 
-def insertSignup(username,email,password,folder_id):
-    con = connect()
-    cur = con.cursor()
-    print(email)
-    try:
-        data=cur.fetchall()
-        cur.execute("Insert into user (Email,password,Username,base_folder_id) values ('{email}','{password}','{username}','{folder_id}');".format(email=email, password=password, username=username, folder_id=folder_id))
-        print(data)
-        if(len(password)>8):
-            return 1
-        else:
-            return 0
-    
-    except:
-        con.close()
-        return 2
-    return 3
+# def insertSignup(username,password,base_folder_id, secondary_folder_id):
+#     con = connect()
+#     cur = con.cursor()
+#     print(username)
+
+#     if(len(password)>8):
+#         try:
+#             cur.execute("Insert into user (password,username,base_folder_id, secondary_folder_id) values ('{password}','{username}','{base_folder_id}', '{secondary_folder_id}');".format(password=password, username=username, base_folder_id=base_folder_id, secondary_folder_id=secondary_folder_id))
+#             con.commit()
+#             data=cur.fetchall()
+#             print(data)
+#             return 1
+        
+#         except:
+#             con.close()
+#             return 2
+#     return 3
 
 
 def is_folder_already_added(path):
@@ -75,19 +75,19 @@ def file_already_added(path):
         return False
     return False
 
-def providePaths(base_folder_id, email):
+def providePaths(base_folder_id, username):
     con=connect()
     cur=con.cursor()
     data=[[], []]
     try:
-        cur.execute("select folder_path from folder where email='{email}'and folder_path not in ('Base', 'second');".format(email=email))
+        cur.execute("select folder_path from folder where username='{username}'and folder_path not in ('Base', 'second');".format(username=username))
         data1=cur.fetchall()
         print(data1)
         con.close()
     except Exception as e:
         print(e)
         con.close()
-        print("select folder_path from folder where email='{email}'and folder_path not in ('Base');".format(email=email))
+        print("select folder_path from folder where username='{username}'and folder_path not in ('Base');".format(username=username))
         print("Error to get folders")
         return data
     
@@ -161,10 +161,10 @@ def getFolders():
     print(data)
     return data
 
-def getFiles():
+def getFiles(username):
     con = connect()
     cur = con.cursor()
-    cur.execute("SELECT * FROM file;")
+    cur.execute("SELECT * FROM file where folder_id in (select folder_id from folder where username='{username}');".format(username=username))
     data=cur.fetchall()
     con.commit()
     con.close()
@@ -181,18 +181,37 @@ def getUsers():
     print(data)
     return data
 
-def insertUser(email,password,username,folder_id, state_folder_id):
+def getUserData(username):
     con = connect()
     cur = con.cursor()
-    cur.execute("Insert into user (Email,password,Username,base_folder_id) values ('{email}','{password}','{username}','{folder_id}', '{state_folder_id}');".format(email=email, password=password, username=username, folder_id=folder_id, state_folder_id=state_folder_id))
+    cur.execute("SELECT * FROM user where username='{username}';".format(username=username))
+    data=cur.fetchall()
     con.commit()
     con.close()
-    return 1
+    print(data)
+    return data
 
-def insertFolder(folder_id,folder_path,email):
+def insertUser(username, password,folder_id, secondary_folder_id):
     con = connect()
     cur = con.cursor()
-    cur.execute("Insert into folder (folder_id,folder_path,Email) values ('{folder_id}','{folder_path}','{email}');".format(folder_id=folder_id, folder_path=folder_path, email=email))
+    print(len(password))
+    if(len(password)<=8):
+        con.close()
+        return 0
+    try:
+        cur.execute("Insert into user (password,username,base_folder_id,secondary_folder_id) values ('{password}','{username}','{folder_id}', '{secondary_folder_id}');".format(password=password, username=username, folder_id=folder_id, secondary_folder_id=secondary_folder_id))
+        con.commit()
+        con.close()
+        return 1
+    except Exception as e:
+        print(e)
+        con.close()
+        return 2
+
+def insertFolder(folder_id,folder_path,username):
+    con = connect()
+    cur = con.cursor()
+    cur.execute("Insert into folder (folder_id,folder_path,username) values ('{folder_id}','{folder_path}','{username}');".format(folder_id=folder_id, folder_path=folder_path, username=username))
     con.commit()
     con.close()
     return 1
@@ -213,11 +232,11 @@ def insertVersion(version_file_id,file_id):
     con.close()
     return 1
 
-def deleteUser(dEmail):
+def deleteUser(dusername):
     con = connect()
     cur = con.cursor()
     try:
-        cur.execute("Delete from User where Email = '{dEmail}';".format(dEmail=dEmail))
+        cur.execute("Delete from User where username = '{dusername}';".format(dusername=dusername))
         con.commit()
     except:
         con.close()
@@ -272,10 +291,10 @@ def deleteVersion(dFile_id):
         con.close()
         return 0
 
-def modifyUser(mpassword,mUsername,memail):
+def modifyUser(mpassword,mUsername):
     con = connect()
     cur = con.cursor()
-    cur.execute("Update User set password ='{mpassword}', Username = '{mUsername}' where email = '{memail}';".format(mpassword=mpassword, mUsername=mUsername, memail=memail))
+    cur.execute("Update User set password ='{mpassword}' where username = '{musername}';".format(mpassword=mpassword, mUsername=mUsername, musername=mUsername))
     con.commit()
     con.close()
     return 1
@@ -304,44 +323,44 @@ def modifyFileStatus(mfilepath,mStatus):
     con.close()
     return 1
 
-# def logfiles(logid):
-#     con = connect()
-#     cur = con.cursor()
-#     cur.execute("select filepath from file where file_id = '{logid}';".format(logid=logid))
-#     file_data = cur.fetchall()
-#     print("Fetched file path:", file_data)
-#     con.close()
-#     if file_data:
-#         file_path = file_data[0][0]
-#         return file_path
-#     else:
-#         return None
+def logfiles(logid):
+    con = connect()
+    cur = con.cursor()
+    cur.execute("select filepath from file where file_id = '{logid}';".format(logid=logid))
+    file_data = cur.fetchall()
+    print("Fetched file path:", file_data)
+    con.close()
+    if file_data:
+        file_path = file_data[0][0]
+        return file_path
+    else:
+        return None
 
-# def logfolders(logid):
-#     con = connect()
-#     cur = con.cursor()
-#     cur.execute("select folder_path from folder where folder_id = '{logid}';".format(logid=logid))
-#     folder_data = cur.fetchall()
-#     con.close()
+def logfolders(logid):
+    con = connect()
+    cur = con.cursor()
+    cur.execute("select folder_path from folder where folder_id = '{logid}';".format(logid=logid))
+    folder_data = cur.fetchall()
+    con.close()
 
-#     if folder_data:
-#         folder_path = folder_data[0][0]
-#         return folder_path
-#     else:
-#         return None
+    if folder_data:
+        folder_path = folder_data[0][0]
+        return folder_path
+    else:
+        return None
 
 
-# def logusers(logemail):
-#     con = connect()
-#     cur = con.cursor()
-#     cur.execute("select username from user where email = '{logemail}';".format(logemail=logemail))
-#     uname = cur.fetchall()
-#     con.close()
-#     if uname:
-#         username = uname[0][0]
-#         return username
-#     else:
-#         return None
+def logusers(logusername):
+    con = connect()
+    cur = con.cursor()
+    cur.execute("select username from user where username = '{logusername}';".format(logusername=logusername))
+    uname = cur.fetchall()
+    con.close()
+    if uname:
+        username = uname[0][0]
+        return username
+    else:
+        return None
 
 def logtable():
     con = connect()
