@@ -2,9 +2,9 @@ import inspect
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import QGraphicsDropShadowEffect
-import ui, dbm, connector
+import ui, dbm, App.connector.connector as connector
 import math, os
-import connector
+import App.connector.connector as connector
 
 imgpath = ui.imgpath
 

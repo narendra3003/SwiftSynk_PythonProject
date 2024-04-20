@@ -24,24 +24,19 @@ def checkLogin(username, password):
         return 3
     return 4
 
-# def insertSignup(username,password,base_folder_id, secondary_folder_id):
-#     con = connect()
-#     cur = con.cursor()
-#     print(username)
-
-#     if(len(password)>8):
-#         try:
-#             cur.execute("Insert into user (password,username,base_folder_id, secondary_folder_id) values ('{password}','{username}','{base_folder_id}', '{secondary_folder_id}');".format(password=password, username=username, base_folder_id=base_folder_id, secondary_folder_id=secondary_folder_id))
-#             con.commit()
-#             data=cur.fetchall()
-#             print(data)
-#             return 1
-        
-#         except:
-#             con.close()
-#             return 2
-#     return 3
-
+def getSize(file_path):
+    con = connect()
+    cur = con.cursor()
+    try:
+        cur.execute("SELECT status FROM file where filepath='{file_path}';".format(file_path=file_path))
+        data=cur.fetchall()
+        con.close()
+        print(data)
+        return data[0][0]
+    except:
+        con.close()
+        return False
+    return False
 
 def is_folder_already_added(path):
     con = connect()

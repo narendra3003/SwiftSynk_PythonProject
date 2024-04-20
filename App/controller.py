@@ -4,10 +4,18 @@ import time
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5 import QtCore
 from PyQt5.QtWidgets import QGraphicsDropShadowEffect
+import connector.authentication
+import connector.fileoprations
+import connector.folderoprations
+import connector.helpers
+import connector.reuploader
+import connector.state_features
+import connector.log
+import connector.basic
 from ui import Ui_MainWindow
 import ui
 import math, os
-import connector
+import dbm
 
 imgpath = ui.imgpath
 
@@ -59,7 +67,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.stackedWidget.setCurrentWidget(self.page_4)
 
     def refresh_table(self):
-        data=connector.dbm.providePaths(connector.mainUser.base_drive_folder_id, connector.mainUser.username)
+        data=dbm.providePaths(connector.basic.mainUser.base_drive_folder_id, connector.basic.mainUser.username)
         for i in reversed(range(self.table.rowCount())):
             self.table.removeRow(i)
         self.show_folders_on_table(data[0])
@@ -70,15 +78,15 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         password = self.passbox.text()
         print(username, password)
 
-        if(connector.dbm.checkLogin(username, password)==0):
+        if(dbm.checkLogin(username, password)==0):
             self.stackedWidget.setCurrentIndex(0)
-            data=connector.dbm.getUserData(username)
+            data=dbm.getUserData(username)
             print(data)
-            connector.mainUser.modifyUser(data[0][1], data[0][2], data[0][3])
-            print("new",connector.mainUser.username, connector.mainUser.base_drive_folder_id, connector.mainUser.secondary_folder_id)
-        elif(connector.dbm.checkLogin(username, password)==1):
+            connector.basic.mainUser.modifyUser(data[0][1], data[0][2], data[0][3])
+            print("new",connector.basic.mainUser.username, connector.basic.mainUser.base_drive_folder_id, connector.basic.mainUser.secondary_folder_id)
+        elif(dbm.checkLogin(username, password)==1):
             QtWidgets.QMessageBox.warning(self, "Login Failed", "Incorrect username")
-        elif(connector.dbm.checkLogin(username, password)==2):
+        elif(dbm.checkLogin(username, password)==2):
             QtWidgets.QMessageBox.warning(self, "Login Failed", "Incorrect Password")
         else:
             QtWidgets.QMessageBox.warning(self, "Login Failed", "Error")
@@ -86,12 +94,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def signup(self):
         username = self.unamebox_su.text()
         password = self.passbox_su.text()
-        creds = connector.authenticate()
-        service = connector.build('drive', 'v3', credentials=creds)
-        base_drive_folder_id= connector.create_folder(service, username+"_SwiftSynK")
-        connector.grant_access(service, base_drive_folder_id)
-        secondary_folder_id=connector.create_folder_in_parent_on_drive("Second_space", base_drive_folder_id)
-        signedUp=connector.dbm.insertUser(username,password, base_drive_folder_id, secondary_folder_id)
+        creds = connector.authentication.authenticate()
+        service = connector.helpers.build('drive', 'v3', credentials=creds)
+        base_drive_folder_id= connector.authentication.create_folder(service, username+"_SwiftSynK")
+        connector.authentication.grant_access(service, base_drive_folder_id)
+        secondary_folder_id=connector.folderoprations.create_folder_in_parent_on_drive("Second_space", base_drive_folder_id)
+        signedUp=dbm.insertUser(username,password, base_drive_folder_id, secondary_folder_id)
 
         if(signedUp==1):
             self.stackedWidget.setCurrentIndex(3)
@@ -165,10 +173,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             selected_folders = folder_dialog.selectedFiles()
             for folder_path in selected_folders:
                 print("folder", folder_path)
-                if(connector.dbm.is_folder_already_added(folder_path)):
+                if(dbm.is_folder_already_added(folder_path)):
                     QtWidgets.QMessageBox.warning(self, "Folder Already Added", "The folder '{}' is already being synced.".format(folder_path))
                 else:
-                    connector.upload_folder_to_drive(folder_path)
+                    connector.folderoprations.upload_folder_to_drive(folder_path)
                     self.refresh_table()
 
     def show_folders_on_table(self, selected_folders):
@@ -228,10 +236,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             selected_files = file_dialog.selectedFiles()
             for file_path in selected_files:
                 print(file_path)
-                if(connector.dbm.file_already_added(file_path)):
+                if(dbm.file_already_added(file_path)):
                     QtWidgets.QMessageBox.warning(self, "File Already Exists", "The file '{}' is already being synced.".format(file_path))
                 else:
-                    connector.upload_file_to_drive(file_path)
+                    connector.fileoprations.upload_file_to_drive(file_path)
                     self.refresh_table()
 
     def show_files_on_table(self, selected_files):
@@ -251,7 +259,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             item_name.setTextAlignment(QtCore.Qt.AlignCenter)
             self.table.setItem(row_position, 1, item_name)
 
-            item_status = QtWidgets.QTableWidgetItem("Synced")
+            item_status = QtWidgets.QTableWidgetItem(dbm.getSize(file_path))
             item_status.setFont(QtGui.QFont("Bahnschrift Condensed", 10, QtGui.QFont.Bold))
             item_status.setForeground(QtGui.QColor('lightgreen'))
             item_status.setTextAlignment(QtCore.Qt.AlignCenter)
@@ -278,7 +286,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.table.setItem(row_position, 6, item_del)
 
     def populate_log_table(self):
-        data = connector.getlogdata()
+        data = connector.log.getlogdata()
         print("Data:", data)
         for dataset in data:
             row_position = self.logtable.rowCount()
@@ -339,8 +347,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
 
         elif column == 5:
-            pass
-            #for pause sync
+            print("Tooglfdsifu")
+            connector.state_features.toggeleUpload(self.table.item(row, 3).text(), self.table.item(row, 2).text())
 
         elif column == 6:
             msg_box = QtWidgets.QMessageBox()
@@ -353,9 +361,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             if result == QtWidgets.QMessageBox.Yes:
                 path = self.table.item(row, 3).text() if self.table.item(row, column) == self.table.item(row, column) else self.table2.item(row, 3).text()
                 if os.path.isdir(path):
-                    connector.dbm.deleteFolder(connector.delete_folder_from_drive(path))
+                    dbm.deleteFolder(connector.folderoprations.delete_folder_from_drive(path))
                 else:
-                    connector.dbm.deleteFile(connector.delete_file_from_drive(path))
+                    dbm.deleteFile(connector.fileoprations.delete_file_from_drive(path))
                 self.table.removeRow(row)
             self.refresh_table()
 
@@ -365,7 +373,7 @@ if __name__ == "__main__":
     window = MainWindow()
     window.setWindowTitle("SwiftSynk")
     window.refresh_table()
-    thread = threading.Thread(target=connector.modifiedUploader)
+    thread = threading.Thread(target=connector.reuploader.modifiedUploader)
     thread.start()
     window.show()
     sys.exit(app.exec_())
