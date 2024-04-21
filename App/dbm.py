@@ -146,6 +146,16 @@ def give_last_upload_time(file_path):
         return ""
     return data[0][0]
 
+def folder_isUploaded(folderPath):
+    con = connect()
+    cur = con.cursor()
+    cur.execute("SELECT * FROM folder where folder_path='{folderPath}';".format(folderPath=folderPath))
+    data=cur.fetchall()
+    con.commit()
+    con.close()
+    print(data)
+    return data=={}
+
 def getFolders():
     con = connect()
     cur = con.cursor()
@@ -365,3 +375,11 @@ def logtable():
     con.commit()
     con.close()
     return data
+
+def deletelog():
+    con = connect()
+    cur = con.cursor()
+    cur.execute("truncate logtable;")
+    con.commit()
+    con.close()
+    return 1

@@ -2,7 +2,7 @@ from google.oauth2.credentials import Credentials
 from googleapiclient.discovery import build
 from google.oauth2 import service_account
 
-def list_files_and_folders(service, folder_id, indent=0):
+def delete_folder_items(service, folder_id, indent=0):
     results = service.files().list(
         q=f"'{folder_id}' in parents",
         fields="files(id, name, mimeType)",
@@ -12,10 +12,10 @@ def list_files_and_folders(service, folder_id, indent=0):
     for item in items:
         print('  ' * indent + f"{item['name']} (ID: {item['id']}, Type: {item['mimeType']})")
         if item['mimeType'] == 'application/vnd.google-apps.folder':
-            list_files_and_folders(service, item['id'], indent + 1)
+            delete_folder_items(service, item['id'], indent + 1)
 
 # Your Google Drive folder ID
-folder_id = '1gvh-akOM4JlkCljrtpxAGfX4dXdbfJ2n'
+folder_id = '1Rzq8giL1JMHK2COA64Qi7mCMdz4sy8Po'
 
 credentials_file_path = "C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\SwiftSynk_PythonProject\\reference_files\\syncin-411107-949b882c5e98.json"
 
@@ -30,4 +30,4 @@ creds = service_account.Credentials.from_service_account_file(
 service = build('drive', 'v3', credentials=creds)
 
 # Call the function to list files and folders recursively
-list_files_and_folders(service, folder_id)
+delete_folder_items(service, folder_id)
