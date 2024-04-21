@@ -1,11 +1,10 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QGraphicsDropShadowEffect, QTableWidget
 from PyQt5.QtCore import Qt
+# from Custom_Widgets.Widgets import QCustomSlideMenu
 
 #copy your 'Images' folder path & paste it here with double backslash
-# imgpath = "C:\\Projects\\SEM 4\\SwiftSynk_PythonProject\\App\\Images" # Saif
-imgpath = "C:\\Users\\tupti\\OneDrive\\Desktop\\new Lang\\Sem4\\SwiftSynk_PythonProject\\App\\Images" # Narendra
-
+imgpath = "C:\\Projects\\SEM 4\\SwiftSynk_PythonProject\\App\\Images"
 
 
 class Ui_MainWindow(object):
@@ -101,13 +100,16 @@ class Ui_MainWindow(object):
 "    border: none;\n"
 "    border-radius: 5\n"
 "}\n"
-"#backbutton{\n"
+"#backbutton, #closebut, #closebut2, #closebut3, #refresh_but, #dellog_but{\n"
 "    background-color: rgb(205, 219, 219);\n"
 "    border-radius: 5;\n"
 "    border: none;\n"
 "    color: rgb(56, 68, 101)\n"
 "}\n"
-"\n"
+"#user_wid, #user_wid2, #user_wid3{\n"
+"    background-color: rgb(205, 219, 219);\n"
+"    border-radius: 5\n"
+"}\n"
 "")
         shadow = QGraphicsDropShadowEffect()
         shadow.setBlurRadius(25)
@@ -188,7 +190,7 @@ class Ui_MainWindow(object):
         item = QtWidgets.QTableWidgetItem()
         self.table.setHorizontalHeaderItem(6, item)
         self.syncButton = QtWidgets.QPushButton(self.page)
-        self.syncButton.setGeometry(QtCore.QRect(864, 602, 82, 82))
+        self.syncButton.setGeometry(QtCore.QRect(864, 620, 82, 82))
         font = QtGui.QFont()
         font.setFamily("Bahnschrift Condensed")
         font.setPointSize(12)
@@ -198,7 +200,7 @@ class Ui_MainWindow(object):
         self.syncButton.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.syncButton.setObjectName("syncButton")
         self.syncButton2 = QtWidgets.QPushButton(self.page)
-        self.syncButton2.setGeometry(QtCore.QRect(947, 602, 82, 82))
+        self.syncButton2.setGeometry(QtCore.QRect(947, 620, 82, 82))
         font = QtGui.QFont()
         font.setFamily("Bahnschrift Condensed")
         font.setPointSize(12)
@@ -268,12 +270,6 @@ class Ui_MainWindow(object):
         self.label_12.setFont(font)
         self.label_12.setStyleSheet("color: rgb(56, 68, 101)")
         self.label_12.setObjectName("label_12")
-        self.table.raise_()
-        self.syncButton.raise_()
-        self.leftmenu.raise_()
-        self.syncButton2.raise_()
-        self.searchtab1.raise_()
-        self.label_12.raise_()
         self.stackedWidget.addWidget(self.page)
         self.page_2 = QtWidgets.QWidget()
         self.page_2.setObjectName("page_2")
@@ -678,6 +674,7 @@ class Ui_MainWindow(object):
         self.logtable.setColumnCount(2)
         self.logtable.setColumnWidth(0, 200)
         self.logtable.setColumnWidth(1, 700)
+        self.logtable.setEditTriggers(QtWidgets.QAbstractItemView.NoEditTriggers)
         self.logtable.setRowCount(0)
         item = QtWidgets.QTableWidgetItem()
         font = QtGui.QFont()
@@ -744,6 +741,24 @@ class Ui_MainWindow(object):
         self.searchtab2.setInputMask("")
         self.searchtab2.setText("")
         self.searchtab2.setObjectName("searchtab2")
+        self.refresh_but = QtWidgets.QPushButton(self.page_6)
+        self.refresh_but.setGeometry(QtCore.QRect(700, 40, 70, 40))
+        font = QtGui.QFont()
+        font.setFamily("Bahnschrift")
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setWeight(75)
+        self.refresh_but.setFont(font)
+        self.refresh_but.setObjectName("refresh_but")
+        self.dellog_but = QtWidgets.QPushButton(self.page_6)
+        self.dellog_but.setGeometry(QtCore.QRect(900, 640, 122, 64))
+        font = QtGui.QFont()
+        font.setFamily("Bahnschrift")
+        font.setPointSize(11)
+        font.setBold(False)
+        font.setWeight(50)
+        self.dellog_but.setFont(font)
+        self.dellog_but.setObjectName("dellog_but")
         self.stackedWidget.addWidget(self.page_6)
         MainWindow.setCentralWidget(self.centralwidget)
 
@@ -804,6 +819,9 @@ class Ui_MainWindow(object):
         item = self.logtable.horizontalHeaderItem(1)
         item.setText(_translate("MainWindow", "Description"))
         self.label_14.setText(_translate("MainWindow", "Log Records"))
+        self.refresh_but.setText(_translate("MainWindow", "Refresh"))
+        self.dellog_but.setText(_translate("MainWindow", "Delete\n"
+"Log Records"))
 
 if __name__ == "__main__":
     import sys

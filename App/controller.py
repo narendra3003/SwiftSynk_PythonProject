@@ -1,9 +1,10 @@
 import threading
 import inspect
-import time
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5 import QtCore
-from PyQt5.QtWidgets import QGraphicsDropShadowEffect
+from ui import Ui_MainWindow
+import ui
+import math, os
 import connector.authentication
 import connector.fileoprations
 import connector.folderoprations
@@ -49,8 +50,22 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             button.clicked.connect(self.home)
         for button in [self.lmlog,self.lmlog2, self.lmlog3]:
             button.clicked.connect(self.log)
+        self.refresh_but.clicked.connect(self.populate_log_table)
+        self.dellog_but.clicked.connect(self.deleteLogRecords)
 
         self.stackedWidget.setCurrentWidget(self.page_5)
+
+    def deleteLogRecords(self):
+        msg_box = QtWidgets.QMessageBox()
+        msg_box.setIcon(QtWidgets.QMessageBox.Warning)
+        msg_box.setWindowTitle("Delete Warning")
+        msg_box.setText("Are you sure you want to delete all the log files?")
+        msg_box.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
+        msg_box.setDefaultButton(QtWidgets.QMessageBox.No)
+        result = msg_box.exec_()
+        if result == QtWidgets.QMessageBox.Yes:
+            connector.dbm.deletelog()
+
 
     def home(self):
         self.stackedWidget.setCurrentWidget(self.page)
@@ -108,6 +123,49 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         else:
             QtWidgets.QMessageBox.warning(self,"Signup failed","Error")
 
+    
+    def syncingfiles(self, file_path):
+        print("called and file_path = ", file_path)
+        if os.path.isdir(file_path):
+            file_info = QtCore.QDir(file_path)
+        else:
+            file_info = QtCore.QFileInfo(file_path)
+        row_position = self.table.rowCount()
+        print(row_position)
+        self.table.insertRow(row_position)
+
+        icon = self.icon_provider.icon(file_info)
+        icon_label = QtWidgets.QLabel()
+        icon_label.setPixmap(icon.pixmap(20, 20))
+        icon_label.setAlignment(QtCore.Qt.AlignCenter)
+        self.table.setCellWidget(row_position, 0, icon_label)
+
+        item_name = QtWidgets.QTableWidgetItem(file_info.fileName())
+        item_name.setFont(QtGui.QFont("Bahnschrift Condensed", 10, QtGui.QFont.Bold))
+        item_name.setTextAlignment(QtCore.Qt.AlignCenter)
+        self.table.setItem(row_position, 1, item_name)
+
+        item_status = QtWidgets.QTableWidgetItem("Syncing....")
+        item_status.setFont(QtGui.QFont("Bahnschrift Condensed", 10, QtGui.QFont.Bold))
+        item_status.setForeground(QtGui.QColor('grey'))
+        item_status.setTextAlignment(QtCore.Qt.AlignCenter)
+        self.table.setItem(row_position, 2, item_status)
+
+        item_path = QtWidgets.QTableWidgetItem(file_info.absoluteFilePath())
+        item_path.setFont(QtGui.QFont("Bahnschrift Condensed", 10, QtGui.QFont.Bold))
+        item_path.setTextAlignment(QtCore.Qt.AlignCenter)
+        self.table.setItem(row_position, 3, item_path)
+
+        item_size = QtWidgets.QTableWidgetItem(convert_size(file_info.size()))
+        item_size.setFont(QtGui.QFont("Bahnschrift Condensed", 10, QtGui.QFont.Bold))
+        item_size.setTextAlignment(QtCore.Qt.AlignCenter)
+        if os.path.isdir(file_path):
+            item_size.setText("▶")
+        else:
+            item_size.setText(convert_size(file_info.size()))
+        self.table.setItem(row_position, 4, item_size)
+
+
     def go_to_page(self):
         if(self.counter == 1):
             self.counter -= 1
@@ -157,7 +215,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.table2.setItem(row_position, 3, item_path)
 
             item_size = QtWidgets.QTableWidgetItem(convert_size(file_info.size()))
-            item_size.setFont(QtGui.QFont("Bahnschrift Condensed", 15, QtGui.QFont.Bold))
+            item_size.setFont(QtGui.QFont("Bahnschrift Condensed", 10, QtGui.QFont.Bold))
             item_size.setTextAlignment(QtCore.Qt.AlignCenter)
             if os.path.isdir(file_path):
                 item_size.setText("▶")
@@ -176,6 +234,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 if(dbm.is_folder_already_added(folder_path)):
                     QtWidgets.QMessageBox.warning(self, "Folder Already Added", "The folder '{}' is already being synced.".format(folder_path))
                 else:
+                    self.syncingfiles(folder_path)
                     connector.folderoprations.upload_folder_to_drive(folder_path)
                     self.refresh_table()
 
@@ -239,6 +298,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 if(dbm.file_already_added(file_path)):
                     QtWidgets.QMessageBox.warning(self, "File Already Exists", "The file '{}' is already being synced.".format(file_path))
                 else:
+                    self.syncingfiles(file_path)
                     connector.fileoprations.upload_file_to_drive(file_path)
                     self.refresh_table()
 
@@ -255,7 +315,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.table.setCellWidget(row_position, 0, icon_label)
 
             item_name = QtWidgets.QTableWidgetItem(file_info.fileName())
-            item_name.setFont(QtGui.QFont("Bahnschrift Condensed", 10))
+            item_name.setFont(QtGui.QFont("Bahnschrift Condensed", 10, QtGui.QFont.Bold))
             item_name.setTextAlignment(QtCore.Qt.AlignCenter)
             self.table.setItem(row_position, 1, item_name)
 
@@ -286,9 +346,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.table.setItem(row_position, 6, item_del)
 
     def populate_log_table(self):
+        self.logtable.clearContents()
+        self.logtable.setRowCount(0)
         data = connector.log.getlogdata()
         print("Data:", data)
-        for dataset in data:
+        for dataset in reversed(data):
             row_position = self.logtable.rowCount()
             self.logtable.insertRow(row_position)
             print("Row Position:", row_position)
