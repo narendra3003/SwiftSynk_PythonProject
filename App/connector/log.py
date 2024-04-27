@@ -2,18 +2,14 @@ import os, dbm
 
 def getlogdata():
     data = dbm.logtable()
-    print('db data: ',data)
-
     modified_data = []
     for row in data:
         modified_row = []
         timestamp = row[3]
         modified_row.append(timestamp)
-        print(modified_row)
         act = row[1]
         path_email = row[2]
         ty = row[0]
-        print(ty)
         if ty == 'User':
             if act == 'insert':
                 desc = 'User account: '+path_email+' was added.'
@@ -36,6 +32,5 @@ def getlogdata():
                 desc = ty+': '+os.path.basename(path_email)+' was unsynced. '+ty+' path: '+path_email
                 modified_row.append(desc)
         modified_data.append(tuple(modified_row))
-    print('logdata: ',modified_data)
     return modified_data
 

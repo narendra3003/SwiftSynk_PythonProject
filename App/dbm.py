@@ -333,7 +333,6 @@ def logfiles(logid):
     cur = con.cursor()
     cur.execute("select filepath from file where file_id = '{logid}';".format(logid=logid))
     file_data = cur.fetchall()
-    print("Fetched file path:", file_data)
     con.close()
     if file_data:
         file_path = file_data[0][0]

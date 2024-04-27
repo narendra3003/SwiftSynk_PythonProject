@@ -124,46 +124,47 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             QtWidgets.QMessageBox.warning(self,"Signup failed","Error")
 
     
-    # def syncingfiles(self, file_path):
-    #     print("called and file_path = ", file_path)
-    #     if os.path.isdir(file_path):
-    #         file_info = QtCore.QDir(file_path)
-    #     else:
-    #         file_info = QtCore.QFileInfo(file_path)
-    #     row_position = self.table.rowCount()
-    #     print(row_position)
-    #     self.table.insertRow(row_position)
+    def syncingfiles(self, files):
+        print("called and file_path = ", files)
+        for file in files:
+            if os.path.isdir(file):
+                file_info = QtCore.QDir(file)
+            else:
+                file_info = QtCore.QFileInfo(file)
+            row_position = self.table.rowCount()
+            print(row_position)
+            self.table.insertRow(row_position)
 
-    #     icon = self.icon_provider.icon(file_info)
-    #     icon_label = QtWidgets.QLabel()
-    #     icon_label.setPixmap(icon.pixmap(20, 20))
-    #     icon_label.setAlignment(QtCore.Qt.AlignCenter)
-    #     self.table.setCellWidget(row_position, 0, icon_label)
+            icon = self.icon_provider.icon(file_info)
+            icon_label = QtWidgets.QLabel()
+            icon_label.setPixmap(icon.pixmap(20, 20))
+            icon_label.setAlignment(QtCore.Qt.AlignCenter)
+            self.table.setCellWidget(row_position, 0, icon_label)
 
-    #     item_name = QtWidgets.QTableWidgetItem(file_info.fileName())
-    #     item_name.setFont(QtGui.QFont("Bahnschrift Condensed", 10, QtGui.QFont.Bold))
-    #     item_name.setTextAlignment(QtCore.Qt.AlignCenter)
-    #     self.table.setItem(row_position, 1, item_name)
+            item_name = QtWidgets.QTableWidgetItem(file_info.fileName())
+            item_name.setFont(QtGui.QFont("Bahnschrift Condensed", 10, QtGui.QFont.Bold))
+            item_name.setTextAlignment(QtCore.Qt.AlignCenter)
+            self.table.setItem(row_position, 1, item_name)
 
-    #     item_status = QtWidgets.QTableWidgetItem("Syncing....")
-    #     item_status.setFont(QtGui.QFont("Bahnschrift Condensed", 10, QtGui.QFont.Bold))
-    #     item_status.setForeground(QtGui.QColor('grey'))
-    #     item_status.setTextAlignment(QtCore.Qt.AlignCenter)
-    #     self.table.setItem(row_position, 2, item_status)
+            item_status = QtWidgets.QTableWidgetItem("Syncing....")
+            item_status.setFont(QtGui.QFont("Bahnschrift Condensed", 10, QtGui.QFont.Bold))
+            item_status.setForeground(QtGui.QColor('grey'))
+            item_status.setTextAlignment(QtCore.Qt.AlignCenter)
+            self.table.setItem(row_position, 2, item_status)
 
-    #     item_path = QtWidgets.QTableWidgetItem(file_info.absoluteFilePath())
-    #     item_path.setFont(QtGui.QFont("Bahnschrift Condensed", 10, QtGui.QFont.Bold))
-    #     item_path.setTextAlignment(QtCore.Qt.AlignCenter)
-    #     self.table.setItem(row_position, 3, item_path)
+            item_path = QtWidgets.QTableWidgetItem(file_info.absoluteFilePath())
+            item_path.setFont(QtGui.QFont("Bahnschrift Condensed", 10, QtGui.QFont.Bold))
+            item_path.setTextAlignment(QtCore.Qt.AlignCenter)
+            self.table.setItem(row_position, 3, item_path)
 
-    #     item_size = QtWidgets.QTableWidgetItem(convert_size(file_info.size()))
-    #     item_size.setFont(QtGui.QFont("Bahnschrift Condensed", 10, QtGui.QFont.Bold))
-    #     item_size.setTextAlignment(QtCore.Qt.AlignCenter)
-    #     if os.path.isdir(file_path):
-    #         item_size.setText("▶")
-    #     else:
-    #         item_size.setText(convert_size(file_info.size()))
-    #     self.table.setItem(row_position, 4, item_size)
+            item_size = QtWidgets.QTableWidgetItem(convert_size(file_info.size()))
+            item_size.setFont(QtGui.QFont("Bahnschrift Condensed", 10, QtGui.QFont.Bold))
+            item_size.setTextAlignment(QtCore.Qt.AlignCenter)
+            if os.path.isdir(file):
+                item_size.setText("▶")
+            else:
+                item_size.setText(convert_size(file_info.size()))
+            self.table.setItem(row_position, 4, item_size)
 
 
     def go_to_page(self):
@@ -303,6 +304,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         file_dialog.setFileMode(QtWidgets.QFileDialog.ExistingFiles)
         if file_dialog.exec_():
             selected_files = file_dialog.selectedFiles()
+            self.syncingfiles(selected_files)
             for file_path in selected_files:
                 print(file_path)
                 if(dbm.file_already_added(file_path)):
@@ -378,11 +380,9 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.logtable.clearContents()
         self.logtable.setRowCount(0)
         data = connector.log.getlogdata()
-        print("Data:", data)
         for dataset in reversed(data):
             row_position = self.logtable.rowCount()
             self.logtable.insertRow(row_position)
-            print("Row Position:", row_position)
 
             time = dataset[0]
             time_item = QtWidgets.QTableWidgetItem(str(time))
@@ -391,7 +391,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.logtable.setItem(row_position, 0, time_item)
 
             log_desc = dataset[1]
-            print("Log Type:", log_desc)
             log_desc_item = QtWidgets.QTableWidgetItem(log_desc)
             log_desc_item.setFont(QtGui.QFont("Bahnschrift Condensed", 10))
             log_desc_item.setTextAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
