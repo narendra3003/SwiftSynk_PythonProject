@@ -215,7 +215,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             self.table2.setItem(row_position, 3, item_path)
 
             item_size = QtWidgets.QTableWidgetItem(convert_size(file_info.size()))
-            item_size.setFont(QtGui.QFont("Bahnschrift Condensed", 10, QtGui.QFont.Bold))
+            item_size.setFont(QtGui.QFont("Bahnschrift Condensed", 15, QtGui.QFont.Bold))
             item_size.setTextAlignment(QtCore.Qt.AlignCenter)
             if os.path.isdir(file_path):
                 item_size.setText("▶")
@@ -239,8 +239,18 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     self.refresh_table()
 
     def show_folders_on_table(self, selected_folders):
+        print("Selected Folders: ",selected_folders)
         # row_position=0
-        for folder_path in selected_folders:
+        sorted_folders = sorted(selected_folders)
+        print("Sorted Folders: ", sorted_folders)
+        filtered_folders = sorted_folders.copy()
+        for i, folder in enumerate(sorted_folders):
+            for other_folder in sorted_folders[i+1:]:
+                if folder in other_folder:
+                    filtered_folders.remove(other_folder)
+                    break
+        print("Filtered Folders: ", filtered_folders)
+        for folder_path in filtered_folders:
             folder_info = QtCore.QDir(folder_path)
             row_position = self.table.rowCount()
             self.table.insertRow(row_position)
@@ -275,7 +285,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             item_size = QtWidgets.QTableWidgetItem("▶")
             item_size.setFont(QtGui.QFont("Bahnschrift Condensed", 15, QtGui.QFont.Bold))
             item_size.setTextAlignment(QtCore.Qt.AlignCenter)
-            self.table.setItem(row_position, 6, item_size)
+            self.table.setItem(row_position, 3, item_size)
             
             item_ps = QtWidgets.QTableWidgetItem()
             item_ps.setIcon(QtGui.QIcon(imgpath + "\\pause.png"))
@@ -405,7 +415,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 os.startfile(file_path)
             else:
                 QtWidgets.QMessageBox.warning(self, "File Not Found", "The file does not exist.")
-        elif (column == 6 and os.path.isdir(self.table.item(row, 9).text()) and self.sender() == self.table):  
+        elif (column == 3 and os.path.isdir(self.table.item(row, 9).text()) and self.sender() == self.table):  
             file_path = self.table.item(row, 9).text()
             if os.path.exists(file_path):
                 folder_path = os.path.dirname(file_path)
