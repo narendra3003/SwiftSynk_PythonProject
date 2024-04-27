@@ -64,8 +64,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         msg_box.setDefaultButton(QtWidgets.QMessageBox.No)
         result = msg_box.exec_()
         if result == QtWidgets.QMessageBox.Yes:
-            connector.dbm.deletelog()
-
+            dbm.deletelog()
+        self.populate_log_table()
 
     def home(self):
         self.stackedWidget.setCurrentWidget(self.page)
@@ -131,9 +131,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 file_info = QtCore.QDir(file)
             else:
                 file_info = QtCore.QFileInfo(file)
+                print("File Info:", file_info)
             row_position = self.table.rowCount()
-            print(row_position)
+            print("Before Row Position: ", row_position)
             self.table.insertRow(row_position)
+            print("After row position: ", row_position)
 
             icon = self.icon_provider.icon(file_info)
             icon_label = QtWidgets.QLabel()
