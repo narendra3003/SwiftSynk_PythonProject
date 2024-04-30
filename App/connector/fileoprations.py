@@ -24,6 +24,7 @@ def upload_file_to_drive(file_path, drive_folder_id=mainUser.base_drive_folder_i
         if status:
             print(f"Uploaded {int(status.progress() * 100)}%")
     print(f"File uploaded successfully with file ID: {response['id']}")
+    print(response['id']," ",file_path," ",get_current_time()," ",drive_folder_id," ","Synced")
     dbm.insertFile(response['id'],file_path,get_current_time(),drive_folder_id,"Synced")
 
 

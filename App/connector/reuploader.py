@@ -17,7 +17,9 @@ def modifiedUploader(username=mainUser.username):
 
 def reUpload(file_path, drive_folder_id=mainUser.base_drive_folder_id, credentials_file_path=credentials_file_path):
     # file_name=os.path.basename(file_path)
-    if(get_file_id(file_path, drive_folder_id)!=None):
+    id=get_file_id(file_path, drive_folder_id)
+    print("here: ",id)
+    if(id!=None):
         delete_file_from_drive(file_path, drive_folder_id, credentials_file_path)
     upload_file_to_drive(file_path, drive_folder_id, credentials_file_path)
 

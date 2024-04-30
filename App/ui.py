@@ -572,7 +572,7 @@ class Ui_MainWindow(object):
         self.email_label = QtWidgets.QLabel(self.signupwid)
         self.email_label.setGeometry(QtCore.QRect(230, 110, 262, 42))
         font = QtGui.QFont()
-        font.setFamily("Segoe UI")
+        font.setFamily("Bahnschrift Condensed")
         font.setPointSize(10)
         font.setBold(False)
         font.setWeight(50)

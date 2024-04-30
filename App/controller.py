@@ -157,7 +157,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             item_path = QtWidgets.QTableWidgetItem(file_info.absoluteFilePath())
             item_path.setFont(QtGui.QFont("Bahnschrift Condensed", 10, QtGui.QFont.Bold))
             item_path.setTextAlignment(QtCore.Qt.AlignCenter)
-            self.table.setItem(row_position, 3, item_path)
+            self.table.setItem(row_position, 10, item_path)
 
             item_size = QtWidgets.QTableWidgetItem(convert_size(file_info.size()))
             item_size.setFont(QtGui.QFont("Bahnschrift Condensed", 10, QtGui.QFont.Bold))
@@ -166,7 +166,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 item_size.setText("▶")
             else:
                 item_size.setText(convert_size(file_info.size()))
-            self.table.setItem(row_position, 4, item_size)
+            self.table.setItem(row_position, 3, item_size)
 
 
     def go_to_page(self):
@@ -337,7 +337,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
             item_status = QtWidgets.QTableWidgetItem(dbm.getSize(file_path))
             item_status.setFont(QtGui.QFont("Bahnschrift Condensed", 10, QtGui.QFont.Bold))
-            item_status.setForeground(QtGui.QColor('lightgreen'))
+            if(dbm.getSize(file_path) == 'Synced'):
+                item_status.setForeground(QtGui.QColor('lightgreen'))
+            else:
+                item_status.setForeground(QtGui.QColor('grey'))
             item_status.setTextAlignment(QtCore.Qt.AlignCenter)
             self.table.setItem(row_position, 2, item_status)
 
@@ -458,6 +461,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 result = msg_box.exec_()
                 if result == QtWidgets.QMessageBox.Yes:
                     #2state initiation function here
+                    connector.state_features.create_state2_file(self.table.item(row, 9).text())
                     self.flag_2st = 1
                     self.refresh_table()
             elif (self.flag_2st == 1):
@@ -474,6 +478,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
         elif column == 7:
             connector.state_features.toggeleUpload(self.table.item(row, 9).text(), self.table.item(row, 2).text())
+            self.refresh_table()
 
         elif column == 8:
             msg_box = QtWidgets.QMessageBox()
@@ -484,6 +489,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             msg_box.setDefaultButton(QtWidgets.QMessageBox.No)
             result = msg_box.exec_()
             if result == QtWidgets.QMessageBox.Yes:
+
                 path = self.table.item(row, 9).text() if self.table.item(row, column) == self.table.item(row, column) else self.table2.item(row, 3).text()
                 if os.path.isdir(path):
                     dbm.deleteFolder(connector.folderoprations.delete_folder_from_drive(path))
