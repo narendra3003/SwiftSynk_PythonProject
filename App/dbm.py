@@ -134,6 +134,8 @@ def getVersion(file_id):
     con.commit()
     con.close()
     print(data, " is ID")
+    if(len(data)==0):
+        return None
     return data[0][0]
 
 def give_last_upload_time(file_path):
@@ -395,4 +397,4 @@ def is_twoStated(filePath):
     con.commit()
     con.close()
     print(data)
-    return data!=[[]]
+    return data!=()

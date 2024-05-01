@@ -451,7 +451,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 result = msg_box.exec_()
                 if result == QtWidgets.QMessageBox.Yes:
                     #2state initiation function here
-                    # connector.state_features.create_state2_file(self.table.item(row, 9).text())
+                    connector.state_features.create_state2_file(self.table.item(row, 10).text())
                     self.flag_2st = 1
                     self.refresh_table()
 
@@ -468,11 +468,11 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
             
 
-        elif column == 7:
-            connector.state_features.toggeleUpload(self.table.item(row, 9).text(), self.table.item(row, 2).text())
+        elif column == 8:
+            connector.state_features.toggeleUpload(self.table.item(row, 10).text(), self.table.item(row, 2).text())
             self.refresh_table()
 
-        elif column == 8:
+        elif column == 9:
             msg_box = QtWidgets.QMessageBox()
             msg_box.setIcon(QtWidgets.QMessageBox.Question)
             msg_box.setWindowTitle("Delete Warning")
@@ -482,7 +482,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             result = msg_box.exec_()
             if result == QtWidgets.QMessageBox.Yes:
 
-                path = self.table.item(row, 9).text() if self.table.item(row, column) == self.table.item(row, column) else self.table2.item(row, 3).text()
+                path = self.table.item(row, 10).text() if self.table.item(row, column) == self.table.item(row, column) else self.table2.item(row, 3).text()
                 if os.path.isdir(path):
                     dbm.deleteFolder(connector.folderoprations.delete_folder_from_drive(path))
                 else:
