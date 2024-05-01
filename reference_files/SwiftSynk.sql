@@ -2,7 +2,6 @@ DROP DATABASE IF EXISTS swiftsynk;
 CREATE DATABASE swiftsynk;
 USE swiftsynk;
 CREATE TABLE user(
-    password varchar(12),
     username varchar(45) primary key ,
     base_folder_id varchar(50),
     secondary_folder_id varchar(50)
@@ -141,10 +140,9 @@ CREATE TRIGGER DeleteFile
 SS
 DELIMITER ;
 
--- insert into user values("syedsaif78676@gmail.com","hii","Saif", "1rEgaGA5mofkeCf572WVRkOWIj_4sHaWm");
+insert into user values("Narendra", "1gvh-akOM4JlkCljrtpxAGfX4dXdbfJ2n", "1Osn10FfyuozwtJA4O7k8ZxPyfmd2hCPs");
+insert into user values("Saif", "1rEgaGA5mofkeCf572WVRkOWIj_4sHaWm", "1bKg0ctXx-F9Sxy0G0ErSnMuMq-EqcVAk");
 -- insert into user values("varadesanchita@gmail.com","sanchi","Sanchita", "12QDJynTGSmbyv4Jf6w8ZYzH-NwgYOSt8");
-insert into user values("hii","Narendra", "1gvh-akOM4JlkCljrtpxAGfX4dXdbfJ2n", "1Osn10FfyuozwtJA4O7k8ZxPyfmd2hCPs");
-insert into user values("hii","Saif", "1rEgaGA5mofkeCf572WVRkOWIj_4sHaWm", "1bKg0ctXx-F9Sxy0G0ErSnMuMq-EqcVAk");
 -- insert into user values("varadesanchita@gmail.com","sanchi","Sanchita", "12QDJynTGSmbyv4Jf6w8ZYzH-NwgYOSt8");
 -- insert into user values("syedsaif78676@gmail.com","hii","Saif","1rEgaGA5mofkeCf572WVRkOWIj_4sHaWm");
 -- insert into user values("saiff@gmail.com","saif@16","Saifuddin", "jklm");

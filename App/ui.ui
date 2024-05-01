@@ -150,7 +150,7 @@
      <string notr="true"/>
     </property>
     <property name="currentIndex">
-     <number>4</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="page">
      <property name="styleSheet">
@@ -692,196 +692,12 @@ Folders</string>
       </property>
      </widget>
     </widget>
-    <widget class="QWidget" name="page_3">
-     <widget class="QWidget" name="logwid" native="true">
-      <property name="geometry">
-       <rect>
-        <x>90</x>
-        <y>60</y>
-        <width>351</width>
-        <height>221</height>
-       </rect>
-      </property>
-      <property name="styleSheet">
-       <string notr="true">color: rgb(205, 219, 219)</string>
-      </property>
-      <widget class="QLabel" name="label">
-       <property name="geometry">
-        <rect>
-         <x>155</x>
-         <y>20</y>
-         <width>51</width>
-         <height>31</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Bahnschrift</family>
-         <pointsize>24</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Login</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_2">
-       <property name="geometry">
-        <rect>
-         <x>91</x>
-         <y>108</y>
-         <width>60</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Bahnschrift</family>
-         <pointsize>14</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Password:</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_3">
-       <property name="geometry">
-        <rect>
-         <x>90</x>
-         <y>68</y>
-         <width>60</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Bahnschrift</family>
-         <pointsize>14</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Username:</string>
-       </property>
-      </widget>
-      <widget class="QLineEdit" name="emailbox">
-       <property name="geometry">
-        <rect>
-         <x>160</x>
-         <y>67</y>
-         <width>113</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Agency FB</family>
-         <pointsize>10</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-      </widget>
-      <widget class="QLineEdit" name="passbox">
-       <property name="geometry">
-        <rect>
-         <x>160</x>
-         <y>107</y>
-         <width>113</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="loginbutton">
-       <property name="geometry">
-        <rect>
-         <x>145</x>
-         <y>150</y>
-         <width>70</width>
-         <height>25</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Bahnschrift</family>
-         <pointsize>12</pointsize>
-         <weight>75</weight>
-         <bold>true</bold>
-        </font>
-       </property>
-       <property name="cursor">
-        <cursorShape>PointingHandCursor</cursorShape>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">color: rgb(56, 68, 101)</string>
-       </property>
-       <property name="text">
-        <string>Login</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_4">
-       <property name="geometry">
-        <rect>
-         <x>137</x>
-         <y>190</y>
-         <width>55</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Bahnschrift</family>
-         <pointsize>10</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>New Account? </string>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="signupswitch">
-       <property name="geometry">
-        <rect>
-         <x>192</x>
-         <y>187</y>
-         <width>35</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Bahnschrift</family>
-         <pointsize>10</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-         <underline>true</underline>
-        </font>
-       </property>
-       <property name="cursor">
-        <cursorShape>PointingHandCursor</cursorShape>
-       </property>
-       <property name="toolTip">
-        <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sign Up&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-       </property>
-       <property name="text">
-        <string>Sign Up!</string>
-       </property>
-      </widget>
-     </widget>
-    </widget>
+    <widget class="QWidget" name="page_3"/>
     <widget class="QWidget" name="page_4">
      <widget class="QWidget" name="signupwid" native="true">
       <property name="geometry">
        <rect>
-        <x>90</x>
+        <x>100</x>
         <y>50</y>
         <width>351</width>
         <height>261</height>
@@ -893,9 +709,9 @@ Folders</string>
       <widget class="QLabel" name="label_5">
        <property name="geometry">
         <rect>
-         <x>145</x>
-         <y>12</y>
-         <width>70</width>
+         <x>100</x>
+         <y>30</y>
+         <width>161</width>
          <height>31</height>
         </rect>
        </property>
@@ -908,37 +724,16 @@ Folders</string>
         </font>
        </property>
        <property name="text">
-        <string>Sign Up</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_6">
-       <property name="geometry">
-        <rect>
-         <x>91</x>
-         <y>141</y>
-         <width>60</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Bahnschrift</family>
-         <pointsize>14</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Password:</string>
+        <string>Start Syncing🔁</string>
        </property>
       </widget>
       <widget class="QLabel" name="label_7">
        <property name="geometry">
         <rect>
          <x>90</x>
-         <y>101</y>
-         <width>60</width>
-         <height>16</height>
+         <y>85</y>
+         <width>181</width>
+         <height>31</height>
         </rect>
        </property>
        <property name="font">
@@ -950,14 +745,15 @@ Folders</string>
         </font>
        </property>
        <property name="text">
-        <string>Username:</string>
+        <string>Connect with your digital identity!
+     Enter any desired username</string>
        </property>
       </widget>
       <widget class="QLineEdit" name="unamebox_su">
        <property name="geometry">
         <rect>
-         <x>160</x>
-         <y>100</y>
+         <x>125</x>
+         <y>145</y>
          <width>113</width>
          <height>20</height>
         </rect>
@@ -974,32 +770,11 @@ Folders</string>
         <string>Enter a desired username</string>
        </property>
       </widget>
-      <widget class="QLineEdit" name="passbox_su">
-       <property name="geometry">
-        <rect>
-         <x>160</x>
-         <y>140</y>
-         <width>113</width>
-         <height>20</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Bahnschrift</family>
-         <pointsize>14</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-      </widget>
       <widget class="QPushButton" name="signupbutton">
        <property name="geometry">
         <rect>
-         <x>145</x>
-         <y>182</y>
+         <x>146</x>
+         <y>195</y>
          <width>70</width>
          <height>25</height>
         </rect>
@@ -1019,86 +794,7 @@ Folders</string>
         <string notr="true">color: rgb(56, 68, 101)</string>
        </property>
        <property name="text">
-        <string>Sign Up</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="label_8">
-       <property name="geometry">
-        <rect>
-         <x>128</x>
-         <y>220</y>
-         <width>77</width>
-         <height>16</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Bahnschrift</family>
-         <pointsize>10</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="text">
-        <string>Already registered? </string>
-       </property>
-      </widget>
-      <widget class="QPushButton" name="loginswitch">
-       <property name="geometry">
-        <rect>
-         <x>204</x>
-         <y>217</y>
-         <width>31</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Bahnschrift</family>
-         <pointsize>10</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-         <underline>true</underline>
-        </font>
-       </property>
-       <property name="cursor">
-        <cursorShape>PointingHandCursor</cursorShape>
-       </property>
-       <property name="toolTip">
-        <string>Log in with an existing account</string>
-       </property>
-       <property name="text">
-        <string>Log in!</string>
-       </property>
-      </widget>
-      <widget class="QLabel" name="email_label">
-       <property name="geometry">
-        <rect>
-         <x>115</x>
-         <y>55</y>
-         <width>131</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="font">
-        <font>
-         <family>Bahnschrift Condensed</family>
-         <pointsize>10</pointsize>
-         <weight>50</weight>
-         <bold>false</bold>
-        </font>
-       </property>
-       <property name="styleSheet">
-        <string notr="true">border: 2px solid rgb(166, 166, 166);
-border-radius: 10px;
-padding: 3px;
-</string>
-       </property>
-       <property name="text">
-        <string>Email</string>
-       </property>
-       <property name="alignment">
-        <set>Qt::AlignCenter</set>
+        <string>Go</string>
        </property>
       </widget>
      </widget>
@@ -1119,10 +815,10 @@ padding: 3px;
       <widget class="QLabel" name="label_9">
        <property name="geometry">
         <rect>
-         <x>100</x>
+         <x>90</x>
          <y>30</y>
-         <width>181</width>
-         <height>21</height>
+         <width>201</width>
+         <height>31</height>
         </rect>
        </property>
        <property name="font">
@@ -1134,14 +830,14 @@ padding: 3px;
         </font>
        </property>
        <property name="text">
-        <string>Welcome to SwiftSynk!</string>
+        <string>Welcome to SwiftSynk📂</string>
        </property>
       </widget>
       <widget class="QLabel" name="label_10">
        <property name="geometry">
         <rect>
-         <x>70</x>
-         <y>70</y>
+         <x>73</x>
+         <y>73</y>
          <width>235</width>
          <height>16</height>
         </rect>
