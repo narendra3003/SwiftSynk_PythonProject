@@ -48,15 +48,15 @@ def create_state2_file(file_path):
 # copy last file version in main
 def getBackToVersion(file_path):
     drive_folder_id=dbm.getParentFolderid(file_path)
-    version_id=dbm.getVersionID(dbm.give_id_by_path(file_path))
+    version_id=dbm.getVersion(dbm.give_id_by_path(file_path))
     #delete version_id
     delete_file_from_drive(file_path)
     id=copy_file(version_id, drive_folder_id)
     dbm.insertFile(id,file_path,get_current_time(),drive_folder_id,"Synced")
 
 #delete last version
-def retainVersion(filepath):
-    version_id=dbm.getVersionID(dbm.give_id_by_path(file_path))
+def retainVersion(file_path):
+    version_id=dbm.getVersion(dbm.give_id_by_path(file_path))
     drive_folder_id=dbm.getParentFolderid(file_path)
     delete_file_from_drive(file_path, drive_folder_id)
     dbm.deleteVersion(version_id)

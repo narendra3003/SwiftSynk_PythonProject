@@ -434,7 +434,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             msg_box.setDefaultButton(QtWidgets.QMessageBox.No)
             result = msg_box.exec_()
             if result == QtWidgets.QMessageBox.Yes:
-                #retain previous, delete new
+                connector.state_features.getBackToVersion(self.table.item(row, 10).text()) #retain previous, delete new
                 self.refresh_table()
                 pass
 
@@ -449,7 +449,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 msg_box.setDefaultButton(QtWidgets.QMessageBox.No)
                 result = msg_box.exec_()
                 if result == QtWidgets.QMessageBox.Yes:
-                    #retain current, delete previous
+                    connector.state_features.retainVersion(self.table.item(row, 10).text()) #retain current, delete previous
                     self.refresh_table()
 
             else:
@@ -459,8 +459,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 msg_box.setDefaultButton(QtWidgets.QMessageBox.Yes)
                 result = msg_box.exec_()
                 if result == QtWidgets.QMessageBox.Yes:
-                    #2state initiation function here
-                    connector.state_features.create_state2_file(self.table.item(row, 10).text())
+                    connector.state_features.create_state2_file(self.table.item(row, 10).text()) #2state initiation function
                     self.refresh_table()
 
             
