@@ -259,7 +259,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             item_path = QtWidgets.QTableWidgetItem(folder_path)
             item_path.setFont(QtGui.QFont("Bahnschrift Condensed", 10, QtGui.QFont.Bold))
             item_path.setTextAlignment(QtCore.Qt.AlignCenter)
-            self.table.setItem(row_position, 10, item_path)
+            self.table.setItem(row_position, 11, item_path)
             
             item_size = QtWidgets.QTableWidgetItem("▶")
             item_size.setFont(QtGui.QFont("Bahnschrift Condensed", 15, QtGui.QFont.Bold))
@@ -269,12 +269,12 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             item_ps = QtWidgets.QTableWidgetItem()
             item_ps.setIcon(QtGui.QIcon(imgpath + "\\pause.png"))
             item_ps.setTextAlignment(QtCore.Qt.AlignCenter)
-            self.table.setItem(row_position, 8, item_ps)
+            self.table.setItem(row_position, 9, item_ps)
 
             item_del = QtWidgets.QTableWidgetItem()
             item_del.setIcon(QtGui.QIcon(imgpath + "\\remove.png"))
             item_del.setTextAlignment(QtCore.Qt.AlignLeft)
-            self.table.setItem(row_position, 9, item_del)
+            self.table.setItem(row_position, 10, item_del)
 
 
     def sync_files(self):
@@ -321,7 +321,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             item_path = QtWidgets.QTableWidgetItem(file_info.absoluteFilePath())
             item_path.setFont(QtGui.QFont("Bahnschrift Condensed", 10, QtGui.QFont.Bold))
             item_path.setTextAlignment(QtCore.Qt.AlignCenter)
-            self.table.setItem(row_position, 10, item_path)
+            self.table.setItem(row_position, 11, item_path)
 
             item_size = QtWidgets.QTableWidgetItem(convert_size(file_info.size()))
             item_size.setFont(QtGui.QFont("Bahnschrift Condensed", 10, QtGui.QFont.Bold))
@@ -336,30 +336,35 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.table.setItem(row_position, 5, item_2down)
 
                 item_retnew = QtWidgets.QTableWidgetItem()
-                item_retnew.setIcon(QtGui.QIcon(imgpath + "\\back-arrow.png")) #delete current, retain previous
+                item_retnew.setIcon(QtGui.QIcon(imgpath + "\\clock1.png")) #delete current, retain previous
                 item_retnew.setTextAlignment(QtCore.Qt.AlignCenter)
                 self.table.setItem(row_position, 6, item_retnew)
 
+                item_step = QtWidgets.QTableWidgetItem()
+                item_step.setIcon(QtGui.QIcon(imgpath + "\\exchange.png")) # step for 2 state
+                item_step.setTextAlignment(QtCore.Qt.AlignCenter)
+                self.table.setItem(row_position, 7, item_step)
+
                 item_2stop = QtWidgets.QTableWidgetItem()
-                item_2stop.setIcon(QtGui.QIcon(imgpath + "\\front-arrow.png")) #delete previous, retain current
+                item_2stop.setIcon(QtGui.QIcon(imgpath + "\\clock2.png")) #delete previous, retain current
                 item_2stop.setTextAlignment(QtCore.Qt.AlignCenter)
-                self.table.setItem(row_position, 7, item_2stop)
+                self.table.setItem(row_position, 8, item_2stop)
 
             else:
                 item_2st = QtWidgets.QTableWidgetItem()
                 item_2st.setIcon(QtGui.QIcon(imgpath + "\\2stateinit.png")) # initiate 2state
                 item_2st.setTextAlignment(QtCore.Qt.AlignCenter)
-                self.table.setItem(row_position, 7, item_2st)
+                self.table.setItem(row_position, 8, item_2st)
 
             item_ps = QtWidgets.QTableWidgetItem()
             item_ps.setIcon(QtGui.QIcon(imgpath + "\\pause.png"))
             item_ps.setTextAlignment(QtCore.Qt.AlignCenter)
-            self.table.setItem(row_position, 8, item_ps)
+            self.table.setItem(row_position, 9, item_ps)
             
             item_del = QtWidgets.QTableWidgetItem()
             item_del.setIcon(QtGui.QIcon(imgpath + "\\remove.png"))
             item_del.setTextAlignment(QtCore.Qt.AlignLeft)
-            self.table.setItem(row_position, 9, item_del)
+            self.table.setItem(row_position, 10, item_del)
 
     def populate_log_table(self):
         self.logtable.clearContents()
@@ -393,14 +398,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         #         QtWidgets.QMessageBox.warning(self, "File Not Found", "The file does not exist.")
 
         if column == 1:
-            file_path_item = self.table.item(row, 10) if self.sender() == self.table else self.table2.item(row, 3)
+            file_path_item = self.table.item(row, 11) if self.sender() == self.table else self.table2.item(row, 3)
             file_path = file_path_item.text()
             if os.path.exists(file_path):
                 os.startfile(file_path)
             else:
                 QtWidgets.QMessageBox.warning(self, "File Not Found", "The file does not exist.")
-        elif (column == 3 and os.path.isdir(self.table.item(row, 10).text()) and self.sender() == self.table):  
-            file_path = self.table.item(row, 10).text()
+        elif (column == 3 and os.path.isdir(self.table.item(row, 11).text()) and self.sender() == self.table):  
+            file_path = self.table.item(row, 11).text()
             if os.path.exists(file_path):
                 folder_path = os.path.dirname(file_path)
                 self.populate_folder_table(file_path) 
@@ -417,7 +422,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             else:
                 QtWidgets.QMessageBox.warning(self, "Folder Not Found", "The folder does not exist.")
 
-        elif (column == 5 and os.path.isfile(self.table.item(row, 10).text()) and dbm.is_twoStated(self.table.item(row, 10).text())):
+        elif (column == 5 and os.path.isfile(self.table.item(row, 11).text()) and dbm.is_twoStated(self.table.item(row, 11).text())):
             msg_box = QtWidgets.QMessageBox()
             msg_box.setIcon(QtWidgets.QMessageBox.Question)
             msg_box.setWindowTitle("Download Previous State File?")
@@ -429,7 +434,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 #download file
                 pass
 
-        elif (column == 6 and os.path.isfile(self.table.item(row, 10).text()) and dbm.is_twoStated(self.table.item(row, 10).text())):
+        elif (column == 6 and os.path.isfile(self.table.item(row, 11).text()) and dbm.is_twoStated(self.table.item(row, 11).text())):
             msg_box = QtWidgets.QMessageBox()
             msg_box.setIcon(QtWidgets.QMessageBox.Question)
             msg_box.setWindowTitle("Retain Previous state?")
@@ -438,22 +443,26 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             msg_box.setDefaultButton(QtWidgets.QMessageBox.No)
             result = msg_box.exec_()
             if result == QtWidgets.QMessageBox.Yes:
-                connector.state_features.getBackToVersion(self.table.item(row, 10).text()) #retain previous, delete new
+                connector.state_features.getBackToVersion(self.table.item(row, 11).text()) #retain previous, delete new
                 self.refresh_table()
                 pass
 
-        elif (column == 7 and os.path.isfile(self.table.item(row, 10).text())):
+        elif (column == 7 and os.path.isfile(self.table.item(row, 11).text()) and dbm.is_twoStated(self.table.item(row, 11).text())):
+            # step (change previous state with current and start syncing the latest version)
+            pass
+
+        elif (column == 8 and os.path.isfile(self.table.item(row, 11).text())):
             msg_box = QtWidgets.QMessageBox()
             msg_box.setIcon(QtWidgets.QMessageBox.Question)
 
-            if (dbm.is_twoStated(self.table.item(row, 10).text())):
+            if (dbm.is_twoStated(self.table.item(row, 11).text())):
                 msg_box.setWindowTitle("Keep Current state?")
                 msg_box.setText("Do you want to delete this file's previous state and keep only the current state on Drive?")
                 msg_box.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
                 msg_box.setDefaultButton(QtWidgets.QMessageBox.No)
                 result = msg_box.exec_()
                 if result == QtWidgets.QMessageBox.Yes:
-                    connector.state_features.retainVersion(self.table.item(row, 10).text()) #retain current, delete previous
+                    connector.state_features.retainVersion(self.table.item(row, 11).text()) #retain current, delete previous
                     self.refresh_table()
 
             else:
@@ -463,16 +472,16 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 msg_box.setDefaultButton(QtWidgets.QMessageBox.Yes)
                 result = msg_box.exec_()
                 if result == QtWidgets.QMessageBox.Yes:
-                    connector.state_features.create_state2_file(self.table.item(row, 10).text()) #2state initiation function
+                    connector.state_features.create_state2_file(self.table.item(row, 11).text()) #2state initiation function
                     self.refresh_table()
 
             
 
-        elif column == 8:
-            connector.state_features.toggeleUpload(self.table.item(row, 10).text(), self.table.item(row, 2).text())
+        elif column == 9:
+            connector.state_features.toggeleUpload(self.table.item(row, 11).text(), self.table.item(row, 2).text())
             self.refresh_table()
 
-        elif column == 9:
+        elif column == 10:
             msg_box = QtWidgets.QMessageBox()
             msg_box.setIcon(QtWidgets.QMessageBox.Question)
             msg_box.setWindowTitle("Delete Warning")
@@ -482,7 +491,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             result = msg_box.exec_()
             if result == QtWidgets.QMessageBox.Yes:
 
-                path = self.table.item(row, 10).text() if self.table.item(row, column) == self.table.item(row, column) else self.table2.item(row, 3).text()
+                path = self.table.item(row, 11).text() if self.table.item(row, column) == self.table.item(row, column) else self.table2.item(row, 3).text()
                 if os.path.isdir(path):
                     dbm.deleteFolder(connector.folderoprations.delete_folder_from_drive(path))
                 else:
