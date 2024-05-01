@@ -2,6 +2,7 @@ import threading
 import inspect
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5 import QtCore
+import connector.classes
 from ui import Ui_MainWindow
 import ui
 import math, os
@@ -76,7 +77,10 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
     def gdrive(self):
         # Email address redirect function
         # if gmail login successful then ↓
-        self.stackedWidget.setCurrentWidget(self.page_4)
+        if(not connector.classes.isUserPresent()):
+            self.stackedWidget.setCurrentWidget(self.page_4)
+        else:
+            pass
 
     def refresh_table(self):
         data=dbm.providePaths(connector.basic.mainUser.base_drive_folder_id, connector.basic.mainUser.username)
