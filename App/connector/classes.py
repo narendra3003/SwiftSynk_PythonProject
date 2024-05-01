@@ -1,6 +1,6 @@
 
 class User:
-    def __init__(self, username, base_drive_folder_id, secondary_folder_id):
+    def _init_(self, username=None, base_drive_folder_id=None, secondary_folder_id=None):
         self.username=username
         self.base_drive_folder_id=base_drive_folder_id
         self.secondary_folder_id=secondary_folder_id
@@ -9,3 +9,14 @@ class User:
         self.username=Newusername
         self.base_drive_folder_id=Newbase_drive_folder_id
         self.secondary_folder_id=Newsecondary_folder_id
+    
+    def delUser(self):
+        self.username=None
+        self.base_drive_folder_id=None
+        self.secondary_folder_id=None
+
+
+
+mainUser=User()
+def isUserPresent():
+    return mainUser.username!=None
