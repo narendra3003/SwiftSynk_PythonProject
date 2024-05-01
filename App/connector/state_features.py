@@ -45,18 +45,41 @@ def create_state2_file(file_path):
     version_id=copy_file(file_id)
     dbm.insertVersion(version_id, file_id)
 
+# copy last file version in main
 def getBackToVersion(file_path):
     drive_folder_id=dbm.getParentFolderid(file_path)
     version_id=dbm.getVersionID(dbm.give_id_by_path(file_path))
+    #delete version_id
     delete_file_from_drive(file_path)
     id=copy_file(version_id, drive_folder_id)
     dbm.insertFile(id,file_path,get_current_time(),drive_folder_id,"Synced")
 
+#delete last version
 def retainVersion(filepath):
     version_id=dbm.getVersionID(dbm.give_id_by_path(file_path))
     drive_folder_id=dbm.getParentFolderid(file_path)
     delete_file_from_drive(file_path, drive_folder_id)
     dbm.deleteVersion(version_id)
+
+# def update_state(file_name, drive_folder_id, credentials_path=credentials_file_path):
+#     drive_service = getDriveService()
+#     # file_name = os.path.basename(file_path)
+#     query = f"name='{file_name}' and '{drive_folder_id}' in parents and trashed=false"
+#     response = drive_service.files().list(q=query, fields='files(id)').execute()
+#     files = response.get('files', [])
+
+#     if not files:
+#         print(f"File '{file_name}' not found in folder with ID '{drive_folder_id}'.")
+#         return
+#     file_id = files[0]['id']
+#     drive_service.files().delete(fileId=file_id).execute()
+#     versionID=dbm.getVersion()
+#     if(dbm.deleteVersion(file_id)==1):
+#         print(f"File '{file_name}' deleted successfully from Google Drive. And DB", file_id)
+#     if(dbm.deleteFile(file_id)==1):
+#         print(f"File '{file_name}' deleted successfully from Google Drive. And DB", file_id)
+#     print(f"File '{file_name}' deleted successfully from Google Drive.")
+
 
 def copy_file(file_id, destination_folder_id=mainUser.secondary_folder_id, credentials_path=credentials_file_path):
     credentials = service_account.Credentials.from_service_account_file(

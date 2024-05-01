@@ -10,8 +10,8 @@ def upload_file_to_drive(file_path, drive_folder_id=mainUser.base_drive_folder_i
         'name': file_path.split("\\")[-1],
         'parents': [drive_folder_id],
     }
-    print(file_metadata)
-    print(os.path.splitext(file_metadata.get('name')))
+    # print(file_metadata)
+    # print(os.path.splitext(file_metadata.get('name')))
     media = MediaFileUpload(file_path, resumable=True)
     request = drive_service.files().create(
         body=file_metadata,
@@ -26,6 +26,7 @@ def upload_file_to_drive(file_path, drive_folder_id=mainUser.base_drive_folder_i
     print(f"File uploaded successfully with file ID: {response['id']}")
     print(response['id']," ",file_path," ",get_current_time()," ",drive_folder_id," ","Synced")
     dbm.insertFile(response['id'],file_path,get_current_time(),drive_folder_id,"Synced")
+    return  response['id']
 
 
 #to delete files from drive

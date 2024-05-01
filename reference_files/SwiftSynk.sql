@@ -142,10 +142,7 @@ DELIMITER ;
 
 insert into user values("Narendra", "1gvh-akOM4JlkCljrtpxAGfX4dXdbfJ2n", "1Osn10FfyuozwtJA4O7k8ZxPyfmd2hCPs");
 insert into user values("Saif", "1rEgaGA5mofkeCf572WVRkOWIj_4sHaWm", "1bKg0ctXx-F9Sxy0G0ErSnMuMq-EqcVAk");
--- insert into user values("varadesanchita@gmail.com","sanchi","Sanchita", "12QDJynTGSmbyv4Jf6w8ZYzH-NwgYOSt8");
--- insert into user values("varadesanchita@gmail.com","sanchi","Sanchita", "12QDJynTGSmbyv4Jf6w8ZYzH-NwgYOSt8");
--- insert into user values("syedsaif78676@gmail.com","hii","Saif","1rEgaGA5mofkeCf572WVRkOWIj_4sHaWm");
--- insert into user values("saiff@gmail.com","saif@16","Saifuddin", "jklm");
+insert into user values("hii","Saif", "1rEgaGA5mofkeCf572WVRkOWIj_4sHaWm", "1bKg0ctXx-F9Sxy0G0ErSnMuMq-EqcVAk");
 -- insert into folder values("1gvh-akOM4JlkCljrtpxAGfX4dXdbfJ2n", "BASE","narendradukhande30@gmail.com");
 -- insert into folder values("efgh", "some\\path","varadesanchita@gmail.com");
 -- insert into folder values("jklm", "some\\path","saiff@gmail.com");
@@ -154,6 +151,4 @@ insert into user values("Saif", "1rEgaGA5mofkeCf572WVRkOWIj_4sHaWm", "1bKg0ctXx-
 -- insert into file values("pqr","Sync","c:files/java","16:09","jklm");
 
 -- insert into logtable values ("File", "modified","0.0026 sec")
-
-
 -- insert into logtable values ("File", "modified","0.0026 sec")

@@ -3,6 +3,27 @@ import pymysql as p
 def connect():
     return p.connect(host="localhost", user="root", password='oracle',db="SwiftSynK", port=3306)
 
+def checkLogin(username, password):
+    con = connect()
+    cur = con.cursor()
+    print(username)
+    try:
+        cur.execute("SELECT password FROM user where username='{username}';".format(username=username))
+        data=cur.fetchall()
+        con.close()
+        print("SELECT password FROM user where username='{username}';".format(username=username))
+        print(data)
+        if(len(data)==0):
+            return 1
+        elif(data[0][0]==password):
+            return 0
+        else:
+            return 2
+    except:
+        con.close()
+        return 3
+    return 4
+
 def getSize(file_path):
     con = connect()
     cur = con.cursor()
@@ -109,9 +130,11 @@ def getVersion(file_id):
     con = connect()
     cur = con.cursor()
     cur.execute("select last_version_id from lastVersions where main_file_id = '{file_id}';".format(file_id=file_id))
+    data=cur.fetchall()
     con.commit()
     con.close()
-    return 1
+    print(data, " is ID")
+    return data[0][0]
 
 def give_last_upload_time(file_path):
     con = connect()
@@ -158,16 +181,12 @@ def getFiles(username):
 def getUsers():
     con = connect()
     cur = con.cursor()
-    try:
-        cur.execute("SELECT * FROM user;")
-        data=cur.fetchall()
-        con.commit()
-        con.close()
-        return data
-    except Exception as e:
-        print(e)
-        con.close()
-        return 0
+    cur.execute("SELECT * FROM user;")
+    data=cur.fetchall()
+    con.commit()
+    con.close()
+    print(data)
+    return data
 
 def getUserData(username):
     con = connect()
@@ -179,11 +198,15 @@ def getUserData(username):
     print(data)
     return data
 
-def insertUser(username,folder_id, secondary_folder_id):
+def insertUser(username, password,folder_id, secondary_folder_id):
     con = connect()
     cur = con.cursor()
+    print(len(password))
+    if(len(password)<=8):
+        con.close()
+        return 0
     try:
-        cur.execute("Insert into user (username,base_folder_id,secondary_folder_id) values ('{username}','{folder_id}', '{secondary_folder_id}');".format(username=username, folder_id=folder_id, secondary_folder_id=secondary_folder_id))
+        cur.execute("Insert into user (password,username,base_folder_id,secondary_folder_id) values ('{password}','{username}','{folder_id}', '{secondary_folder_id}');".format(password=password, username=username, folder_id=folder_id, secondary_folder_id=secondary_folder_id))
         con.commit()
         con.close()
         return 1
@@ -269,19 +292,20 @@ def deleteVersion(dFile_id):
         cur.execute("Delete from lastVersions where last_version_id = '{dFile_id}';".format(dFile_id=dFile_id))
         con.commit()
         con.close()
+        print("DELETED", dFile_id)
         return 1
     except Exception as e:
         print(e)
         con.close()
         return 0
 
-# def modifyUser(mpassword,mUsername):
-#     con = connect()
-#     cur = con.cursor()
-#     cur.execute("Update User set password ='{mpassword}' where username = '{musername}';".format(mpassword=mpassword, mUsername=mUsername, musername=mUsername))
-#     con.commit()
-#     con.close()
-#     return 1
+def modifyUser(mpassword,mUsername):
+    con = connect()
+    cur = con.cursor()
+    cur.execute("Update User set password ='{mpassword}' where username = '{musername}';".format(mpassword=mpassword, mUsername=mUsername, musername=mUsername))
+    con.commit()
+    con.close()
+    return 1
 
 def modifyFolder(mfolder_path,mfolder_id):
     con = connect()
@@ -361,3 +385,14 @@ def deletelog():
     con.commit()
     con.close()
     return 1
+
+def is_twoStated(filePath):
+    con = connect()
+    cur = con.cursor()
+    print("hii: ",filePath)
+    cur.execute(f"SELECT * FROM lastversions where main_file_id=( SELECT file_id FROM file where filepath='{filePath}');")
+    data=cur.fetchall()
+    con.commit()
+    con.close()
+    print(data)
+    return data!=[[]]

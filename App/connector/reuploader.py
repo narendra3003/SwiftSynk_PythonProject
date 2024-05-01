@@ -1,4 +1,5 @@
 from connector.folderoprations import *
+# import state_features as stf
 import requests, time
 
 def modifiedUploader(username=mainUser.username):
@@ -15,10 +16,20 @@ def modifiedUploader(username=mainUser.username):
                 print("\n\n\n")
         time.sleep(1)
 
+
 def reUpload(file_path, drive_folder_id=mainUser.base_drive_folder_id, credentials_file_path=credentials_file_path):
     # file_name=os.path.basename(file_path)
+    twoStated=dbm.is_twoStated(file_path)
     id=get_file_id(file_path, drive_folder_id)
     print("here: ",id)
+    if(twoStated):
+        print("isTwoStated")
+        versionID=dbm.getVersion(id)
+        dbm.deleteVersion(versionID)
+        delete_file_from_drive(file_path, drive_folder_id, credentials_file_path)
+        newID=upload_file_to_drive(file_path, drive_folder_id, credentials_file_path)
+        dbm.insertVersion(versionID, newID)
+        return
     if(id!=None):
         delete_file_from_drive(file_path, drive_folder_id, credentials_file_path)
     upload_file_to_drive(file_path, drive_folder_id, credentials_file_path)
