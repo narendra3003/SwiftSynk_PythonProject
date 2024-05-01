@@ -288,8 +288,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     connector.fileoprations.upload_file_to_drive(file_path)
                     self.refresh_table()
 
-    flag_2st = 0 #flag for 2state buttons
-
     def show_files_on_table(self, selected_files):
         for file_path in selected_files:
             file_info = QtCore.QFileInfo(file_path)
@@ -326,13 +324,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             item_size.setTextAlignment(QtCore.Qt.AlignCenter)
             self.table.setItem(row_position, 3, item_size)
 
-            if(self.flag_2st == 0):
-                item_2st = QtWidgets.QTableWidgetItem()
-                item_2st.setIcon(QtGui.QIcon(imgpath + "\\2stateinit.png")) # initiate 2state
-                item_2st.setTextAlignment(QtCore.Qt.AlignCenter)
-                self.table.setItem(row_position, 7, item_2st)
 
-            elif(self.flag_2st == 1):
+            if(dbm.is_twoStated(file_path)):
                 item_2down = QtWidgets.QTableWidgetItem()
                 item_2down.setIcon(QtGui.QIcon(imgpath + "\\download.png")) #download
                 item_2down.setTextAlignment(QtCore.Qt.AlignCenter)
@@ -344,9 +337,15 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.table.setItem(row_position, 6, item_retnew)
 
                 item_2stop = QtWidgets.QTableWidgetItem()
-                item_2stop.setIcon(QtGui.QIcon(imgpath + "\\front-arrow.png")) #deete previous, retain current
+                item_2stop.setIcon(QtGui.QIcon(imgpath + "\\front-arrow.png")) #delete previous, retain current
                 item_2stop.setTextAlignment(QtCore.Qt.AlignCenter)
                 self.table.setItem(row_position, 7, item_2stop)
+
+            else:
+                item_2st = QtWidgets.QTableWidgetItem()
+                item_2st.setIcon(QtGui.QIcon(imgpath + "\\2stateinit.png")) # initiate 2state
+                item_2st.setTextAlignment(QtCore.Qt.AlignCenter)
+                self.table.setItem(row_position, 7, item_2st)
 
             item_ps = QtWidgets.QTableWidgetItem()
             item_ps.setIcon(QtGui.QIcon(imgpath + "\\pause.png"))
@@ -414,7 +413,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             else:
                 QtWidgets.QMessageBox.warning(self, "Folder Not Found", "The folder does not exist.")
 
-        elif (column == 5 and os.path.isfile(self.table.item(row, 10).text()) and self.flag_2st == 1):
+        elif (column == 5 and os.path.isfile(self.table.item(row, 10).text()) and dbm.is_twoStated(self.table.item(row, 10).text())):
             msg_box = QtWidgets.QMessageBox()
             msg_box.setIcon(QtWidgets.QMessageBox.Question)
             msg_box.setWindowTitle("Download Previous State File?")
@@ -426,7 +425,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 #download file
                 pass
 
-        elif (column == 6 and os.path.isfile(self.table.item(row, 10).text()) and self.flag_2st == 1):
+        elif (column == 6 and os.path.isfile(self.table.item(row, 10).text()) and dbm.is_twoStated(self.table.item(row, 10).text())):
             msg_box = QtWidgets.QMessageBox()
             msg_box.setIcon(QtWidgets.QMessageBox.Question)
             msg_box.setWindowTitle("Retain Previous state?")
@@ -436,14 +435,24 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             result = msg_box.exec_()
             if result == QtWidgets.QMessageBox.Yes:
                 #retain previous, delete new
-                self.flag_2st = 0
                 self.refresh_table()
                 pass
 
         elif (column == 7 and os.path.isfile(self.table.item(row, 10).text())):
             msg_box = QtWidgets.QMessageBox()
             msg_box.setIcon(QtWidgets.QMessageBox.Question)
-            if (self.flag_2st == 0):
+
+            if (dbm.is_twoStated(self.table.item(row, 10).text())):
+                msg_box.setWindowTitle("Keep Current state?")
+                msg_box.setText("Do you want to delete this file's previous state and keep only the current state on Drive?")
+                msg_box.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
+                msg_box.setDefaultButton(QtWidgets.QMessageBox.No)
+                result = msg_box.exec_()
+                if result == QtWidgets.QMessageBox.Yes:
+                    #retain current, delete previous
+                    self.refresh_table()
+
+            else:
                 msg_box.setWindowTitle("Note")
                 msg_box.setText("Do you want to initiate 2 State for this file?")
                 msg_box.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
@@ -452,18 +461,6 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 if result == QtWidgets.QMessageBox.Yes:
                     #2state initiation function here
                     connector.state_features.create_state2_file(self.table.item(row, 10).text())
-                    self.flag_2st = 1
-                    self.refresh_table()
-
-            elif (self.flag_2st == 1):
-                msg_box.setWindowTitle("Keep Current state?")
-                msg_box.setText("Do you want to delete this file's previous state and keep only the current state on Drive?")
-                msg_box.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
-                msg_box.setDefaultButton(QtWidgets.QMessageBox.No)
-                result = msg_box.exec_()
-                if result == QtWidgets.QMessageBox.Yes:
-                    #retain current, delete previous
-                    self.flag_2st = 0
                     self.refresh_table()
 
             
