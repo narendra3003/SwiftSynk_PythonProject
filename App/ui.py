@@ -1,11 +1,11 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QGraphicsDropShadowEffect, QTableWidget
 from PyQt5.QtCore import Qt
+from Images import resources
 
 #copy your 'Images' folder path & paste it here with double backslash
 # imgpath = "C:\\Projects\\SEM 4\\SwiftSynk_PythonProject\\App\\Images" #Saif
 imgpath = r"C:\Users\tupti\OneDrive\Desktop\new Lang\Sem4\SwiftSynk_PythonProject\App\Images" #Narendra
-
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -16,11 +16,11 @@ class Ui_MainWindow(object):
         MainWindow.setStyleSheet("#widget1{\n"
 "    background-color: #DCECE\n"
 "}\n"
-"#leftmenu, #leftmenu2, #leftmenu3{\n"
+"#leftmenu, #leftmenu2, #leftmenu3, #leftmenu4{\n"
 "    background-color: rgb(56, 68, 101);\n"
 "    border-radius: 5\n"
 "}\n"
-"#lmhome,#lmlog,#lmuser,#lmfav,#lmhome2,#lmlog2,#lmuser2,#lmfav2,#lmhome3,#lmlog3,#lmuser3,#lmfav3{\n"
+"#lmhome,#lmlog,#lmuser,#lmhome2,#lmlog2,#lmuser2,#lmhome3,#lmlog3,#lmuser3,#lmuser4, #lmhome4, #lmlog4{\n"
 "    background-color:transparent\n"
 "}\n"
 "#table, #table2, #logtable{\n"
@@ -62,9 +62,10 @@ class Ui_MainWindow(object):
 "    border-radius: 5\n"
 "}\n"
 "\n"
-"#emailbox,#passbox,#emailbox_su,#passbox_su,#unamebox_su{\n"
-"    border-radius: 5;\n"
-"    color: rgb(56, 68, 101)"
+"#unamebox_su{\n"
+"    border-radius: 10;\n"
+"    color: rgb(56, 68, 101);\n"
+"    background-color: rgb(205, 219, 219)\n"
 "}\n"
 "#signupswitch{\n"
 "    background-color: transparent\n"
@@ -95,11 +96,6 @@ class Ui_MainWindow(object):
 "    background-color: rgb(205, 219, 219);\n"
 "    border-radius: 15\n"
 "}\n"
-"#searchtab1,#searchtab2{\n"
-"    background-color: rgb(205, 219, 219);\n"
-"    border: none;\n"
-"    border-radius: 5\n"
-"}\n"
 "#backbutton, #closebut, #closebut2, #closebut3, #refresh_but, #dellog_but{\n"
 "    background-color: rgb(205, 219, 219);\n"
 "    border-radius: 5;\n"
@@ -108,6 +104,62 @@ class Ui_MainWindow(object):
 "}\n"
 "#user_wid, #user_wid2, #user_wid3{\n"
 "    background-color: rgb(205, 219, 219);\n"
+"    border-radius: 5\n"
+"}\n"
+"QLineEdit:focus{\n"
+"       border: 2px solid grey;\n"
+"}\n"
+"QScrollBar:vertical\n"
+"    {\n"
+"        background-color: #2A2929;\n"
+"        width: 15px;\n"
+"        margin: 15px 3px 15px 3px;\n"
+"        border: 1px transparent #2A2929;\n"
+"        border-radius: 4px;\n"
+"    }\n"
+"\n"
+"    QScrollBar::handle:vertical\n"
+"    {\n"
+"        background-color: #CDDBDB;\n"
+"        min-height: 5px;\n"
+"        border-radius: 4px;\n"
+"    }\n"
+"\n"
+"    QScrollBar::sub-line:vertical\n"
+"    {\n"
+"        margin: 3px 0px 3px 0px;\n"
+"        border-image: url(:/qss_icons/rc/up_arrow_disabled.png);\n"
+"        height: 10px;\n"
+"        width: 10px;\n"
+"        subcontrol-position: top;\n"
+"        subcontrol-origin: margin;\n"
+"    }\n"
+"\n"
+"    QScrollBar::add-line:vertical\n"
+"    {\n"
+"        margin: 3px 0px 3px 0px;\n"
+"        border-image: url(:/qss_icons/rc/down_arrow_disabled.png);\n"
+"        height: 10px;\n"
+"        width: 10px;\n"
+"        subcontrol-position: bottom;\n"
+"        subcontrol-origin: margin;\n"
+"    }\n"
+"\n"
+"    QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical\n"
+"    {\n"
+"        background: none;\n"
+"    }\n"
+"\n"
+"    QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical\n"
+"    {\n"
+"        background: none;\n"
+"    }\n"
+"\n"
+"#userlabel, #folderno, #fileno {\n"
+"    color: rgb(56, 68, 101);\n"
+"}\n"
+"#logout{\n"
+"    background-color: rgb(56, 68, 101);\n"
 "    border-radius: 5\n"
 "}\n"
 "")
@@ -246,14 +298,6 @@ class Ui_MainWindow(object):
         self.lmlog.setIcon(icon1)
         self.lmlog.setIconSize(QtCore.QSize(30, 30))
         self.lmlog.setObjectName("lmlog")
-        self.lmfav = QtWidgets.QPushButton(self.leftmenu)
-        self.lmfav.setGeometry(QtCore.QRect(20, 180, 46, 46))
-        self.lmfav.setText("")
-        icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap(imgpath+"\\starr.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.lmfav.setIcon(icon2)
-        self.lmfav.setIconSize(QtCore.QSize(30, 30))
-        self.lmfav.setObjectName("lmfav")
         self.lmuser = QtWidgets.QPushButton(self.leftmenu)
         self.lmuser.setGeometry(QtCore.QRect(20, 640, 46, 46))
         self.lmuser.setText("")
@@ -262,16 +306,6 @@ class Ui_MainWindow(object):
         self.lmuser.setIcon(icon3)
         self.lmuser.setIconSize(QtCore.QSize(30, 30))
         self.lmuser.setObjectName("lmuser")
-        self.searchtab1 = QtWidgets.QLineEdit(self.page)
-        self.searchtab1.setGeometry(QtCore.QRect(798, 40, 242, 40))
-        font = QtGui.QFont()
-        font.setFamily("Bahnschrift")
-        font.setBold(True)
-        font.setWeight(75)
-        self.searchtab1.setFont(font)
-        self.searchtab1.setInputMask("")
-        self.searchtab1.setText("")
-        self.searchtab1.setObjectName("searchtab1")
         self.label_12 = QtWidgets.QLabel(self.page)
         self.label_12.setGeometry(QtCore.QRect(160, 20, 222, 62))
         font = QtGui.QFont()
@@ -383,12 +417,6 @@ class Ui_MainWindow(object):
         self.lmlog2.setIcon(icon1)
         self.lmlog2.setIconSize(QtCore.QSize(30, 30))
         self.lmlog2.setObjectName("lmlog2")
-        self.lmfav2 = QtWidgets.QPushButton(self.leftmenu2)
-        self.lmfav2.setGeometry(QtCore.QRect(20, 180, 46, 46))
-        self.lmfav2.setText("")
-        self.lmfav2.setIcon(icon2)
-        self.lmfav2.setIconSize(QtCore.QSize(30, 30))
-        self.lmfav2.setObjectName("lmfav2")
         self.pathlabel = QtWidgets.QLabel(self.page_2)
         self.pathlabel.setGeometry(QtCore.QRect(160, 20, 522, 62))
         font = QtGui.QFont()
@@ -405,6 +433,82 @@ class Ui_MainWindow(object):
         self.stackedWidget.addWidget(self.page_2)
         self.page_3 = QtWidgets.QWidget()
         self.page_3.setObjectName("page_3")
+        self.textBrowser = QtWidgets.QTextBrowser(self.page_3)
+        self.textBrowser.setGeometry(QtCore.QRect(120, 140, 942, 582))
+        font = QtGui.QFont()
+        font.setFamily("Bahnschrift")
+        font.setPointSize(14)
+        font.setBold(True)
+        font.setWeight(75)
+        self.textBrowser.setFont(font)
+        self.textBrowser.setStyleSheet("background-color: rgb(56, 68, 101);\n"
+"border-radius: 5")
+        self.textBrowser.setObjectName("textBrowser")
+        self.userlabel = QtWidgets.QLabel(self.page_3)
+        self.userlabel.setGeometry(QtCore.QRect(140, 40, 342, 32))
+        font = QtGui.QFont()
+        font.setFamily("Bahnschrift")
+        font.setPointSize(16)
+        font.setBold(True)
+        font.setWeight(75)
+        self.userlabel.setFont(font)
+        self.userlabel.setObjectName("userlabel")
+        self.fileno = QtWidgets.QLabel(self.page_3)
+        self.fileno.setGeometry(QtCore.QRect(140, 90, 282, 32))
+        font = QtGui.QFont()
+        font.setFamily("Bahnschrift")
+        font.setPointSize(12)
+        font.setBold(False)
+        font.setWeight(50)
+        self.fileno.setFont(font)
+        self.fileno.setObjectName("fileno")
+        self.folderno = QtWidgets.QLabel(self.page_3)
+        self.folderno.setGeometry(QtCore.QRect(480, 90, 282, 32))
+        font = QtGui.QFont()
+        font.setFamily("Bahnschrift")
+        font.setPointSize(12)
+        font.setBold(False)
+        font.setWeight(50)
+        self.folderno.setFont(font)
+        self.folderno.setObjectName("folderno")
+        self.logout = QtWidgets.QPushButton(self.page_3)
+        self.logout.setGeometry(QtCore.QRect(980, 40, 62, 62))
+        self.logout.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.logout.setText("")
+        icon4 = QtGui.QIcon()
+        icon4.addPixmap(QtGui.QPixmap(imgpath+"\\power-button.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.logout.setIcon(icon4)
+        self.logout.setIconSize(QtCore.QSize(32, 32))
+        self.logout.setObjectName("logout")
+        self.url = QtWidgets.QLabel(self.page_3)
+        self.url.setGeometry(QtCore.QRect(480, 30, 342, 32))
+        font = QtGui.QFont()
+        font.setFamily("Bahnschrift")
+        font.setPointSize(10)
+        self.url.setFont(font)
+        self.url.setText("")
+        self.url.setObjectName("url")
+        self.leftmenu4 = QtWidgets.QWidget(self.page_3)
+        self.leftmenu4.setGeometry(QtCore.QRect(20, 20, 82, 700))
+        self.leftmenu4.setObjectName("leftmenu4")
+        self.lmuser4 = QtWidgets.QPushButton(self.leftmenu4)
+        self.lmuser4.setGeometry(QtCore.QRect(20, 640, 46, 46))
+        self.lmuser4.setText("")
+        self.lmuser4.setIcon(icon3)
+        self.lmuser4.setIconSize(QtCore.QSize(30, 30))
+        self.lmuser4.setObjectName("lmuser4")
+        self.lmhome4 = QtWidgets.QPushButton(self.leftmenu4)
+        self.lmhome4.setGeometry(QtCore.QRect(20, 40, 46, 46))
+        self.lmhome4.setText("")
+        self.lmhome4.setIcon(icon)
+        self.lmhome4.setIconSize(QtCore.QSize(30, 30))
+        self.lmhome4.setObjectName("lmhome4")
+        self.lmlog4 = QtWidgets.QPushButton(self.leftmenu4)
+        self.lmlog4.setGeometry(QtCore.QRect(20, 110, 46, 46))
+        self.lmlog4.setText("")
+        self.lmlog4.setIcon(icon1)
+        self.lmlog4.setIconSize(QtCore.QSize(30, 30))
+        self.lmlog4.setObjectName("lmlog4")
         self.stackedWidget.addWidget(self.page_3)
         self.page_4 = QtWidgets.QWidget()
         self.page_4.setObjectName("page_4")
@@ -422,7 +526,7 @@ class Ui_MainWindow(object):
         self.label_5.setFont(font)
         self.label_5.setObjectName("label_5")
         self.label_7 = QtWidgets.QLabel(self.signupwid)
-        self.label_7.setGeometry(QtCore.QRect(180, 170, 362, 7))
+        self.label_7.setGeometry(QtCore.QRect(180, 170, 362, 70))
         font = QtGui.QFont()
         font.setFamily("Bahnschrift")
         font.setPointSize(14)
@@ -524,12 +628,6 @@ class Ui_MainWindow(object):
         self.lmlog3.setIcon(icon1)
         self.lmlog3.setIconSize(QtCore.QSize(30, 30))
         self.lmlog3.setObjectName("lmlog3")
-        self.lmfav3 = QtWidgets.QPushButton(self.leftmenu3)
-        self.lmfav3.setGeometry(QtCore.QRect(20, 180, 46, 46))
-        self.lmfav3.setText("")
-        self.lmfav3.setIcon(icon2)
-        self.lmfav3.setIconSize(QtCore.QSize(30, 30))
-        self.lmfav3.setObjectName("lmfav3")
         self.logtable = QtWidgets.QTableWidget(self.page_6)
         self.logtable.setGeometry(QtCore.QRect(140, 98, 900, 622))
         self.logtable.setStyleSheet("::section {\n"
@@ -608,16 +706,6 @@ class Ui_MainWindow(object):
         self.label_14.setFont(font)
         self.label_14.setStyleSheet("color: rgb(56, 68, 101)")
         self.label_14.setObjectName("label_14")
-        self.searchtab2 = QtWidgets.QLineEdit(self.page_6)
-        self.searchtab2.setGeometry(QtCore.QRect(798, 40, 242, 40))
-        font = QtGui.QFont()
-        font.setFamily("Bahnschrift")
-        font.setBold(True)
-        font.setWeight(75)
-        self.searchtab2.setFont(font)
-        self.searchtab2.setInputMask("")
-        self.searchtab2.setText("")
-        self.searchtab2.setObjectName("searchtab2")
         self.refresh_but = QtWidgets.QPushButton(self.page_6)
         self.refresh_but.setGeometry(QtCore.QRect(700, 40, 70, 40))
         font = QtGui.QFont()
@@ -671,6 +759,36 @@ class Ui_MainWindow(object):
         item.setText(_translate("MainWindow", "Size"))
         self.backbutton.setText(_translate("MainWindow", "◀ Back"))
         self.pathlabel.setText(_translate("MainWindow", "Folder"))
+        self.textBrowser.setHtml(_translate("MainWindow", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'Bahnschrift\'; font-size:14pt; font-weight:600; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; color:#cddbdb;\">User Guide [ </span><span style=\" font-size:12pt; font-weight:400; color:#cddbdb;\">ℹ ]</span><span style=\" font-size:12pt; color:#cddbdb;\">: </span></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; color:#cddbdb;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; font-weight:400; color:#cddbdb;\"> </span><img src=\":/newPrefix/book-alt.png\" width=\"30\" height=\"30\" /><span style=\" font-size:12pt; color:#cddbdb;\">  Log Files</span><span style=\" font-size:12pt; font-weight:400; color:#cddbdb;\"> - Contains all the synced/unsynced files/folders along with the user logs. Log files can be cleared using the delete button present beneath the table.</span></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:400; color:#cddbdb;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><img src=\":/newPrefix/pause.png\" width=\"30\" height=\"30\" /><span style=\" font-size:12pt; color:#cddbdb;\">  Pause Sync</span><span style=\" font-size:12pt; font-weight:400; color:#cddbdb;\"> - This button pauses the sync of that file/folder and stops reflecting the changes made on your local device onto the drive. After a file/folder\'s sync is paused, the button can be pressed again to restart the sync. The status of the file would display if the file/folder sync is paused or not.</span></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:400; color:#cddbdb;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><img src=\":/newPrefix/remove.png\" width=\"30\" height=\"30\" /><span style=\" font-size:12pt; color:#cddbdb;\">  Stop Sync</span><span style=\" font-size:12pt; font-weight:400; color:#cddbdb;\"> - This button stops the syncing and also deletes the file from the drive. If clicked while a file is in 2-state then both the previous file and the current file would be deleted from the drive.</span></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:400; color:#cddbdb;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><img src=\":/newPrefix/2stateinit.png\" width=\"30\" height=\"30\" /><span style=\" font-size:12pt; color:#cddbdb;\">  Initiate 2-state</span><span style=\" font-size:12pt; font-weight:400; color:#cddbdb;\"> - This button initiates 2-state for the file. Once initiated, the current state of the file is saved on a secondary folder on the drive, this file acts a savepoint. In the main folder, the file\'s sync goes on continuously. Due to any problem/needs the previous saved file(savepoint) can be restored.</span></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:400; color:#cddbdb;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><img src=\":/newPrefix/clock1.png\" width=\"30\" height=\"30\" /><span style=\" font-size:12pt; color:#cddbdb;\">  Delete current, retain previous</span><span style=\" font-size:12pt; font-weight:400; color:#cddbdb;\"> - This button appears for the 2-state initiated files. It deletes the current syncing file from the main folder of drive and brings in the previously saved file(savepoint) from the secondary folder onto the main folder and starts syncing this newly brought file. It can be used to go back to the previous savepoint. </span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; font-weight:400; text-decoration: underline; color:#cddbdb;\">Note:</span><span style=\" font-size:12pt; font-weight:400; color:#cddbdb;\"> This stops the 2-state for the file and initiates normal sync for this newly brought file.</span></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:400; color:#cddbdb;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><img src=\":/newPrefix/clock2.png\" width=\"30\" height=\"30\" /><span style=\" font-size:12pt; color:#cddbdb;\">  Delete previous, retain current</span><span style=\" font-size:12pt; font-weight:400; color:#cddbdb;\"> - This button appears for the 2-state initiated files. It deletes the previously saved file(savepoint) from the main folder of drive and keeps the currently syncing file only in the main folder and continues it\'s sync normally. It can be used to delete the previous savepoint. </span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; font-weight:400; text-decoration: underline; color:#cddbdb;\">Note:</span><span style=\" font-size:12pt; font-weight:400; color:#cddbdb;\"> This stops the 2-state for the file and continues normal sync of the current file.</span></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:400; color:#cddbdb;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><img src=\":/newPrefix/exchange.png\" width=\"30\" height=\"30\" /><span style=\" font-size:12pt; color:#cddbdb;\">  Change previous and current 2-state files(Step process) - </span><span style=\" font-size:12pt; font-weight:400; color:#cddbdb;\">For 2-state files. It changes the previously saved file(savepoint) with the current file and saves it in the secondary folder making a new savepoint and starts syncing the changes in this file in the primary folder. This can be used to make a new savepoint and remove the previous savepoint. The 2-state syncing continues for this file.</span></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:400; color:#cddbdb;\"><br /></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><img src=\":/newPrefix/download.png\" width=\"30\" height=\"30\" /><span style=\" font-size:12pt; color:#cddbdb;\">  Download savepoint file - </span><span style=\" font-size:12pt; font-weight:400; color:#cddbdb;\">For 2-state files. It can be used to download the previous </span></p>\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><span style=\" font-size:12pt; font-weight:400; color:#cddbdb;\">state(savepoint) of the file if required and continuing the 2-state sync normally.</span></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:400; color:#cddbdb;\"><br /></p>\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:400; color:#cddbdb;\"><br /></p></body></html>"))
+        self.userlabel.setText(_translate("MainWindow", "Username"))
+        self.fileno.setText(_translate("MainWindow", "Total Files Synced: "))
+        self.folderno.setText(_translate("MainWindow", "Total Folders Synced: "))
+        self.logout.setToolTip(_translate("MainWindow", "Delete Account"))
         self.backbutton.setToolTip(_translate("MainWindow", "Go Back to Files"))
         self.label_5.setText(_translate("MainWindow", "Start Syncing🔁"))
         self.label_7.setText(_translate("MainWindow", "Connect with your digital identity!\n"

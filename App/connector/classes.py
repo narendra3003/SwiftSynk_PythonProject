@@ -1,6 +1,6 @@
 
 class User:
-    def _init_(self, username=None, base_drive_folder_id=None, secondary_folder_id=None):
+    def _init_(self, username=None, base_drive_folder_id="", secondary_folder_id=""):
         self.username=username
         self.base_drive_folder_id=base_drive_folder_id
         self.secondary_folder_id=secondary_folder_id
@@ -14,9 +14,3 @@ class User:
         self.username=None
         self.base_drive_folder_id=None
         self.secondary_folder_id=None
-
-
-
-mainUser=User()
-def isUserPresent():
-    return mainUser.username!=None

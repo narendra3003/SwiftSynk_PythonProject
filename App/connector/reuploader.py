@@ -4,7 +4,7 @@ import requests, time
 
 def modifiedUploader(username=mainUser.username):
     while True:
-        if(not IsInternet()):
+        if(not (IsInternet() and isUserPresent())):
             continue
         files_toCheck=dbm.getFiles(username)
         for file in files_toCheck:

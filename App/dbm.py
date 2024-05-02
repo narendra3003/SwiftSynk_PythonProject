@@ -245,6 +245,32 @@ def insertVersion(version_file_id,file_id):
     con.close()
     return 1
 
+def deleteAllUserData(dusername):
+    con = connect()
+    cur = con.cursor()
+    try:
+        cur.execute("Delete from file where folder_id in (SELECT folder_id FROM folder where username= '{dusername}');".format(dusername=dusername))
+        cur.execute("Delete from folder where username = '{dusername}';".format(dusername=dusername))
+        cur.execute("Delete from User where username = '{dusername}';".format(dusername=dusername))
+        con.commit()
+    except Exception as e:
+        print(e)
+        con.close()
+        return 0
+    con.close()
+    return 1
+
+def countFiles():
+    con = connect()
+    cur = con.cursor()
+    cur.execute("select count(*) as number from file;")
+    file=cur.fetchone()
+    cur.execute("select count(*) as number from folder where folder_path not like '%BASE' and folder_path not like '%SECOND%';")
+    folder=cur.fetchone()
+    con.commit()
+    con.close()
+    return file, folder
+
 def deleteUser(dusername):
     con = connect()
     cur = con.cursor()

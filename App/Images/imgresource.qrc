@@ -1,0 +1,13 @@
+<RCC>
+  <qresource prefix="newPrefix">
+    <file>2stateinit.png</file>
+    <file>book-alt.png</file>
+    <file>clock1.png</file>
+    <file>clock2.png</file>
+    <file>download.png</file>
+    <file>exchange.png</file>
+    <file>home2.png</file>
+    <file>pause.png</file>
+    <file>remove.png</file>
+  </qresource>
+</RCC>

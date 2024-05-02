@@ -45,7 +45,9 @@ create table logtable(
     Tablename varchar (20),
     activity varchar (20),
     descript varchar (100),
-    Time_stamp datetime
+    Time_stamp datetime,
+    -- username varchar (50),
+    -- foreign key (username) references User(username)
 );
 
 

@@ -36,6 +36,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.ui = Ui_MainWindow()
         self.setupUi(self)
         self.populate_log_table()
+        self.userlabel.setText(str(dbm.getUsers()[0][0]))
         self.syncButton.clicked.connect(self.sync_files)
         self.syncButton2.clicked.connect(self.sync_folders)
         self.table.cellDoubleClicked.connect(self.open_item_explorer)
@@ -44,18 +45,43 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.backbutton.clicked.connect(self.go_to_page)
         self.gdrivebutton.clicked.connect(self.gdrive)
         self.signupbutton.clicked.connect(self.signup)
-        for button in [self.lmhome,self.lmhome2, self.lmhome3]:
+        for button in [self.lmhome,self.lmhome2, self.lmhome3, self.lmhome4]:
             button.clicked.connect(self.home)
-        for button in [self.lmlog,self.lmlog2, self.lmlog3]:
+        for button in [self.lmlog,self.lmlog2, self.lmlog3, self.lmlog4]:
             button.clicked.connect(self.log)
+        for button in [self.lmuser,self.lmuser2, self.lmuser3, self.lmuser4]:
+            button.clicked.connect(self.user)
         self.refresh_but.clicked.connect(self.populate_log_table)
         self.dellog_but.clicked.connect(self.deleteLogRecords)
+        self.logout.clicked.connect(self.deleteuser)
 
         if(dbm.getUsers() != ()):
             self.stackedWidget.setCurrentWidget(self.page)
         else:
             self.stackedWidget.setCurrentWidget(self.page_5)
         
+
+    def deleteuser(self):
+        msg_box = QtWidgets.QMessageBox()
+        msg_box.setIcon(QtWidgets.QMessageBox.Warning)
+        msg_box.setWindowTitle("Delete Warning")
+        msg_box.setText("Do you want to delete the account with all the files on drive?")
+        msg_box.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
+        msg_box.setDefaultButton(QtWidgets.QMessageBox.No)
+        result = msg_box.exec_()
+        if result == QtWidgets.QMessageBox.Yes:
+            msg_box.setWindowTitle("Delete Warning")
+            msg_box.setText("Delete the account with all the files on drive?")
+            msg_box.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
+            msg_box.setDefaultButton(QtWidgets.QMessageBox.No)
+            result = msg_box.exec_()
+            if result == QtWidgets.QMessageBox.Yes:
+                # delete the user with all the files
+                pass
+        else:
+            #delete user without deleting files
+            pass
+
 
     def deleteLogRecords(self):
         msg_box = QtWidgets.QMessageBox()
@@ -73,6 +99,8 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.stackedWidget.setCurrentWidget(self.page)
     def log(self):
         self.stackedWidget.setCurrentWidget(self.page_6)
+    def user(self):
+        self.stackedWidget.setCurrentWidget(self.page_3)
 
     def gdrive(self):
         # Email address redirect function
@@ -83,11 +111,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             pass
 
     def refresh_table(self):
-        data=dbm.providePaths(connector.basic.mainUser.base_drive_folder_id, connector.basic.mainUser.username)
         for i in reversed(range(self.table.rowCount())):
             self.table.removeRow(i)
+        data=dbm.providePaths(connector.basic.mainUser.base_drive_folder_id, connector.basic.mainUser.username)
         self.show_folders_on_table(data[0])
         self.show_files_on_table(data[1])
+        self.file_count, self.folder_count = dbm.countFiles()
+        self.fileno.setText("Total Files Synced: "+ str(self.file_count[0]))
+        self.folderno.setText("Total Folders Synced: "+ str(self.folder_count[0]))
 
 
     def signup(self):
@@ -98,12 +129,17 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         connector.authentication.grant_access(service, base_drive_folder_id)
         secondary_folder_id=connector.folderoprations.create_folder_in_parent_on_drive("Second_space", base_drive_folder_id)
         signedUp=dbm.insertUser(username, base_drive_folder_id, secondary_folder_id)
+        connector.basic.mainUser.modifyUser(username, base_drive_folder_id, secondary_folder_id)
 
         if(signedUp==1):
-            self.stackedWidget.setCurrentWidget(self.page)
+            self.stackedWidget.setCurrentWidget(self.page) #correct signUp
         else:
-            QtWidgets.QMessageBox.warning(self,"Signup failed","Error")
+            QtWidgets.QMessageBox.warning(self,"Signup failed","Error") # invalid signUp
 
+    def signOut(self):
+        username=connector.basic.mainUser.username
+        dbm.deleteUser(username)
+        connector.basic.mainUser.modifyUser(None, "", "")
     
     def syncingfiles(self, files):
         print("called and file_path = ", files)
@@ -284,7 +320,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             selected_files = file_dialog.selectedFiles()
             self.syncingfiles(selected_files)
             for file_path in selected_files:
-                print(file_path)
+                print("Syncing file:", file_path)
                 if(dbm.file_already_added(file_path)):
                     QtWidgets.QMessageBox.warning(self, "File Already Exists", "The file '{}' is already being synced.".format(file_path))
                 else:
@@ -294,6 +330,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def show_files_on_table(self, selected_files):
         for file_path in selected_files:
+            print("Normal file: ", file_path)
             file_info = QtCore.QFileInfo(file_path)
             row_position = self.table.rowCount()
             self.table.insertRow(row_position)
@@ -386,7 +423,41 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             log_desc_item.setTextAlignment(QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
             self.logtable.setItem(row_position, 1, log_desc_item)
 
-            
+    def syncingfiles(self, file_path):
+        for file in file_path:
+            print("Populating table with file info:", file)
+            print("Current table row count:", self.table.rowCount())
+
+            file_info = QtCore.QFileInfo(file)
+            row_position = self.table.rowCount()
+            self.table.insertRow(row_position)
+
+            icon = self.icon_provider.icon(file_info)
+            icon_label = QtWidgets.QLabel()
+            icon_label.setPixmap(icon.pixmap(20, 20))
+            icon_label.setAlignment(QtCore.Qt.AlignCenter)
+            self.table.setCellWidget(row_position, 0, icon_label)
+
+            item_name = QtWidgets.QTableWidgetItem(file_info.fileName())
+            item_name.setFont(QtGui.QFont("Bahnschrift Condensed", 10, QtGui.QFont.Bold))
+            item_name.setTextAlignment(QtCore.Qt.AlignCenter)
+            self.table.setItem(row_position, 1, item_name)
+
+            item_status = QtWidgets.QTableWidgetItem("Syncing...")
+            item_status.setFont(QtGui.QFont("Bahnschrift Condensed", 10, QtGui.QFont.Bold))
+            item_status.setForeground(QtGui.QColor('blue'))
+            item_status.setTextAlignment(QtCore.Qt.AlignCenter)
+            self.table.setItem(row_position, 2, item_status)
+
+            item_path = QtWidgets.QTableWidgetItem(file_info.absoluteFilePath())
+            item_path.setFont(QtGui.QFont("Bahnschrift Condensed", 10, QtGui.QFont.Bold))
+            item_path.setTextAlignment(QtCore.Qt.AlignCenter)
+            self.table.setItem(row_position, 11, item_path)
+
+            item_size = QtWidgets.QTableWidgetItem(convert_size(file_info.size()))
+            item_size.setFont(QtGui.QFont("Bahnschrift Condensed", 10, QtGui.QFont.Bold))
+            item_size.setTextAlignment(QtCore.Qt.AlignCenter)
+            self.table.setItem(row_position, 3, item_size)
 
     def open_item_explorer(self, row, column):
         # if column == 3:  
@@ -482,6 +553,13 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 result = msg_box.exec_()
                 if result == QtWidgets.QMessageBox.Yes:
                     connector.state_features.create_state2_file(self.table.item(row, 11).text()) #2state initiation function
+                    tooltip = QtWidgets.QLabel("2-State initiated", self)
+                    tooltip.setStyleSheet("QLabel { background-color: lightgrey; color: black; padding: 4px; border-radius: 4px; font-family: Bahnschrift; }")
+                    tooltip.setGraphicsEffect(self.createShadowEffect())
+                    tooltip.move(510, 680)
+                    tooltip.resize(150, 25)
+                    tooltip.show()
+                    QtCore.QTimer.singleShot(3000, tooltip.hide)
                     self.refresh_table()
 
             
@@ -506,7 +584,22 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 else:
                     dbm.deleteFile(connector.fileoprations.delete_file_from_drive(path))
                 self.table.removeRow(row)
+                tooltip_text = "Deleted " + os.path.basename(path)
+                tooltip = QtWidgets.QLabel(tooltip_text, self)
+                tooltip.setStyleSheet("QLabel { background-color: grey; color: black; padding: 4px; border-radius: 4px; font-family: Bahnschrift; }")
+                tooltip.setGraphicsEffect(self.createShadowEffect())
+                tooltip.move(530, 680)
+                tooltip.resize(60, 25)
+                tooltip.show()
+                QtCore.QTimer.singleShot(3000, tooltip.hide)
             self.refresh_table()
+
+    def createShadowEffect(self):
+        shadow = QtWidgets.QGraphicsDropShadowEffect()
+        shadow.setBlurRadius(5)
+        shadow.setColor(QtGui.QColor(50, 50, 50, 150))
+        shadow.setOffset(2, 2)
+        return shadow
 
 if __name__ == "__main__":
     import sys
