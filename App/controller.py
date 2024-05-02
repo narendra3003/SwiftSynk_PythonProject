@@ -36,7 +36,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.ui = Ui_MainWindow()
         self.setupUi(self)
         self.populate_log_table()
-        self.userlabel.setText(str(dbm.getUsers()[0][0]))
+        self.userlabel.setText(str(dbm.getUsers()[1][0]))
         self.syncButton.clicked.connect(self.sync_files)
         self.syncButton2.clicked.connect(self.sync_folders)
         self.table.cellDoubleClicked.connect(self.open_item_explorer)
@@ -502,7 +502,14 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             msg_box.setDefaultButton(QtWidgets.QMessageBox.Yes)
             result = msg_box.exec_()
             if result == QtWidgets.QMessageBox.Yes:
-                connector.state_features.download_file_from_drive(dbm.getVersion(dbm.give_id_by_path(self.table.item(row, 11).text()))) #retain previous, delete new
+                connector.state_features.download_file_from_drive(dbm.getVersion(dbm.give_id_by_path(self.table.item(row, 11).text()))) #download
+                tooltip = QtWidgets.QLabel("Downloaded", self)
+                tooltip.setStyleSheet("QLabel { background-color: lightgrey; color: black; padding: 4px; border-radius: 4px; font-family: Bahnschrift; }")
+                tooltip.setGraphicsEffect(self.createShadowEffect())
+                tooltip.move(510, 680)
+                tooltip.resize(120, 25)
+                tooltip.show()
+                QtCore.QTimer.singleShot(3000, tooltip.hide)
                 print("should download")
 
         elif (column == 6 and os.path.isfile(self.table.item(row, 11).text()) and dbm.is_twoStated(self.table.item(row, 11).text())):
@@ -515,6 +522,13 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             result = msg_box.exec_()
             if result == QtWidgets.QMessageBox.Yes:
                 connector.state_features.getBackToVersion(self.table.item(row, 11).text()) #retain previous, delete new
+                tooltip = QtWidgets.QLabel("Updates Done", self)
+                tooltip.setStyleSheet("QLabel { background-color: lightgrey; color: black; padding: 4px; border-radius: 4px; font-family: Bahnschrift; }")
+                tooltip.setGraphicsEffect(self.createShadowEffect())
+                tooltip.move(510, 680)
+                tooltip.resize(120, 25)
+                tooltip.show()
+                QtCore.QTimer.singleShot(3000, tooltip.hide)
                 self.refresh_table()
 
         elif (column == 7 and os.path.isfile(self.table.item(row, 11).text()) and dbm.is_twoStated(self.table.item(row, 11).text())):
@@ -529,6 +543,13 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 result = msg_box.exec_()
                 if result == QtWidgets.QMessageBox.Yes:
                     connector.state_features.updateVersion(self.table.item(row, 11).text()) #update version
+                    tooltip = QtWidgets.QLabel("Updated previous version", self)
+                    tooltip.setStyleSheet("QLabel { background-color: lightgrey; color: black; padding: 4px; border-radius: 4px; font-family: Bahnschrift; }")
+                    tooltip.setGraphicsEffect(self.createShadowEffect())
+                    tooltip.move(510, 680)
+                    tooltip.resize(160, 25)
+                    tooltip.show()
+                    QtCore.QTimer.singleShot(3000, tooltip.hide)
                     self.refresh_table()
 
         elif (column == 8 and os.path.isfile(self.table.item(row, 11).text())):
@@ -543,6 +564,13 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                 result = msg_box.exec_()
                 if result == QtWidgets.QMessageBox.Yes:
                     connector.state_features.retainVersion(self.table.item(row, 11).text()) #retain current, delete previous
+                    tooltip = QtWidgets.QLabel("Updates Done", self)
+                    tooltip.setStyleSheet("QLabel { background-color: lightgrey; color: black; padding: 4px; border-radius: 4px; font-family: Bahnschrift; }")
+                    tooltip.setGraphicsEffect(self.createShadowEffect())
+                    tooltip.move(510, 680)
+                    tooltip.resize(120, 25)
+                    tooltip.show()
+                    QtCore.QTimer.singleShot(3000, tooltip.hide)
                     self.refresh_table()
 
             else:
@@ -557,7 +585,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
                     tooltip.setStyleSheet("QLabel { background-color: lightgrey; color: black; padding: 4px; border-radius: 4px; font-family: Bahnschrift; }")
                     tooltip.setGraphicsEffect(self.createShadowEffect())
                     tooltip.move(510, 680)
-                    tooltip.resize(150, 25)
+                    tooltip.resize(120, 25)
                     tooltip.show()
                     QtCore.QTimer.singleShot(3000, tooltip.hide)
                     self.refresh_table()
