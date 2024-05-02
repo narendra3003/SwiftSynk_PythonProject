@@ -29,11 +29,11 @@
    <string notr="true">#widget1{
 	background-color: #DCECE
 }
-#leftmenu, #leftmenu2, #leftmenu3{
+#leftmenu, #leftmenu2, #leftmenu3, #leftmenu4{
 	background-color: rgb(56, 68, 101);
 	border-radius: 5
 }
-#lmhome,#lmlog,#lmuser,#lmfav,#lmhome2,#lmlog2,#lmuser2,#lmfav2,#lmhome3,#lmlog3,#lmuser3,#lmfav3{
+#lmhome,#lmlog,#lmuser,#lmhome2,#lmlog2,#lmuser2,#lmhome3,#lmlog3,#lmuser3,#lmuser4, #lmhome4, #lmlog4{
 	background-color:transparent
 }
 #table1, #table2, #logtable{
@@ -130,7 +130,59 @@
     border: none;
     color: rgb(56, 68, 101)
 }
+QScrollBar:vertical
+    {
+        background-color: #2A2929;
+        width: 15px;
+        margin: 15px 3px 15px 3px;
+        border: 1px transparent #2A2929;
+        border-radius: 4px;
+    }
 
+    QScrollBar::handle:vertical
+    {
+        background-color: #CDDBDB;
+        min-height: 5px;
+        border-radius: 4px;
+    }
+
+    QScrollBar::sub-line:vertical
+    {
+        margin: 3px 0px 3px 0px;
+        border-image: url(:/qss_icons/rc/up_arrow_disabled.png);
+        height: 10px;
+        width: 10px;
+        subcontrol-position: top;
+        subcontrol-origin: margin;
+    }
+
+    QScrollBar::add-line:vertical
+    {
+        margin: 3px 0px 3px 0px;
+        border-image: url(:/qss_icons/rc/down_arrow_disabled.png);
+        height: 10px;
+        width: 10px;
+        subcontrol-position: bottom;
+        subcontrol-origin: margin;
+    }
+
+    QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical
+    {
+        background: none;
+    }
+
+    QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical
+    {
+        background: none;
+    }
+
+#userlabel, #folderno, #fileno {
+	color: rgb(56, 68, 101);
+}
+#logout{
+	background-color: rgb(56, 68, 101);
+	border-radius: 5
+}
 </string>
   </property>
   <widget class="QWidget" name="centralwidget">
@@ -351,29 +403,6 @@ Folders</string>
         </size>
        </property>
       </widget>
-      <widget class="QPushButton" name="lmfav">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>90</y>
-         <width>23</width>
-         <height>23</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="icon">
-        <iconset>
-         <normaloff>Images/starr.png</normaloff>Images/starr.png</iconset>
-       </property>
-       <property name="iconSize">
-        <size>
-         <width>15</width>
-         <height>15</height>
-        </size>
-       </property>
-      </widget>
       <widget class="QPushButton" name="lmuser">
        <property name="geometry">
         <rect>
@@ -397,29 +426,6 @@ Folders</string>
         </size>
        </property>
       </widget>
-     </widget>
-     <widget class="QLineEdit" name="searchtab1">
-      <property name="geometry">
-       <rect>
-        <x>399</x>
-        <y>20</y>
-        <width>121</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Bahnschrift</family>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="inputMask">
-       <string/>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
      </widget>
      <widget class="QLabel" name="label_12">
       <property name="geometry">
@@ -452,7 +458,6 @@ Folders</string>
      <zorder>syncButton</zorder>
      <zorder>leftmenu</zorder>
      <zorder>syncButton2</zorder>
-     <zorder>searchtab1</zorder>
      <zorder>label_12</zorder>
     </widget>
     <widget class="QWidget" name="page_2">
@@ -640,29 +645,6 @@ Folders</string>
         </size>
        </property>
       </widget>
-      <widget class="QPushButton" name="lmfav2">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>90</y>
-         <width>23</width>
-         <height>23</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="icon">
-        <iconset>
-         <normaloff>Images/starr.png</normaloff>Images/starr.png</iconset>
-       </property>
-       <property name="iconSize">
-        <size>
-         <width>15</width>
-         <height>15</height>
-        </size>
-       </property>
-      </widget>
      </widget>
      <widget class="QLabel" name="pathlabel">
       <property name="geometry">
@@ -692,7 +674,248 @@ Folders</string>
       </property>
      </widget>
     </widget>
-    <widget class="QWidget" name="page_3"/>
+    <widget class="QWidget" name="page_3">
+     <widget class="QTextBrowser" name="textBrowser">
+      <property name="geometry">
+       <rect>
+        <x>60</x>
+        <y>70</y>
+        <width>471</width>
+        <height>291</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Bahnschrift</family>
+        <pointsize>14</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="styleSheet">
+       <string notr="true">background-color: rgb(56, 68, 101);
+border-radius: 5</string>
+      </property>
+      <property name="html">
+       <string>&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:'Bahnschrift'; font-size:14pt; font-weight:600; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; color:#cddbdb;&quot;&gt;User Guide [ &lt;/span&gt;&lt;span style=&quot; font-size:12pt; font-weight:400; color:#cddbdb;&quot;&gt;ℹ ]&lt;/span&gt;&lt;span style=&quot; font-size:12pt; color:#cddbdb;&quot;&gt;: &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; color:#cddbdb;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:400; color:#cddbdb;&quot;&gt; &lt;/span&gt;&lt;img src=&quot;:/newPrefix/book-alt.png&quot; width=&quot;15&quot; height=&quot;15&quot; /&gt;&lt;span style=&quot; font-size:12pt; color:#cddbdb;&quot;&gt;  Log Files&lt;/span&gt;&lt;span style=&quot; font-size:12pt; font-weight:400; color:#cddbdb;&quot;&gt; - Contains all the synced/unsynced files/folders along with the user logs. Log files can be cleared using the delete button present beneath the table.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:400; color:#cddbdb;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;img src=&quot;:/newPrefix/pause.png&quot; width=&quot;15&quot; height=&quot;15&quot; /&gt;&lt;span style=&quot; font-size:12pt; color:#cddbdb;&quot;&gt;  Pause Sync&lt;/span&gt;&lt;span style=&quot; font-size:12pt; font-weight:400; color:#cddbdb;&quot;&gt; - This button pauses the sync of that file/folder and stops reflecting the changes made on your local device onto the drive. After a file/folder's sync is paused, the button can be pressed again to restart the sync. The status of the file would display if the file/folder sync is paused or not.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:400; color:#cddbdb;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;img src=&quot;:/newPrefix/remove.png&quot; width=&quot;15&quot; height=&quot;15&quot; /&gt;&lt;span style=&quot; font-size:12pt; color:#cddbdb;&quot;&gt;  Stop Sync&lt;/span&gt;&lt;span style=&quot; font-size:12pt; font-weight:400; color:#cddbdb;&quot;&gt; - This button stops the syncing and also deletes the file from the drive. If clicked while a file is in 2-state then both the previous file and the current file would be deleted from the drive.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:400; color:#cddbdb;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;img src=&quot;:/newPrefix/2stateinit.png&quot; width=&quot;15&quot; height=&quot;15&quot; /&gt;&lt;span style=&quot; font-size:12pt; color:#cddbdb;&quot;&gt;  Initiate 2-state&lt;/span&gt;&lt;span style=&quot; font-size:12pt; font-weight:400; color:#cddbdb;&quot;&gt; - This button initiates 2-state for the file. Once initiated, the current state of the file is saved on a secondary folder on the drive, this file acts a savepoint. In the main folder, the file's sync goes on continuously. Due to any problem/needs the previous saved file(savepoint) can be restored.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:400; color:#cddbdb;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;img src=&quot;:/newPrefix/clock1.png&quot; width=&quot;15&quot; height=&quot;15&quot; /&gt;&lt;span style=&quot; font-size:12pt; color:#cddbdb;&quot;&gt;  Delete current, retain previous&lt;/span&gt;&lt;span style=&quot; font-size:12pt; font-weight:400; color:#cddbdb;&quot;&gt; - This button appears for the 2-state initiated files. It deletes the current syncing file from the main folder of drive and brings in the previously saved file(savepoint) from the secondary folder onto the main folder and starts syncing this newly brought file. It can be used to go back to the previous savepoint. &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:400; text-decoration: underline; color:#cddbdb;&quot;&gt;Note:&lt;/span&gt;&lt;span style=&quot; font-size:12pt; font-weight:400; color:#cddbdb;&quot;&gt; This stops the 2-state for the file and initiates normal sync for this newly brought file.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:400; color:#cddbdb;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;img src=&quot;:/newPrefix/clock2.png&quot; width=&quot;15&quot; height=&quot;15&quot; /&gt;&lt;span style=&quot; font-size:12pt; color:#cddbdb;&quot;&gt;  Delete previous, retain current&lt;/span&gt;&lt;span style=&quot; font-size:12pt; font-weight:400; color:#cddbdb;&quot;&gt; - This button appears for the 2-state initiated files. It deletes the previously saved file(savepoint) from the main folder of drive and keeps the currently syncing file only in the main folder and continues it's sync normally. It can be used to delete the previous savepoint. &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:400; text-decoration: underline; color:#cddbdb;&quot;&gt;Note:&lt;/span&gt;&lt;span style=&quot; font-size:12pt; font-weight:400; color:#cddbdb;&quot;&gt; This stops the 2-state for the file and continues normal sync of the current file.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:400; color:#cddbdb;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;img src=&quot;:/newPrefix/exchange.png&quot; width=&quot;15&quot; height=&quot;15&quot; /&gt;&lt;span style=&quot; font-size:12pt; color:#cddbdb;&quot;&gt;  Change previous and current 2-state files(Step process) - &lt;/span&gt;&lt;span style=&quot; font-size:12pt; font-weight:400; color:#cddbdb;&quot;&gt;For 2-state files. It changes the previously saved file(savepoint) with the current file and saves it in the secondary folder making a new savepoint and starts syncing the changes in this file in the primary folder. This can be used to make a new savepoint and remove the previous savepoint. The 2-state syncing continues for this file.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:400; color:#cddbdb;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;img src=&quot;:/newPrefix/download.png&quot; width=&quot;15&quot; height=&quot;15&quot; /&gt;&lt;span style=&quot; font-size:12pt; color:#cddbdb;&quot;&gt;  Download savepoint file - &lt;/span&gt;&lt;span style=&quot; font-size:12pt; font-weight:400; color:#cddbdb;&quot;&gt;For 2-state files. It can be used to download the previous &lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-size:12pt; font-weight:400; color:#cddbdb;&quot;&gt;state(savepoint) of the file if required and continuing the 2-state sync normally.&lt;/span&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-size:12pt; font-weight:400; color:#cddbdb;&quot;&gt;&lt;br /&gt;&lt;/p&gt;
+&lt;p style=&quot;-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-weight:400; color:#cddbdb;&quot;&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="userlabel">
+      <property name="geometry">
+       <rect>
+        <x>70</x>
+        <y>20</y>
+        <width>171</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Bahnschrift</family>
+        <pointsize>16</pointsize>
+        <weight>75</weight>
+        <bold>true</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Username</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="fileno">
+      <property name="geometry">
+       <rect>
+        <x>70</x>
+        <y>45</y>
+        <width>141</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Bahnschrift</family>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Total Files Synced: </string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="folderno">
+      <property name="geometry">
+       <rect>
+        <x>240</x>
+        <y>45</y>
+        <width>141</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Bahnschrift</family>
+        <pointsize>12</pointsize>
+        <weight>50</weight>
+        <bold>false</bold>
+       </font>
+      </property>
+      <property name="text">
+       <string>Total Folders Synced: </string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="logout">
+      <property name="geometry">
+       <rect>
+        <x>490</x>
+        <y>20</y>
+        <width>31</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="cursor">
+       <cursorShape>PointingHandCursor</cursorShape>
+      </property>
+      <property name="toolTip">
+       <string>Delete Account</string>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+      <property name="icon">
+       <iconset>
+        <normaloff>Images/power-button.png</normaloff>Images/power-button.png</iconset>
+      </property>
+      <property name="iconSize">
+       <size>
+        <width>16</width>
+        <height>16</height>
+       </size>
+      </property>
+     </widget>
+     <widget class="QLabel" name="url">
+      <property name="geometry">
+       <rect>
+        <x>200</x>
+        <y>15</y>
+        <width>171</width>
+        <height>16</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Bahnschrift</family>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string/>
+      </property>
+     </widget>
+     <widget class="QWidget" name="leftmenu4" native="true">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>41</width>
+        <height>350</height>
+       </rect>
+      </property>
+      <widget class="QPushButton" name="lmuser4">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>320</y>
+         <width>23</width>
+         <height>23</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>Images/user-gear.png</normaloff>Images/user-gear.png</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>15</width>
+         <height>15</height>
+        </size>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="lmhome4">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>20</y>
+         <width>23</width>
+         <height>23</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>Images/home2.png</normaloff>Images/home2.png</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>15</width>
+         <height>15</height>
+        </size>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="lmlog4">
+       <property name="geometry">
+        <rect>
+         <x>10</x>
+         <y>55</y>
+         <width>23</width>
+         <height>23</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="icon">
+        <iconset>
+         <normaloff>Images/book-alt.png</normaloff>Images/book-alt.png</iconset>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>15</width>
+         <height>15</height>
+        </size>
+       </property>
+      </widget>
+     </widget>
+    </widget>
     <widget class="QWidget" name="page_4">
      <widget class="QWidget" name="signupwid" native="true">
       <property name="geometry">
@@ -990,29 +1213,6 @@ Folders</string>
         </size>
        </property>
       </widget>
-      <widget class="QPushButton" name="lmfav3">
-       <property name="geometry">
-        <rect>
-         <x>10</x>
-         <y>90</y>
-         <width>23</width>
-         <height>23</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="icon">
-        <iconset>
-         <normaloff>Images/starr.png</normaloff>Images/starr.png</iconset>
-       </property>
-       <property name="iconSize">
-        <size>
-         <width>15</width>
-         <height>15</height>
-        </size>
-       </property>
-      </widget>
      </widget>
      <widget class="QTableWidget" name="logtable">
       <property name="geometry">
@@ -1126,33 +1326,12 @@ Folders</string>
        <string>Log Records</string>
       </property>
      </widget>
-     <widget class="QLineEdit" name="searchtab2">
-      <property name="geometry">
-       <rect>
-        <x>399</x>
-        <y>20</y>
-        <width>121</width>
-        <height>20</height>
-       </rect>
-      </property>
-      <property name="font">
-       <font>
-        <family>Bahnschrift</family>
-        <weight>75</weight>
-        <bold>true</bold>
-       </font>
-      </property>
-      <property name="inputMask">
-       <string/>
-      </property>
-      <property name="text">
-       <string/>
-      </property>
-     </widget>
     </widget>
    </widget>
   </widget>
  </widget>
- <resources/>
+ <resources>
+  <include location="Images/imgresource.qrc"/>
+ </resources>
  <connections/>
 </ui>

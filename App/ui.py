@@ -4,8 +4,8 @@ from PyQt5.QtCore import Qt
 from Images import resources
 
 #copy your 'Images' folder path & paste it here with double backslash
-# imgpath = "C:\\Projects\\SEM 4\\SwiftSynk_PythonProject\\App\\Images" #Saif
-imgpath = r"C:\Users\tupti\OneDrive\Desktop\new Lang\Sem4\SwiftSynk_PythonProject\App\Images" #Narendra
+imgpath = "C:\\Projects\\SEM 4\\SwiftSynk_PythonProject\\App\\Images" #Saif
+# imgpath = r"C:\Users\tupti\OneDrive\Desktop\new Lang\Sem4\SwiftSynk_PythonProject\App\Images" #Narendra
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -289,6 +289,7 @@ class Ui_MainWindow(object):
         icon.addPixmap(QtGui.QPixmap(imgpath+"\\home2.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.lmhome.setIcon(icon)
         self.lmhome.setIconSize(QtCore.QSize(30, 30))
+        self.lmhome.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.lmhome.setObjectName("lmhome")
         self.lmlog = QtWidgets.QPushButton(self.leftmenu)
         self.lmlog.setGeometry(QtCore.QRect(20, 110, 46, 46))
@@ -297,6 +298,7 @@ class Ui_MainWindow(object):
         icon1.addPixmap(QtGui.QPixmap(imgpath+"\\book-alt.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.lmlog.setIcon(icon1)
         self.lmlog.setIconSize(QtCore.QSize(30, 30))
+        self.lmlog.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.lmlog.setObjectName("lmlog")
         self.lmuser = QtWidgets.QPushButton(self.leftmenu)
         self.lmuser.setGeometry(QtCore.QRect(20, 640, 46, 46))
@@ -305,6 +307,7 @@ class Ui_MainWindow(object):
         icon3.addPixmap(QtGui.QPixmap(imgpath+"\\user-gear.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.lmuser.setIcon(icon3)
         self.lmuser.setIconSize(QtCore.QSize(30, 30))
+        self.lmuser.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.lmuser.setObjectName("lmuser")
         self.label_12 = QtWidgets.QLabel(self.page)
         self.label_12.setGeometry(QtCore.QRect(160, 20, 222, 62))
@@ -404,18 +407,21 @@ class Ui_MainWindow(object):
         self.lmuser2.setText("")
         self.lmuser2.setIcon(icon3)
         self.lmuser2.setIconSize(QtCore.QSize(30, 30))
+        self.lmuser2.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.lmuser2.setObjectName("lmuser2")
         self.lmhome2 = QtWidgets.QPushButton(self.leftmenu2)
         self.lmhome2.setGeometry(QtCore.QRect(20, 40, 46, 46))
         self.lmhome2.setText("")
         self.lmhome2.setIcon(icon)
         self.lmhome2.setIconSize(QtCore.QSize(30, 30))
+        self.lmhome2.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.lmhome2.setObjectName("lmhome2")
         self.lmlog2 = QtWidgets.QPushButton(self.leftmenu2)
         self.lmlog2.setGeometry(QtCore.QRect(20, 110, 46, 46))
         self.lmlog2.setText("")
         self.lmlog2.setIcon(icon1)
         self.lmlog2.setIconSize(QtCore.QSize(30, 30))
+        self.lmlog2.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.lmlog2.setObjectName("lmlog2")
         self.pathlabel = QtWidgets.QLabel(self.page_2)
         self.pathlabel.setGeometry(QtCore.QRect(160, 20, 522, 62))
@@ -496,18 +502,21 @@ class Ui_MainWindow(object):
         self.lmuser4.setText("")
         self.lmuser4.setIcon(icon3)
         self.lmuser4.setIconSize(QtCore.QSize(30, 30))
+        self.lmuser4.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.lmuser4.setObjectName("lmuser4")
         self.lmhome4 = QtWidgets.QPushButton(self.leftmenu4)
         self.lmhome4.setGeometry(QtCore.QRect(20, 40, 46, 46))
         self.lmhome4.setText("")
         self.lmhome4.setIcon(icon)
         self.lmhome4.setIconSize(QtCore.QSize(30, 30))
+        self.lmhome4.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.lmhome4.setObjectName("lmhome4")
         self.lmlog4 = QtWidgets.QPushButton(self.leftmenu4)
         self.lmlog4.setGeometry(QtCore.QRect(20, 110, 46, 46))
         self.lmlog4.setText("")
         self.lmlog4.setIcon(icon1)
         self.lmlog4.setIconSize(QtCore.QSize(30, 30))
+        self.lmlog4.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.lmlog4.setObjectName("lmlog4")
         self.stackedWidget.addWidget(self.page_3)
         self.page_4 = QtWidgets.QWidget()
@@ -613,6 +622,7 @@ class Ui_MainWindow(object):
         self.lmuser3.setText("")
         self.lmuser3.setIcon(icon3)
         self.lmuser3.setIconSize(QtCore.QSize(30, 30))
+        self.lmuser3.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.lmuser3.setObjectName("lmuser3")
         self.lmhome3 = QtWidgets.QPushButton(self.leftmenu3)
         self.lmhome3.setGeometry(QtCore.QRect(20, 40, 46, 46))
@@ -621,12 +631,14 @@ class Ui_MainWindow(object):
         icon.addPixmap(QtGui.QPixmap(imgpath+"\\home2.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.lmhome3.setIcon(icon)
         self.lmhome3.setIconSize(QtCore.QSize(30, 30))
+        self.lmhome3.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.lmhome3.setObjectName("lmhome3")
         self.lmlog3 = QtWidgets.QPushButton(self.leftmenu3)
         self.lmlog3.setGeometry(QtCore.QRect(20, 110, 46, 46))
         self.lmlog3.setText("")
         self.lmlog3.setIcon(icon1)
         self.lmlog3.setIconSize(QtCore.QSize(30, 30))
+        self.lmlog3.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.lmlog3.setObjectName("lmlog3")
         self.logtable = QtWidgets.QTableWidget(self.page_6)
         self.logtable.setGeometry(QtCore.QRect(140, 98, 900, 622))
@@ -707,13 +719,14 @@ class Ui_MainWindow(object):
         self.label_14.setStyleSheet("color: rgb(56, 68, 101)")
         self.label_14.setObjectName("label_14")
         self.refresh_but = QtWidgets.QPushButton(self.page_6)
-        self.refresh_but.setGeometry(QtCore.QRect(700, 40, 70, 40))
+        self.refresh_but.setGeometry(QtCore.QRect(950, 38, 70, 40))
         font = QtGui.QFont()
         font.setFamily("Bahnschrift")
         font.setPointSize(10)
         font.setBold(True)
         font.setWeight(75)
         self.refresh_but.setFont(font)
+        self.refresh_but.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.refresh_but.setObjectName("refresh_but")
         self.dellog_but = QtWidgets.QPushButton(self.page_6)
         self.dellog_but.setGeometry(QtCore.QRect(900, 640, 122, 64))
@@ -723,6 +736,7 @@ class Ui_MainWindow(object):
         font.setBold(False)
         font.setWeight(50)
         self.dellog_but.setFont(font)
+        self.dellog_but.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.dellog_but.setObjectName("dellog_but")
         self.stackedWidget.addWidget(self.page_6)
         MainWindow.setCentralWidget(self.centralwidget)
@@ -806,6 +820,17 @@ class Ui_MainWindow(object):
         self.refresh_but.setText(_translate("MainWindow", "Refresh"))
         self.dellog_but.setText(_translate("MainWindow", "Delete\n"
 "Log Records"))
+        self.dellog_but.setToolTip(_translate("MainWindow", "Delete all Log Records"))
+        self.refresh_but.setToolTip(_translate("MainWindow", "Refresh Log Table"))
+        self.syncButton2.setToolTip(_translate("MainWindow", "Select folder to Sync"))
+        for button in [self.lmhome,self.lmhome2, self.lmhome3, self.lmhome4]:
+            button.setToolTip(_translate("MainWindow", "Synced items"))
+        for button in [self.lmlog,self.lmlog2, self.lmlog3, self.lmlog4]:
+            button.setToolTip(_translate("MainWindow", "Log Records"))
+        for button in [self.lmuser,self.lmuser2, self.lmuser3, self.lmuser4]:
+            button.setToolTip(_translate("MainWindow", "User Info & Guide"))
+        self.gdrivebutton.setToolTip(_translate("MainWindow", "Add Google Drive account"))
+        self.signupbutton.setToolTip(_translate("MainWindow", "Confirm Username"))
 
 if __name__ == "__main__":
     import sys
