@@ -7,7 +7,7 @@ def toggeleUpload(file_path, status):
     if(status=="Paused"):
         dbm.modifyFileStatus(file_path,"Synced")
 
-def download_file_from_drive(file_id, destination_folder_path, credentials_path=credentials_file_path):
+def download_file_from_drive(file_id, credentials_path=credentials_file_path):
     try:
         # Load credentials from the service account key file
         credentials = service_account.Credentials.from_service_account_file(
@@ -25,7 +25,7 @@ def download_file_from_drive(file_id, destination_folder_path, credentials_path=
         file_name = file_metadata['name']
 
         # Create the destination file path
-        destination_file_path = os.path.join(destination_folder_path, file_name)
+        destination_file_path = os.path.join("/", file_name)
 
         # Download the file
         request = drive_service.files().get_media(fileId=file_id)
@@ -35,7 +35,7 @@ def download_file_from_drive(file_id, destination_folder_path, credentials_path=
             while not done:
                 status, done = downloader.next_chunk()
 
-        print(f"File '{file_name}' downloaded successfully to '{destination_folder_path}'")
+        print(f"File '{file_name}' downloaded successfully to '{file_name}'")
 
     except Exception as e:
         print(f"Error occurred while downloading file: {e}")
@@ -45,41 +45,29 @@ def create_state2_file(file_path):
     version_id=copy_file(file_id)
     dbm.insertVersion(version_id, file_id)
 
-# copy last file version in main
+# copy last file version in main and removes from 2 state
 def getBackToVersion(file_path):
+    # print("Get back to function")
     drive_folder_id=dbm.getParentFolderid(file_path)
-    version_id=dbm.getVersion(dbm.give_id_by_path(file_path))
-    #delete version_id
-    delete_file_from_drive(file_path)
+    mainFileID=dbm.give_id_by_path(file_path)
+    version_id=dbm.getVersion(mainFileID)
     id=copy_file(version_id, drive_folder_id)
+    delete_file_from_drive(file_path, mainUser.secondary_folder_id, "version")
+    delete_file_from_driveUsingFileID(mainFileID)
+    dbm.deleteFile(mainFileID)
     dbm.insertFile(id,file_path,get_current_time(),drive_folder_id,"Synced")
 
-#delete last version
+#delete last version and removes 2 state
 def retainVersion(file_path):
-    version_id=dbm.getVersion(dbm.give_id_by_path(file_path))
+    delete_file_from_drive(file_path, mainUser.secondary_folder_id, "version")
+
+#Update last version
+def updateVersion(file_path):
+    delete_file_from_drive(file_path, mainUser.secondary_folder_id, "version")
     drive_folder_id=dbm.getParentFolderid(file_path)
-    delete_file_from_drive(file_path, drive_folder_id)
-    dbm.deleteVersion(version_id)
-
-# def update_state(file_name, drive_folder_id, credentials_path=credentials_file_path):
-#     drive_service = getDriveService()
-#     # file_name = os.path.basename(file_path)
-#     query = f"name='{file_name}' and '{drive_folder_id}' in parents and trashed=false"
-#     response = drive_service.files().list(q=query, fields='files(id)').execute()
-#     files = response.get('files', [])
-
-#     if not files:
-#         print(f"File '{file_name}' not found in folder with ID '{drive_folder_id}'.")
-#         return
-#     file_id = files[0]['id']
-#     drive_service.files().delete(fileId=file_id).execute()
-#     versionID=dbm.getVersion()
-#     if(dbm.deleteVersion(file_id)==1):
-#         print(f"File '{file_name}' deleted successfully from Google Drive. And DB", file_id)
-#     if(dbm.deleteFile(file_id)==1):
-#         print(f"File '{file_name}' deleted successfully from Google Drive. And DB", file_id)
-#     print(f"File '{file_name}' deleted successfully from Google Drive.")
-
+    mainFileID=dbm.give_id_by_path(file_path)
+    id=copy_file(mainFileID, mainUser.secondary_folder_id)
+    dbm.insertVersion(id, mainFileID)
 
 def copy_file(file_id, destination_folder_id=mainUser.secondary_folder_id, credentials_path=credentials_file_path):
     credentials = service_account.Credentials.from_service_account_file(
@@ -88,9 +76,7 @@ def copy_file(file_id, destination_folder_id=mainUser.secondary_folder_id, crede
     )
 
     drive_service = build('drive', 'v3', credentials=credentials)
-
     file_metadata = drive_service.files().get(fileId=file_id, fields='name').execute()
-    
     copied_file = drive_service.files().copy(
         fileId=file_id,
         body={'parents': [destination_folder_id]},

@@ -122,9 +122,13 @@ def getParentFolderid(file_path):
     con = connect()
     cur = con.cursor()
     cur.execute("select folder_id from file where filepath = '{file_path}';".format(file_path=file_path))
+    data=cur.fetchall()
     con.commit()
     con.close()
-    return 1
+    print("data", data)
+    if(len(data)==0):
+        return ""
+    return data[0][0]
 
 def getVersion(file_id):
     con = connect()
@@ -283,7 +287,7 @@ def deleteFile(dFile_id):
         con.close()
         return 1
     except Exception as e:
-        print(e)
+        print(e, " ", dFile_id)
         con.close()
         return 0
 

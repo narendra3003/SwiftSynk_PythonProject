@@ -418,7 +418,7 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             if os.path.exists(file_path):
                 folder_path = os.path.dirname(file_path)
                 self.populate_folder_table(file_path) 
-                self.stackedWidget.setCurrentIndex(1)  
+                self.stackedWidget.setCurrentIndex(1)
             else:
                 QtWidgets.QMessageBox.warning(self, "Folder Not Found", "The folder does not exist.")
 
@@ -426,13 +426,13 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             msg_box = QtWidgets.QMessageBox()
             msg_box.setIcon(QtWidgets.QMessageBox.Question)
             msg_box.setWindowTitle("Download Previous State File?")
-            msg_box.setText("Do you want to download this file's previous saved state?")
+            msg_box.setText("Do you want to replace this file's previous saved state?")
             msg_box.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
             msg_box.setDefaultButton(QtWidgets.QMessageBox.Yes)
             result = msg_box.exec_()
             if result == QtWidgets.QMessageBox.Yes:
-                #download file
-                pass
+                connector.state_features.download_file_from_drive(dbm.getVersion(dbm.give_id_by_path(self.table.item(row, 11).text()))) #retain previous, delete new
+                print("should download")
 
         elif (column == 6 and os.path.isfile(self.table.item(row, 11).text()) and dbm.is_twoStated(self.table.item(row, 11).text())):
             msg_box = QtWidgets.QMessageBox()
@@ -445,11 +445,20 @@ class MainWindow(QtWidgets.QMainWindow, Ui_MainWindow):
             if result == QtWidgets.QMessageBox.Yes:
                 connector.state_features.getBackToVersion(self.table.item(row, 11).text()) #retain previous, delete new
                 self.refresh_table()
-                pass
 
         elif (column == 7 and os.path.isfile(self.table.item(row, 11).text()) and dbm.is_twoStated(self.table.item(row, 11).text())):
-            # step (change previous state with current and start syncing the latest version)
-            pass
+            msg_box = QtWidgets.QMessageBox()
+            msg_box.setIcon(QtWidgets.QMessageBox.Question)
+
+            if (dbm.is_twoStated(self.table.item(row, 11).text())):
+                msg_box.setWindowTitle("Update this as latest state?")
+                msg_box.setText("Do you want to update this file's previous state as current state?")
+                msg_box.setStandardButtons(QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No)
+                msg_box.setDefaultButton(QtWidgets.QMessageBox.No)
+                result = msg_box.exec_()
+                if result == QtWidgets.QMessageBox.Yes:
+                    connector.state_features.updateVersion(self.table.item(row, 11).text()) #update version
+                    self.refresh_table()
 
         elif (column == 8 and os.path.isfile(self.table.item(row, 11).text())):
             msg_box = QtWidgets.QMessageBox()

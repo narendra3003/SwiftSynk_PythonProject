@@ -30,7 +30,7 @@ def upload_file_to_drive(file_path, drive_folder_id=mainUser.base_drive_folder_i
 
 
 #to delete files from drive
-def delete_file_from_drive(file_name, drive_folder_id=mainUser.base_drive_folder_id, credentials_file_path=credentials_file_path, table="file"):
+def delete_file_from_drive(file_name, drive_folder_id=mainUser.base_drive_folder_id, table="file", credentials_file_path=credentials_file_path):
     drive_service = getDriveService()
     # file_name = os.path.basename(file_path)
     query = f"name='{file_name}' and '{drive_folder_id}' in parents and trashed=false"
@@ -44,7 +44,11 @@ def delete_file_from_drive(file_name, drive_folder_id=mainUser.base_drive_folder
     drive_service.files().delete(fileId=file_id).execute()
     if(table=="version"):
         dbm.deleteVersion(file_id)
-        return
-    if(dbm.deleteFile(file_id)==1):
-        print(f"File '{file_name}' deleted successfully from Google Drive. And DB", file_id)
+        print(f"File '{file_name}' deleted successfully from Google Drive. And DB", file_id, " ", table)
+    elif(dbm.deleteFile(file_id)==1):
+        print(f"File '{file_name}' deleted successfully from Google Drive. And DB", file_id, " ", table)
     print(f"File '{file_name}' deleted successfully from Google Drive.")
+
+def delete_file_from_driveUsingFileID(file_id, credentials_file_path=credentials_file_path):
+    drive_service = getDriveService()
+    drive_service.files().delete(fileId=file_id).execute()
