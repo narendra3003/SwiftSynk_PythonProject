@@ -4,7 +4,10 @@ from PyQt5.QtCore import Qt
 from Images import resources
 
 #copy your 'Images' folder path & paste it here with double backslash
-imgpath = "C:\\Projects\\SEM 4\\SwiftSynk_PythonProject\\App\\Images" #Saif
+#imgpath = "C:\\Projects\\SEM 4\\SwiftSynk_PythonProject\\App\\Images" #Saif
+
+imgpath = r"C:\Users\Admin\Desktop\Sem4\SwiftSynk_PythonProject\App\Images"
+
 # imgpath = r"C:\Users\tupti\OneDrive\Desktop\new Lang\Sem4\SwiftSynk_PythonProject\App\Images" #Narendra
 
 class Ui_MainWindow(object):

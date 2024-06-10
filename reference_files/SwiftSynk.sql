@@ -142,6 +142,8 @@ DELIMITER ;
 
 insert into user values("Narendra", "1gvh-akOM4JlkCljrtpxAGfX4dXdbfJ2n", "1Osn10FfyuozwtJA4O7k8ZxPy-- f-- md2hCPs");
 insert into user values("Saif", "1rEgaGA5mofkeCf572WVRkOWIj_4sHaWm", "1bKg0ctXx-F9Sxy0G0ErSnMuMq-EqcVAk");
+insert into user values("Sanchi", "12QDJynTGSmbyv4Jf6w8ZYzH-NwgYOSt8", "1FkMMrtw-vMjNj_MrFXSe4M6-vKZ1Yi4K");
+
 -- insert into user values("hii","Saif", "1rEgaGA5mofkeCf572WVRkOWIj_4sHaWm", "1bKg0ctXx-F9Sxy0G0ErSnMuMq-EqcVAk");
 -- insert into folder values("1gvh-akOM4JlkCljrtpxAGfX4dXdbfJ2n", "BASE","narendradukhande30@gmail.com");
 -- insert into folder values("efgh", "some\\path","varadesanchita@gmail.com");
