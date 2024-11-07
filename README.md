@@ -1,6 +1,6 @@
 # SwiftSynk - A Syncing Application
 
-SwiftSynk is a file synchronization application designed to ensure that files and folders are seamlessly synced and backed up with Google Drive. This project was developed as a Python Mini Project for SE IT at the University of Mumbai.
+SwiftSynk is a file synchronization application designed to ensure that files and folders are seamlessly synced and backed up with Google Drive. This project was developed as a Semester Mini Project based on Python under the curriculum of University of Mumbai.
 
 ## Features of SwiftSynk:
 
@@ -21,22 +21,9 @@ SwiftSynk is a file synchronization application designed to ensure that files an
 - An active internet connection.
 
 ## Project Team:
-- [Narendra Dukhande](https://github.com/narendra3003) (Roll No. 18)
-- [Saifuddin Syed](https://github.com/saifuddin-syed) (Roll No. 63)
-- [Sanchita Warade](https://github.com/sanchitavarade) (Roll No. 64)
+- [Narendra Dukhande](https://github.com/narendra3003)
+- [Saifuddin Syed](https://github.com/saifuddin-syed)
+- [Sanchita Warade](https://github.com/sanchitavarade)
 
 ## Project Guide:
 - **Prof. Tayyabali Sayyad**
-
-## Project Documentation:
-- **Problem Statement**: Develop an application to facilitate the seamless synchronization of files between local storage and Google Drive, providing users with efficient data management across platforms.
-- **Project Scope**: The project aims to create a user-friendly file synchronization application with emphasis on simplicity, accessibility, and robust security measures.
-- **Review of Literature**: Explores existing file synchronization applications, their features, and their impact on user productivity and data security.
-- **Review of Existing Scenario**: Analyzes current syncing applications like Dropbox, Google Drive, Microsoft OneDrive, Apple iCloud, and more.
-- **Proposed Solution**: SwiftSynk offers automatic and selective file synchronization, robust security, and multi-platform support.
-- **System Design**: Detailed design and implementation strategies for the application.
-- **ER Diagram**: Entity-Relationship diagram for database design.
-- **Conclusion**: Summary of the project and its significance.
-- **Limitations and Future Extensions**: Discusses the limitations and potential future improvements for SwiftSynk.
-- **References**: List of references and resources used in the project.
-- **Team Contributions and Challenges**: Detailed account of individual contributions, learning experiences, and challenges faced during the project.
